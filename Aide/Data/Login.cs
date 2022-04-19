@@ -2,9 +2,9 @@
 {
     public class Login
     {
-        public string grand_type { get; set; } = "password";
-        public string client_id { get; set; } = "AOMAPI";
-        public string scope { get; set; } = "offline_access openid profile ASUOnlineMobileApi";
+        public string grand_type { get; set; }
+        public string client_id { get; set; } 
+        public string scope { get; set; } 
         public string username { get; set; }
         public string password { get; set; }
     }
