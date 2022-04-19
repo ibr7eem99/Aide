@@ -1,0 +1,69 @@
+﻿@model StudentPlanInfo
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Styles {
+<link rel="stylesheet" href="~/css/uploadRegistrationInfo.css" />
+}
+<section class="position-relative bg-img w-100" style="background-image: url(/images/ASU.jpeg); min-height: calc(100vh - 75px);">
+    <div style="top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 1;"
+         class="position-absolute w-100 h-100"></div>
+
+    <div class="py-3 d-flex justify-content-center align-items-center">
+        <div class="card m-auto rounded-lg border-0" style="width: 25rem; z-index: 1000;">
+            <div class="card-body">
+                <form asp-action="Index" method="post" class="form" enctype="multipart/form-data">
+                    <div class="form-group col-sm-12">
+                        <label asp-for="DestinationFolderPath"></label>
+                        <input asp-for="DestinationFolderPath" type="text" class="form-control" />
+                        <span asp-validation-for="DestinationFolderPath" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label asp-for="CurrentSemester"></label>
+                            <input asp-for="CurrentSemester" class="form-control">
+                            <span asp-validation-for="CurrentSemester" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group my-3 text-center">
+                        <label>Upload Data Sheet</label>
+                        <div class="form__upload-btn rounded-pill mx-auto mb-1">
+                            <input type="file" class="form__input" id="upload-data-sheet-input" />
+                            <span class="form__text">Upload File</span>
+                        </div>
+                        <span id="data-sheet-path">No file upload yet</span>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <input type="submit" value="Initiate The Process"
+                               class="btn btn-dark rounded-pill px-3 py-2" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+<script>
+    $(document).ready(function () {
+        // Upload Data Sheet
+        const dataSheetInput = $("#upload-data-sheet-input");
+        dataSheetInput.change(() => {
+            const dataSheetInputValue = dataSheetInput.val();
+            const dataSheetPath = $("#data-sheet-path");
+            const pattern = /[\u0600-\u06FF\u0750-\u077F]/;
+            if (dataSheetInputValue && !pattern.test(dataSheetInputValue)) {
+                dataSheetPath.text(dataSheetInputValue.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+            }
+            else {
+                dataSheetPath.text("No file upload yet");
+            }
+        });
+
+    });
+</script>
+}

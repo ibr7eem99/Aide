@@ -1,0 +1,35 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+.form__upload-btn {
+    position: relative;
+    background-color: #86172f;
+    padding: 8px 30px;
+    max-width: max-content;
+    cursor: pointer;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+    .form__upload-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    }
+
+    .form__upload-btn > input[type=file] {
+        position: absolute;
+        transform: scale(2);
+        opacity: 0;
+    }
+
+        .form__upload-btn > input[type=file],
+        .form__upload-btn > input[type=file]::-webkit-file-upload-button {
+            cursor: pointer;
+        }
+
+.form__text {
+    color: #fff;
+    font-size: 1rem;
+}
