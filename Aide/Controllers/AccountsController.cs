@@ -30,12 +30,13 @@ namespace Aide.Controllers
                 login.grand_type = _configuration["GetToken:grand_type"];
                 login.client_id = _configuration["GetToken:client_id"];
                 login.scope = _configuration["GetToken:scope"];
+
                 var dict = new Dictionary<string, string>();
                 dict.Add("grant_type", login.grand_type);
                 dict.Add("client_id", login.client_id);
                 dict.Add("scope", login.scope);
-                dict.Add("username", login.username);
-                dict.Add("password", login.password);
+                dict.Add("username", login.Username);
+                dict.Add("password", login.Password);
                 Token token1 = null;
                 using (var client = new HttpClient())
                 {
@@ -54,7 +55,7 @@ namespace Aide.Controllers
                         {
                             tokenvalue = System.Text.Encoding.ASCII.GetString(tokenbyts);
                         }*/
-                        return RedirectToAction(nameof(Index), "HomeController");
+                        return RedirectToAction(nameof(Index), "Home");
                     }
                     else
                     {

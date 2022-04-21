@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ib_ra\\Documents\\GitHub\\Aide\\Aide\\Aide.csproj": {}
+    "C:\\Users\\My Laptop\\Documents\\github\\Aide\\Aide\\Aide.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ib_ra\\Documents\\GitHub\\Aide\\Aide\\Aide.csproj": {
+    "C:\\Users\\My Laptop\\Documents\\github\\Aide\\Aide\\Aide.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ib_ra\\Documents\\GitHub\\Aide\\Aide\\Aide.csproj",
+        "projectUniqueName": "C:\\Users\\My Laptop\\Documents\\github\\Aide\\Aide\\Aide.csproj",
         "projectName": "Aide",
-        "projectPath": "C:\\Users\\ib_ra\\Documents\\GitHub\\Aide\\Aide\\Aide.csproj",
-        "packagesPath": "C:\\Users\\ib_ra\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ib_ra\\Documents\\GitHub\\Aide\\Aide\\obj\\",
+        "projectPath": "C:\\Users\\My Laptop\\Documents\\github\\Aide\\Aide\\Aide.csproj",
+        "packagesPath": "C:\\Users\\My Laptop\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\My Laptop\\Documents\\github\\Aide\\Aide\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ib_ra\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\My Laptop\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -77,7 +77,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.104\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

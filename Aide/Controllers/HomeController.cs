@@ -46,7 +46,7 @@ namespace Aide.Controllers
                 semester = year.ToString() + 3;
             }
 
-            return View(new StudentPlanInfo { CurrentSemester = Convert.ToInt32(semester) });
+            return View(new StudentPlanInfo { Year = Convert.ToInt32(semester) });
         }
 
         /*[HttpPost]
