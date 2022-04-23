@@ -11,7 +11,7 @@ namespace Aide.Service
 {
     public class StudyPlan
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        /*private readonly IWebHostEnvironment _webHostEnvironment;
 
         public StudyPlan(IWebHostEnvironment webHostEnvironment)
         {
@@ -56,10 +56,10 @@ namespace Aide.Service
             int courseNumberAddress2 = 0;
             int registeredAtAddress1 = 0;
             int registeredAtAddress2 = 0;
-            /*string yearAddress1;
+            *//*string yearAddress1;
             string yearAddress2;
             string semesterAddress1;
-            string semesterAddress2;*/
+            string semesterAddress2;*//*
             ExcelCellAddress start = worksheet.Dimension.Start;
             ExcelCellAddress end = worksheet.Dimension.End;
             Regex reg = new Regex(@"([0-9])");
@@ -143,12 +143,12 @@ namespace Aide.Service
                 worksheet.Cells[end.Row + 2, 2].Style.WrapText = true;
                 worksheet.Cells[end.Row + 2, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
-                /*worksheet.Cells[end.Row + 2, 3].Value = "Course Title";
+                *//*worksheet.Cells[end.Row + 2, 3].Value = "Course Title";
                 worksheet.Cells[end.Row + 2, 3].AutoFitColumns();
                 worksheet.Cells[end.Row + 2, 3].Style.Border.Top.Style = ExcelBorderStyle.Thick;
                 worksheet.Cells[end.Row + 2, 3].Style.Border.Right.Style = ExcelBorderStyle.Thick;
                 worksheet.Cells[end.Row + 2, 3].Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
-                worksheet.Cells[end.Row + 2, 3, end.Row + 3, 3].Merge = true;*/
+                worksheet.Cells[end.Row + 2, 3, end.Row + 3, 3].Merge = true;*//*
 
                 worksheet.Cells[end.Row + 2, 3].Value = "Registered At";
                 worksheet.Cells[end.Row + 2, 3].Style.Border.BorderAround(ExcelBorderStyle.Thick);
@@ -160,7 +160,7 @@ namespace Aide.Service
                     worksheet.Cells[(end.Row + 2) + (i + 1), 2].Value = currentRegistration[i].courseId;
                     worksheet.Cells[(end.Row + 2) + (i + 1), 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
                     worksheet.Cells[(end.Row + 2) + (i + 1), 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    /*worksheet.Cells[end.Row + (i + 1), 3].Value = registrations[i];*/
+                    *//*worksheet.Cells[end.Row + (i + 1), 3].Value = registrations[i];*//*
                     worksheet.Cells[(end.Row + 2) + (i + 1), 3].Value = currentRegistration[i].semeter;
                     worksheet.Cells[(end.Row + 2) + (i + 1), 3].Style.Border.BorderAround(ExcelBorderStyle.Thick);
                     worksheet.Cells[(end.Row + 2) + (i + 1), 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -189,7 +189,7 @@ namespace Aide.Service
             }
             catch
             {
-                /*System.IO.File.Create($@"{path}\{student.StudentId}.xlsx");*/
+                *//*System.IO.File.Create($@"{path}\{student.StudentId}.xlsx");*//*
             }
         }
 
@@ -208,14 +208,14 @@ namespace Aide.Service
             }
             catch (Exception ex)
             {
-                /*ModelState.AddModelError("CreateDirectory", ex.Message);*/
+                *//*ModelState.AddModelError("CreateDirectory", ex.Message);*//*
             }
         }
 
-        /*private bool CheckFileLength(IFormFile dataSheet)
+        *//*private bool CheckFileLength(IFormFile dataSheet)
         {
             return (dataSheet == null || dataSheet.Length == 0) ? false : true;
-        }*/
+        }*//*
 
         private string GetStudentPalnSheetFile(int studentId, int majorId)
         {
@@ -275,5 +275,5 @@ namespace Aide.Service
             }
             return FullFileName;
         }
-    }
+    }*/
 }
