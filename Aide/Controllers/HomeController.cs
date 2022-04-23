@@ -73,7 +73,7 @@ namespace Aide.Controllers
                         {
                             HttpContent httpContent = result.Content;
                             string jsoncontent = httpContent.ReadAsStringAsync().Result;
-                            Supuervised = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Supuervised>>(jsoncontent);
+                            Supuervised = JsonSerializer.Deserialize<IEnumerable<Supuervised>>(jsoncontent);
                         }
                         else
                         {
