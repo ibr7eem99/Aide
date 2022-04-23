@@ -2,12 +2,17 @@
 {
     public class Supuervised
     {
-        public int courseNumber { get; set; }
-        public string courseNameAr { get; set; }
-        public string supervisorNameAr { get; set; }
-        public double mark { get; set; }
-        public int studentID { get; set; }
-        public string studentNameAr { get; set; }
-        public int semesterStudyPlan { get; set; }
+        public int CourseNumber { get; set; }
+        public string CourseNameAr { get; set; }
+        public string CourseNameEn { get; set; }
+        public string SupervisorNameAr { get; set; }
+        public string SupervisorNameEn { get; set; }
+        public double? Mark { get; set; }
+        public int StudentID { get; set; }
+        public string StudentNameAr { get; set; }
+        public string StudentNameEn { get; set; }
+        public int SemesterStudyPlan { get; set; }
+        public int Year { get; set; }
+        public int Semester { get; set; }
     }
 }

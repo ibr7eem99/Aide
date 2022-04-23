@@ -49,12 +49,7 @@ namespace Aide.Controllers
                         HttpContent content = result.Content;
                         string jsoncontent = content.ReadAsStringAsync().Result;
                         HttpContext.Session.Set("token", System.Text.Encoding.ASCII.GetBytes(jsoncontent));
-                        /*byte[] tokenbyts = null;
-                        string tokenvalue = null;
-                        if (HttpContext.Session.TryGetValue("token", out tokenbyts))
-                        {
-                            tokenvalue = System.Text.Encoding.ASCII.GetString(tokenbyts);
-                        }*/
+                       
                         return RedirectToAction(nameof(Index), "Home");
                     }
                     else
