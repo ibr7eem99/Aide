@@ -49,7 +49,7 @@ namespace Aide.Controllers
                         HttpContent content = result.Content;
                         string jsoncontent = content.ReadAsStringAsync().Result;
                         HttpContext.Session.Set("token", System.Text.Encoding.ASCII.GetBytes(jsoncontent));
-                       
+                        HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_aloudat"));
                         return RedirectToAction(nameof(Index), "Home");
                     }
                     else

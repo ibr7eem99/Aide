@@ -439,3 +439,7 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\ref\Aide.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.pdb
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.genruntimeconfig.cache
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\EPPlus.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\EPPlus.Interfaces.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\EPPlus.System.Drawing.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Microsoft.IO.RecyclableMemoryStream.dll
