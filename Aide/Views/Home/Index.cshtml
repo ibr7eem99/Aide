@@ -9,6 +9,7 @@
     string uservalue = null;
     if (Context.Session.TryGetValue("user", out userbyts))
     {
+        // get User cookies to check, if the user was MohammedAlodat
         uservalue = System.Text.Encoding.ASCII.GetString(userbyts);
     }
 }

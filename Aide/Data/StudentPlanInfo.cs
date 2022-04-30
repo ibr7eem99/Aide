@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Aide.Models.ViewModels
+namespace Aide.Data
 {
     public class StudentPlanInfo
     {

@@ -1,6 +1,5 @@
 ﻿using Aide.Data;
 using Aide.Models;
-using Aide.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -29,25 +28,32 @@ namespace Aide.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            int year = DateTime.Now.Year - 1;
-            /*int month = DateTime.Now.Month;
-            int day = DateTime.Now.Day;
-            string semester = year.ToString();*/
+            byte[] tokenbyts = null;
 
-            /*if ((month >= 10 && month <= 1) || (month == 2 && day <= 10))
+            if (HttpContext.Session.TryGetValue("token", out tokenbyts))
             {
-                semester = year.ToString();
-            }
-            else if ((month >= 3 && month <= 6) || (month == 2 && day >= 15))
-            {
-                semester = year.ToString() + 2;
-            }
-            else if (month >= 7 && month <= 8)
-            {
-                semester = year.ToString() + 3;
-            }*/
+                int year = DateTime.Now.Year - 1;
 
-            return View(new StudentPlanInfo { Year = year });
+                /*int month = DateTime.Now.Month;
+                int day = DateTime.Now.Day;
+                string semester = year.ToString();*/
+
+                /*if ((month >= 10 && month <= 1) || (month == 2 && day <= 10))
+                {
+                    semester = year.ToString();
+                }
+                else if ((month >= 3 && month <= 6) || (month == 2 && day >= 15))
+                {
+                    semester = year.ToString() + 2;
+                }
+                else if (month >= 7 && month <= 8)
+                {
+                    semester = year.ToString() + 3;
+                }*/
+
+                return View(new StudentPlanInfo { Year = 0});
+            }
+            return RedirectToAction(nameof(Login),"Accounts");
         }
 
         [HttpPost]
@@ -98,7 +104,7 @@ namespace Aide.Controllers
             byte[] tokenbyts = null;
             string tokenvalue = null;
             if (HttpContext.Session.TryGetValue("token", out tokenbyts))
-            {
+            { 
                 tokenvalue = System.Text.Encoding.ASCII.GetString(tokenbyts);
                 return JsonSerializer.Deserialize<Token>(tokenvalue);
             }
