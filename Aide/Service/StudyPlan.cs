@@ -34,11 +34,17 @@ namespace Aide.Service
 
             for (int i = 0; i < supuerviseds.Count(); i++)
             {
-                if (supuerviseds.ElementAt(i).StudentID == supuervised.StudentID)
+                /*
+                    TODO:
+                    Remove Line 41
+                 */
+                int majorId = GetMajorId(supuervised.MajorId);
+                if (supuerviseds.ElementAt(i).StudentID == supuervised.StudentID && majorId != 0)
                 {
                     if (isClosed)
                     {
                         isClosed = false;
+                        supuervised.MajorId = majorId;
                         CreateExcelSheet(path, supuervised);
                         var studentSupuervised = supuerviseds.Where(s => s.StudentID == supuervised.StudentID);
                         await OpenNewExcelPackag(path, studentSupuervised);
@@ -82,6 +88,37 @@ namespace Aide.Service
                 }
                 *//*return true;*//*
             }*/
+        }
+
+        /*
+            TODO:
+            Remove the method
+        */
+        private int GetMajorId(int studentId)
+        {
+            int majorId = 0;
+            string studentInfoPath = $@"{_webHostEnvironment.ContentRootPath}\\Advising Material\\Student Info Vs Courses.xlsx";
+            FileInfo fileInfo = new FileInfo(studentInfoPath);
+
+            using (ExcelPackage package = new ExcelPackage(fileInfo))
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                for (int i = worksheet.Rows.StartRow + 1; i <= worksheet.Rows.EndRow; i++)
+                {
+                    if (worksheet.Cells[i, 1].Text == studentId.ToString())
+                    {
+                        majorId = Convert.ToInt32(worksheet.Cells[i, 2].Text);
+                        break;
+                    }
+                }
+            }
+
+            if (majorId == 0)
+            {
+                return majorId;
+            }
+
+            return majorId;
         }
 
         /*
@@ -171,13 +208,13 @@ namespace Aide.Service
 
                         /*if (query.Any())
                         {*/
-                            var currentCource = currentStudent.
-                            FirstOrDefault(c => c.CourseNumber.ToString().Equals(worksheet.Cells[row, courseNumberAddress1].Text));
-                            if (currentCource is not null)
-                            {
-                                worksheet.Cells[row, registeredAtAddress1].Value = $"{currentCource.Year}{currentCource.Semester}";
-                                currentStudent.Remove(currentCource);
-                            }
+                        var currentCource = currentStudent.
+                        FirstOrDefault(c => c.CourseNumber.ToString().Equals(worksheet.Cells[row, courseNumberAddress1].Text));
+                        if (currentCource is not null)
+                        {
+                            worksheet.Cells[row, registeredAtAddress1].Value = $"{currentCource.Year}{currentCource.Semester}";
+                            currentStudent.Remove(currentCource);
+                        }
                         /*}*/
                     }
 
@@ -186,13 +223,13 @@ namespace Aide.Service
                         worksheet.Cells[row, courseNumberAddress2].AutoFitColumns(10);
                         /*if (query.Any())
                         {*/
-                            var currentCource = currentStudent.
-                            FirstOrDefault(c => c.CourseNumber.ToString().Equals(worksheet.Cells[row, courseNumberAddress2].Text));
-                            if (currentCource is not null)
-                            {
-                                worksheet.Cells[row, registeredAtAddress2].Value = $"{currentCource.Year}{currentCource.Semester}";
-                                currentStudent.Remove(currentCource);
-                            }
+                        var currentCource = currentStudent.
+                        FirstOrDefault(c => c.CourseNumber.ToString().Equals(worksheet.Cells[row, courseNumberAddress2].Text));
+                        if (currentCource is not null)
+                        {
+                            worksheet.Cells[row, registeredAtAddress2].Value = $"{currentCource.Year}{currentCource.Semester}";
+                            currentStudent.Remove(currentCource);
+                        }
                         /*}*/
                     }
                 }
