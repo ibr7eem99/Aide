@@ -328,8 +328,9 @@ namespace Aide.Service
             switch (majorId)
             {
                 case 1301:
-                    /*FullFileName += "CS_Plans\\";
-                    if (studentId.ToString().Contains("20151") || studentId.ToString().Contains("20152") || studentId.ToString().Contains("20153"))
+                    FullFileName += "CS_Plans";
+                    FullFileName += $"\\{System.IO.Directory.GetFiles(FullFileName).FirstOrDefault(f => f.Split("-")[0].Contains(semesterStudyPlan.ToString()))}";
+                    /*if (studentId.ToString().Contains("20151") || studentId.ToString().Contains("20152") || studentId.ToString().Contains("20153"))
                     {
                         FullFileName += "CS_2015-2016.xlsx";
                     }
@@ -351,8 +352,9 @@ namespace Aide.Service
                     }*/
                     break;
                 case 1302:
-                    /*FullFileName += "SE_Plans\\";
-                    if (studentId.ToString().Contains("20151") || studentId.ToString().Contains("20152") || studentId.ToString().Contains("20153"))
+                    FullFileName += "SE_Plans";
+                    FullFileName += $"\\{System.IO.Directory.GetFiles(FullFileName).FirstOrDefault(f => f.Split("-")[0].Contains(semesterStudyPlan.ToString()))}";
+                    /*if (studentId.ToString().Contains("20151") || studentId.ToString().Contains("20152") || studentId.ToString().Contains("20153"))
                     {
                         FullFileName += "SE-Study Plan 2015-2016.xlsx";
                     }
