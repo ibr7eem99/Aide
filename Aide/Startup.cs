@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Aide.Data;
+using Aide.Service;
 
 namespace Aide
 {
@@ -34,6 +35,8 @@ namespace Aide
                 options.Cookie.HttpOnly = true;// Give a cookie name for session which will be visible in request payloads.
                 options.Cookie.IsEssential = true;
             });
+
+            services.AddScoped<IStudyPlan, StudyPlan>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

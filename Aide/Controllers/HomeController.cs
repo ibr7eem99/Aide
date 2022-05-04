@@ -1,5 +1,7 @@
 ﻿using Aide.Data;
 using Aide.Models;
+using Aide.Service;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -11,6 +13,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Aide.Controllers
 {
@@ -18,11 +21,13 @@ namespace Aide.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
+        private IStudyPlan _studyPlan;
 
-        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, IStudyPlan studyPlan)
         {
             _logger = logger;
             _configuration = configuration;
+            _studyPlan = studyPlan;
         }
 
         [HttpGet]
@@ -51,13 +56,13 @@ namespace Aide.Controllers
                     semester = year.ToString() + 3;
                 }*/
 
-                return View(new StudentPlanInfo { Year = 0});
+                return View(new StudentPlanInfo { Year = 0 });
             }
-            return RedirectToAction(nameof(Login),"Accounts");
+            return RedirectToAction(nameof(Login), "Accounts");
         }
 
         [HttpPost]
-        public IActionResult Index(StudentPlanInfo model)
+        public async Task<IActionResult> Index(StudentPlanInfo model)
         {
             if (ModelState.IsValid)
             {
@@ -81,7 +86,8 @@ namespace Aide.Controllers
                             {
                                 HttpContent httpContent = result.Content;
                                 string jsoncontent = httpContent.ReadAsStringAsync().Result;
-                                Supuervised = JsonSerializer.Deserialize<IEnumerable<Supuervised>>(jsoncontent);
+                                Supuervised = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Supuervised>>(jsoncontent);
+                                await _studyPlan.GenarateExcelSheet(Supuervised);
                             }
                             else
                             {
@@ -104,7 +110,7 @@ namespace Aide.Controllers
             byte[] tokenbyts = null;
             string tokenvalue = null;
             if (HttpContext.Session.TryGetValue("token", out tokenbyts))
-            { 
+            {
                 tokenvalue = System.Text.Encoding.ASCII.GetString(tokenbyts);
                 return JsonSerializer.Deserialize<Token>(tokenvalue);
             }

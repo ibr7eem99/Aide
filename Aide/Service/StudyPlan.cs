@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Aide.Service
 {
-    public class StudyPlan
+    public class StudyPlan : IStudyPlan
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -38,7 +38,7 @@ namespace Aide.Service
                     TODO:
                     Remove Line 41
                  */
-                int majorId = GetMajorId(supuervised.MajorId);
+                int majorId = GetMajorId(supuervised.StudentID);
                 if (supuerviseds.ElementAt(i).StudentID == supuervised.StudentID && majorId != 0)
                 {
                     if (isClosed)
@@ -97,12 +97,12 @@ namespace Aide.Service
         private int GetMajorId(int studentId)
         {
             int majorId = 0;
-            string studentInfoPath = $@"{_webHostEnvironment.ContentRootPath}\\Advising Material\\Student Info Vs Courses.xlsx";
+            string studentInfoPath = $@"{_webHostEnvironment.WebRootPath}\\AdvisingMaterial\\Student_Info_Vs_Courses.xlsx";
             FileInfo fileInfo = new FileInfo(studentInfoPath);
 
             using (ExcelPackage package = new ExcelPackage(fileInfo))
             {
-                ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault(s => s.Name == "Sheet1");
                 for (int i = worksheet.Rows.StartRow + 1; i <= worksheet.Rows.EndRow; i++)
                 {
                     if (worksheet.Cells[i, 1].Text == studentId.ToString())
@@ -288,7 +288,7 @@ namespace Aide.Service
             try
             {
                 // Create Empty Excel Sheet
-                System.IO.File.Create($@"{path}\{supuervised.StudentID} {supuervised.StudentNameEn}.xlsx").Close();
+                System.IO.File.Create($@"{path}\{supuervised.StudentID} {supuervised.StudentNameAr}.xlsx").Close();
                 // Copy Existing Excel Sheet Template to the Empty Excel Sheet
                 CopyExcelSheetTempleate(path, supuervised);
             }
@@ -302,7 +302,7 @@ namespace Aide.Service
         {
             // Get Student Advising Plan File based on MajorId & StudentId
             string existingExcelSheetPath = GetStudentPalnSheetFile(supuervised.SemesterStudyPlan, supuervised.MajorId);
-            System.IO.File.Copy(existingExcelSheetPath, $@"{path}\{supuervised.StudentID} {supuervised.StudentNameEn}.xlsx", true);
+            System.IO.File.Copy(existingExcelSheetPath, $@"{path}\{supuervised.StudentID} {supuervised.StudentNameAr}.xlsx", true);
         }
 
         private void CreateDirectory(string path)
@@ -324,63 +324,31 @@ namespace Aide.Service
 
         private string GetStudentPalnSheetFile(int semesterStudyPlan, int majorId)
         {
-            string FullFileName = $"{_webHostEnvironment.WebRootPath}\\Advising Material\\";
+            string FullFileName = $"{_webHostEnvironment.WebRootPath}\\AdvisingMaterial\\";
+
             switch (majorId)
             {
                 case 1301:
                     FullFileName += "CS_Plans";
-                    FullFileName += $"\\{System.IO.Directory.GetFiles(FullFileName).FirstOrDefault(f => f.Split("-")[0].Contains(semesterStudyPlan.ToString()))}";
-                    /*if (studentId.ToString().Contains("20151") || studentId.ToString().Contains("20152") || studentId.ToString().Contains("20153"))
-                    {
-                        FullFileName += "CS_2015-2016.xlsx";
-                    }
-                    else if (studentId.ToString().Contains("20161") || studentId.ToString().Contains("20162") || studentId.ToString().Contains("20163"))
-                    {
-                        FullFileName += "CS_2016-2017.xlsx";
-                    }
-                    else if (studentId.ToString().Contains("20171") || studentId.ToString().Contains("20172") || studentId.ToString().Contains("20173"))
-                    {
-                        FullFileName += "CS_2017-2018.xlsx";
-                    }
-                    else if (studentId.ToString().Contains("20181") || studentId.ToString().Contains("20182") || studentId.ToString().Contains("20183"))
-                    {
-                        FullFileName += "CS_2018-2019.xlsx";
-                    }
-                    else if (studentId.ToString().Contains("20191") || studentId.ToString().Contains("20192") || studentId.ToString().Contains("20193"))
-                    {
-                        FullFileName += "CS_2019-2020.xlsx";
-                    }*/
+                    FullFileName = GetStudentPalnSheetFileName(FullFileName, semesterStudyPlan);
                     break;
                 case 1302:
                     FullFileName += "SE_Plans";
-                    FullFileName += $"\\{System.IO.Directory.GetFiles(FullFileName).FirstOrDefault(f => f.Split("-")[0].Contains(semesterStudyPlan.ToString()))}";
-                    /*if (studentId.ToString().Contains("20151") || studentId.ToString().Contains("20152") || studentId.ToString().Contains("20153"))
-                    {
-                        FullFileName += "SE-Study Plan 2015-2016.xlsx";
-                    }
-                    else if (studentId.ToString().Contains("20161") || studentId.ToString().Contains("20162") || studentId.ToString().Contains("20163"))
-                    {
-                        FullFileName += "SE-Study Plan 2016-2017.xlsx";
-                    }
-                    else if (studentId.ToString().Contains("20171") || studentId.ToString().Contains("20172") || studentId.ToString().Contains("20173"))
-                    {
-                        FullFileName += "SE-Study Plan 2017-2018.xlsx";
-                    }
-                    else if (studentId.ToString().Contains("20181") || studentId.ToString().Contains("20182") || studentId.ToString().Contains("20183"))
-                    {
-                        FullFileName += "SE-Study Plan 2018-2019.xlsx";
-                    }
-                    else if (studentId.ToString().Contains("20191") || studentId.ToString().Contains("20192") || studentId.ToString().Contains("20193"))
-                    {
-                        FullFileName += "SE-Study Plan 2019-2020.xlsx";
-                    }
-                    else if (studentId.ToString().Contains("20201") || studentId.ToString().Contains("20202") || studentId.ToString().Contains("20203"))
-                    {
-                        FullFileName += "SE-Study Plan 2020-2021.xlsx";
-                    }*/
+                    FullFileName = GetStudentPalnSheetFileName(FullFileName, semesterStudyPlan);
                     break;
             }
             return FullFileName;
         }
+
+        private string GetStudentPalnSheetFileName(string FullFileName, int semesterStudyPlan)
+        {
+            DirectoryInfo place = new DirectoryInfo(FullFileName);
+            return place.GetFiles().FirstOrDefault(f => f.Name.Split("-")[0].Contains(semesterStudyPlan.ToString().Remove(semesterStudyPlan.ToString().Count() - 1))).FullName;
+        }
+    }
+
+    public interface IStudyPlan
+    {
+        public Task<bool> GenarateExcelSheet(IEnumerable<Supuervised> supuerviseds);
     }
 }
