@@ -454,4 +454,6 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Runtime.Compil
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Text.Encodings.Web.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Text.Json.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Test.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.AssemblyReference.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs

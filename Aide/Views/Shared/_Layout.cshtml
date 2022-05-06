@@ -12,20 +12,25 @@
     <header class="header w-100 shadow">
         <div class="container-fluid h-100">
             <img src="/images/ASU-Logo.png" class="h-100" />
-        </div>
 
-        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-            <ul class="navbar-nav flex-grow-1">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignIn">SignIn</a>
-                </li>
-            </ul>
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="SignIn">SignIn</a>
+                    </li>
+                </ul>
+            </div>
+            }
         </div>
     </header>
 
     <main role="main">
         @RenderBody()
     </main>
+
+    <partial name="_CookieConsentPartial" />
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

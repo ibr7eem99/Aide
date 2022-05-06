@@ -42,7 +42,7 @@ namespace Aide.Controllers
                 dict.Add("username", login.Username);
                 dict.Add("password", login.Password);
 
-                Token token1 = null;
+                /*Token token1 = null;*/
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri("https://id.asu.edu.jo");

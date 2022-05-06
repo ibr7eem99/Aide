@@ -1,21 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Aide.Extensions;
+using Aide.Service;
+using Aide.Service.GraphAPIService;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Aide.Data;
-using Aide.Service;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Aide.Extensions;
-using Microsoft.AspNetCore.Http;
-using Aide.Service.GraphAPIService;
 
 namespace Aide
 {
@@ -35,6 +30,8 @@ namespace Aide
         {
             services.AddControllersWithViews();
             services.AddDistributedMemoryCache();
+
+            services.AddScoped<IStudyPlan, StudyPlan>();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromDays(1); // It depends on user requirements.
@@ -59,13 +56,12 @@ namespace Aide
             .AddAzureAd(options => Configuration.Bind("AzureAd", options))
             .AddCookie();
 
-            services.AddMvc();
-            services.AddControllers();
+            /*services.AddMvc();
+            services.AddControllers();*/
 
             // Add application services.
             services.AddSingleton<IGraphAuthProvider, GraphAuthProvider>();
             services.AddSingleton<IGraphServiceClientFactory, GraphServiceClientFactory>();
-            services.AddScoped<IStudyPlan, StudyPlan>();
 
             services.Configure<HstsOptions>(options =>
             {
@@ -100,9 +96,11 @@ namespace Aide
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/healthcheck");
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=Login}/{id?}");
+                    /*pattern: "{controller=Account}/{action=Login}/{id?}");*/
+                    pattern: "{controller=Home}/{action=Test}/{id?}");
             });
         }
     }

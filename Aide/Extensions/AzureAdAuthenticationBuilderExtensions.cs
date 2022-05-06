@@ -56,7 +56,6 @@ namespace Aide.Extensions
                     // we inject our own multitenant validation logic
                     ValidateIssuer = false,
 
-
                     // TODO: Remove this Code
                     // If the app is meant to be accessed by entire organizations, add your issuer validation logic here.
                     //IssuerValidator = (issuer, securityToken, validationParameters) => {
@@ -81,13 +80,13 @@ namespace Aide.Extensions
                     {
                         var code = context.ProtocolMessage.Code;
                         var identifier = context.Principal.FindFirst(Startup.ObjectIdentifierType).Value;
-
+                        
                         var result = await _authProvider.GetUserAccessTokenByAuthorizationCode(code);
 
                         // Check whether the login is from the MSA tenant. 
                         // The sample uses this attribute to disable UI buttons for unsupported operations when the user is logged in with an MSA account.
                         var currentTenantId = context.Principal.FindFirst(Startup.TenantIdType).Value;
-                        if (currentTenantId == "c694b02b-ba42-462c-ba77-f781b53fac5e")
+                        if (currentTenantId == "a6bdeb1e-7724-4165-b796-640034f507ba")
                         {
                             // MSA (Microsoft Account) is used to log in
                         }

@@ -2,10 +2,10 @@
 using Aide.Models;
 using Aide.Service;
 using Aide.Service.GraphAPIService;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,25 +40,28 @@ namespace Aide.Controllers
             _graphServiceClientFactory = graphServiceClientFactory;
         }
 
-        /*[HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Test(string email)
         {
             if (User.Identity.IsAuthenticated)
             {
                 // Get users's email.
-                email ??= User.FindFirst("preferred_username")?.Value;
-                ViewData["Email"] = email;
+                /*email ??= User.FindFirst("preferred_username")?.Value;
+                ViewData["Email"] = email;*/
+                IEnumerable<DriveItem> folderInfo = null;
 
                 // Initialize the GraphServiceClient.
                 var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
+                string jsonString = await GraphService.GetAllItemsInsideDrive(graphClient, HttpContext);
+                folderInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<DriveItem>>(jsonString);
+                ViewData["Response"] = folderInfo;
+                /*ViewData["Response"] = await GraphService.GetUserJson(graphClient, email, HttpContext);
 
-                ViewData["Response"] = await GraphService.GetUserJson(graphClient, email, HttpContext);
-
-                ViewData["Picture"] = await GraphService.GetPictureBase64(graphClient, email, HttpContext);
+                ViewData["Picture"] = await GraphService.GetPictureBase64(graphClient, email, HttpContext);*/
             }
 
             return View();
-        }*/
+        }
 
         [HttpGet]
         public IActionResult Index()
