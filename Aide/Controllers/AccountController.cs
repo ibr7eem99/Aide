@@ -1,4 +1,7 @@
 ﻿using Aide.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -7,15 +10,16 @@ using System.Net.Http;
 
 namespace Aide.Controllers
 {
-    public class AccountsController : Controller
+    public class AccountController : Controller
     {
         private readonly IConfiguration _configuration;
 
-        public AccountsController(IConfiguration configuration)
+        public AccountController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
+        // Aide Project Login
         [HttpGet]
         public IActionResult Login()
         {
@@ -37,6 +41,7 @@ namespace Aide.Controllers
                 dict.Add("scope", login.scope);
                 dict.Add("username", login.Username);
                 dict.Add("password", login.Password);
+
                 Token token1 = null;
                 using (var client = new HttpClient())
                 {
@@ -62,6 +67,36 @@ namespace Aide.Controllers
             return View(login);
         }
 
+        // Microsoft Login
+        [HttpGet]
+        public IActionResult SignIn()
+        {
+            var redirectUrl = Url.Action(nameof(HomeController.Test), "Home");
+            return Challenge(
+                new AuthenticationProperties { RedirectUri = redirectUrl },
+                OpenIdConnectDefaults.AuthenticationScheme);
+        }
 
+        [HttpGet]
+        public IActionResult SignOut()
+        {
+            var callbackUrl = Url.Action(nameof(SignedOut), "Account", values: null, protocol: Request.Scheme);
+            return SignOut(
+                new AuthenticationProperties { RedirectUri = callbackUrl },
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                OpenIdConnectDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet]
+        public IActionResult SignedOut()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                // Redirect to home page if the user is authenticated.
+                return RedirectToAction(nameof(HomeController.Test), "Home");
+            }
+
+            return View();
+        }
     }
 }
