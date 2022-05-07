@@ -130,6 +130,35 @@ namespace Aide.Service.GraphAPIService
 
         }
 
+        public static async Task<string> UplaodAnExistingFile(GraphServiceClient graphClient, HttpContext httpContext, string driveItemId, string filePath)
+        {
+            try
+            {
+                string path = filePath;
+                byte[] bytes = System.IO.File.ReadAllBytes(path);
+                using (MemoryStream stream = new MemoryStream(bytes))
+                {
+                    var item = await graphClient.Me.Drive.Items[driveItemId].Content
+                                    .Request()
+                                    .PutAsync<DriveItem>(stream);
+                    return JsonConvert.SerializeObject(item, Formatting.Indented);
+                }
+            }
+            catch (ServiceException ex)
+            {
+                switch (ex.Error.Code)
+                {
+                    case "AuthenticationFailure":
+                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
+                    case "TokenNotFound":
+                        await httpContext.ChallengeAsync();
+                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
+                    default:
+                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = "An unknown error has occurred." }, Formatting.Indented);
+                }
+            }
+        }
+
         // Load user's profile picture in base64 string.
         /*public static async Task<string> GetPictureBase64(GraphServiceClient graphClient, string email, HttpContext httpContext)
         {
