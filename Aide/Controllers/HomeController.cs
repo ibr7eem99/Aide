@@ -1,4 +1,5 @@
 ﻿using Aide.Data;
+using Aide.Extensions;
 using Aide.Models;
 using Aide.Service;
 using Aide.Service.GraphAPIService;
@@ -48,16 +49,21 @@ namespace Aide.Controllers
                 // Get users's email.
                 /*email ??= User.FindFirst("preferred_username")?.Value;
                 ViewData["Email"] = email;*/
-                IEnumerable<DriveItem> folderInfo = null;
 
                 // Initialize the GraphServiceClient.
                 var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
                 string jsonString = await GraphService.GetAllItemsInsideDrive(graphClient, HttpContext);
-                folderInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<DriveItem>>(jsonString);
-                ViewData["Response"] = folderInfo;
-                /*ViewData["Response"] = await GraphService.GetUserJson(graphClient, email, HttpContext);
-
-                ViewData["Picture"] = await GraphService.GetPictureBase64(graphClient, email, HttpContext);*/
+                try
+                {
+                    IEnumerable<DriveItem> folderInfo = null;
+                    folderInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<DriveItem>>(jsonString);
+                    ViewData["Response"] = folderInfo;
+                }
+                catch (Exception ex)
+                {
+                    ExceptionMessage message = null;
+                    message = Newtonsoft.Json.JsonConvert.DeserializeObject<ExceptionMessage>(jsonString);
+                }
             }
 
             return View();
