@@ -274,7 +274,6 @@ C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\staticwebassets\A
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Aide.TagHelpers.input.cache
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Aide.TagHelpers.output.cache
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Aide.RazorCoreGenerate.cache
-C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Accounts\Login.cshtml.g.cs
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
@@ -457,3 +456,14 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Account\L
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Test.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.AssemblyReference.cache
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Azure.Core.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Microsoft.Graph.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Microsoft.Graph.Core.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Memory.Data.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Text.Encodings.Web.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Text.Json.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Test.cshtml.g.cs
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs

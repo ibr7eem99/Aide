@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Aide.Extensions;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Graph;
@@ -71,6 +72,62 @@ namespace Aide.Service.GraphAPIService
                         return JsonConvert.SerializeObject(new { Message = "An unknown error has occurred." }, Formatting.Indented);
                 }
             }
+        }
+
+        public static async Task<string> GetAllItemsInsideFolder(GraphServiceClient graphClient, HttpContext httpContext, string itemId)
+        {
+            try
+            {
+                var children = await graphClient.Me.Drive.Items[itemId].Children
+                                    .Request()
+                                    .GetAsync();
+
+                return JsonConvert.SerializeObject(children, Formatting.Indented);
+            }
+            catch (ServiceException ex)
+            {
+                switch (ex.Error.Code)
+                {
+                    case "AuthenticationFailure":
+                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
+                    case "TokenNotFound":
+                        await httpContext.ChallengeAsync();
+                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
+                    default:
+                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = "An unknown error has occurred." }, Formatting.Indented);
+                }
+            }
+        }
+
+        public static async Task<string> CreatNewFolder(GraphServiceClient graphClient, HttpContext httpContext, string itemId, string folderName)
+        {
+            try
+            {
+                var driveItem = new DriveItem
+                {
+                    Name = folderName,
+                    Folder = new Folder()
+                };
+                var children = await graphClient.Me.Drive.Items[itemId].Children
+                                    .Request()
+                                    .AddAsync(driveItem);
+
+                return JsonConvert.SerializeObject(children, Formatting.Indented);
+            }
+            catch (ServiceException ex)
+            {
+                switch (ex.Error.Code)
+                {
+                    case "AuthenticationFailure":
+                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
+                    case "TokenNotFound":
+                        await httpContext.ChallengeAsync();
+                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
+                    default:
+                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = "An unknown error has occurred." }, Formatting.Indented);
+                }
+            }
+
         }
 
         // Load user's profile picture in base64 string.
