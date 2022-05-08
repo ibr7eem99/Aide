@@ -22,10 +22,11 @@ namespace Aide.Service
 
         public async Task<bool> GenarateExcelSheet(IEnumerable<Supuervised> supuerviseds)
         {
-            string path = @"C:\Users\ib_ra\Desktop\StudyPlans";
-            if (!System.IO.Directory.Exists(path))
+            string advisingMaterialPath = $@"{_webHostEnvironment.WebRootPath}\\AdvisingMaterial\\StudentAdvisingPlanFolder";
+
+            if (!System.IO.Directory.Exists(advisingMaterialPath))
             {
-                CreateDirectory(path);
+                CreateDirectory(advisingMaterialPath);
             }
 
             bool isClosed = true;
@@ -45,9 +46,10 @@ namespace Aide.Service
                     {
                         isClosed = false;
                         supuervised.MajorId = majorId;
-                        CreateExcelSheet(path, supuervised);
+                        CreateExcelSheet(advisingMaterialPath, supuervised);
                         var studentSupuervised = supuerviseds.Where(s => s.StudentID == supuervised.StudentID);
-                        await OpenNewExcelPackag(path, studentSupuervised);
+                        await OpenNewExcelPackag(advisingMaterialPath, studentSupuervised);
+
                     }
                 }
                 else
@@ -127,7 +129,7 @@ namespace Aide.Service
         */
         private async Task<bool> OpenNewExcelPackag(string path, IEnumerable<Supuervised> studentSupuervised)
         {
-            string copyExcelSheetPath = GetLastEcelSheetInTheDirectory(path);
+            string copyExcelSheetPath = GetExcelSheetInTheDirectory(path);
             FileInfo fileInfo = new FileInfo(copyExcelSheetPath);
             using (ExcelPackage package = new ExcelPackage(fileInfo))
             {
@@ -274,9 +276,9 @@ namespace Aide.Service
             return package.Workbook.Worksheets.FirstOrDefault(w => w.Name.Contains("SE - Adv E") || w.Name.Contains("CS-Adv-E"));
         }
 
-        private string GetLastEcelSheetInTheDirectory(string path)
+        private string GetExcelSheetInTheDirectory(string path)
         {
-            return System.IO.Directory.GetFiles(path).LastOrDefault();
+            return System.IO.Directory.GetFiles(path).FirstOrDefault();
         }
 
         /*

@@ -141,6 +141,7 @@ namespace Aide.Service.GraphAPIService
                     var item = await graphClient.Me.Drive.Items[driveItemId].Content
                                     .Request()
                                     .PutAsync<DriveItem>(stream);
+
                     return JsonConvert.SerializeObject(item, Formatting.Indented);
                 }
             }
