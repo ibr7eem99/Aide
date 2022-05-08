@@ -48,6 +48,37 @@ namespace Aide.Service.GraphAPIService
             }
         }*/
 
+        public static async Task<string> CreateFolderInsideDriveRoot(GraphServiceClient graphClient, HttpContext httpContext, string folderName)
+        {
+            try
+            {
+                var driveItem = new DriveItem
+                {
+                    Name = folderName,
+                    Folder = new Folder()
+                };
+
+                var responce = await graphClient.Me.Drive.Root.Children
+                    .Request()
+                    .AddAsync(driveItem);
+
+                return JsonConvert.SerializeObject(responce, Formatting.Indented);
+            }
+            catch (ServiceException ex)
+            {
+                switch (ex.Error.Code)
+                {
+                    case "AuthenticationFailure":
+                        return JsonConvert.SerializeObject(new { ex.Error.Message }, Formatting.Indented);
+                    case "TokenNotFound":
+                        await httpContext.ChallengeAsync();
+                        return JsonConvert.SerializeObject(new { ex.Error.Message }, Formatting.Indented);
+                    default:
+                        return JsonConvert.SerializeObject(new { Message = "An unknown error has occurred." }, Formatting.Indented);
+                }
+            }
+        }
+
         public static async Task<string> GetAllItemsInsideDrive(GraphServiceClient graphClient, HttpContext httpContext)
         {
             try

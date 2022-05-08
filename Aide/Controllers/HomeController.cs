@@ -3,6 +3,7 @@ using Aide.Extensions;
 using Aide.Models;
 using Aide.Service;
 using Aide.Service.GraphAPIService;
+using Aide.Service.OneDriveService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -25,33 +26,33 @@ namespace Aide.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
         private IStudyPlan _studyPlan;
-
+        private IOneDriveService _oneDriveService;
         private readonly IGraphServiceClientFactory _graphServiceClientFactory;
+
 
         public HomeController(
             ILogger<HomeController> logger,
             IConfiguration configuration,
             IStudyPlan studyPlan,
+            IOneDriveService oneDriveService,
             IGraphServiceClientFactory graphServiceClientFactory
             )
         {
             _logger = logger;
             _configuration = configuration;
             _studyPlan = studyPlan;
+            _oneDriveService = oneDriveService;
             _graphServiceClientFactory = graphServiceClientFactory;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Test(string email)
+        public async Task<IActionResult> Test()
         {
             if (User.Identity.IsAuthenticated)
             {
-                // Get users's email.
-                /*email ??= User.FindFirst("preferred_username")?.Value;
-                ViewData["Email"] = email;*/
-
-                // Initialize the GraphServiceClient.
                 var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
+                ViewData["Response"] = await _oneDriveService.GetProfessorFolder(HttpContext, graphClient);
+                /*var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
                 string jsonString = await GraphService.GetAllItemsInsideDrive(graphClient, HttpContext);
                 try
                 {
@@ -63,7 +64,7 @@ namespace Aide.Controllers
                 {
                     ExceptionMessage message = null;
                     message = Newtonsoft.Json.JsonConvert.DeserializeObject<ExceptionMessage>(jsonString);
-                }
+                }*/
             }
 
             return View();

@@ -1,7 +1,7 @@
 ﻿@if (ViewBag.Response is not null)
 {
     <div>
-        @foreach (var item in ViewBag.Response)
+        @*@foreach (var item in ViewBag.Response)
         {
             <ol>
                 <li>
@@ -11,7 +11,16 @@
                    Folder Name: @item.Name
                 </li>
             </ol>
-        }
+        }*@
+
+        <ol>
+                <li>
+                    Folder Id: @ViewBag.Response.Id
+                </li>
+                <li>
+                   Folder Name: @ViewBag.Response.Name
+                </li>
+            </ol>
 
     </div>
 }

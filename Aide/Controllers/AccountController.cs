@@ -55,7 +55,7 @@ namespace Aide.Controllers
                         string jsoncontent = content.ReadAsStringAsync().Result;
                         HttpContext.Session.Set("token", System.Text.Encoding.ASCII.GetBytes(jsoncontent));
                         HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_aloudat"));
-                        return RedirectToAction(nameof(Index), "Home");
+                        return RedirectToAction(nameof(HomeController.Test), "Home");
                     }
                     else
                     {

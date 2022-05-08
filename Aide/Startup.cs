@@ -1,6 +1,7 @@
 ﻿using Aide.Extensions;
 using Aide.Service;
 using Aide.Service.GraphAPIService;
+using Aide.Service.OneDriveService;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -31,6 +32,7 @@ namespace Aide
             services.AddControllersWithViews();
             services.AddDistributedMemoryCache();
 
+            services.AddScoped<IOneDriveService, OneDriveService>();
             services.AddScoped<IStudyPlan, StudyPlan>();
             services.AddSession(options =>
             {
@@ -99,8 +101,8 @@ namespace Aide
                 endpoints.MapHealthChecks("/healthcheck");
                 endpoints.MapControllerRoute(
                     name: "default",
-                    /*pattern: "{controller=Account}/{action=Login}/{id?}");*/
-                    pattern: "{controller=Home}/{action=Test}/{id?}");
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
+                /*pattern: "{controller=Home}/{action=Test}/{id?}");*/
             });
         }
     }
