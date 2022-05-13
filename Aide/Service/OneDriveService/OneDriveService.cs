@@ -20,6 +20,7 @@ namespace Aide.Service.OneDriveService
             _graphServiceClientFactory = graphServiceClientFactory;
         }*/
 
+        #region ProfessorFolder
         public async Task<object> GetProfessorFolder(HttpContext httpContext, GraphServiceClient graphServiceClient)
         {
             _httpContext = httpContext;
@@ -99,10 +100,48 @@ namespace Aide.Service.OneDriveService
             /*}*/
             return drive;
         }
+        #endregion
+
+        #region StudentsFolder
+        public async Task<object> GetStudentFolder(HttpContext httpContext, GraphServiceClient graphServiceClient, string ProfessorfolderId, string studentfolderName)
+        {
+
+            _httpContext = httpContext;
+            DriveItem drive = null;
+
+            if (_httpContext is not null)
+            {
+                var graphClient = graphServiceClient;
+                string jsonString = await GraphService.GetAllItemsInsideFolder(graphClient, httpContext, ProfessorfolderId);
+                try
+                {
+                    IEnumerable<DriveItem> foldersInfo = null;
+                    foldersInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<DriveItem>>(jsonString);
+                    foreach (DriveItem item in foldersInfo)
+                    {
+                        if (item.Name.Equals(studentfolderName, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            drive = item;
+                        }
+                    }
+
+                    if (drive is null)
+                    {
+                        jsonString = await GraphService.CreatNewFolder(graphClient, httpContext, ProfessorfolderId, studentfolderName);
+                        drive = Newtonsoft.Json.JsonConvert.DeserializeObject<DriveItem>(jsonString);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExceptionMessage message = null;
+                    message = Newtonsoft.Json.JsonConvert.DeserializeObject<ExceptionMessage>(jsonString);
+                    return message;
+                }
+            }
+            return drive;
+        }
+        #endregion
     }
 
-    public interface IOneDriveService
-    {
-        Task<object> GetProfessorFolder(HttpContext httpContext, GraphServiceClient graphServiceClient);
-    }
+
 }

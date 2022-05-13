@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Aide.Service
+namespace Aide.Service.ExcelSheetService
 {
     public class StudyPlan : IStudyPlan
     {
@@ -349,8 +349,5 @@ namespace Aide.Service
         }
     }
 
-    public interface IStudyPlan
-    {
-        public Task<bool> GenarateExcelSheet(IEnumerable<Supuervised> supuerviseds);
-    }
+  
 }

@@ -132,7 +132,7 @@ namespace Aide.Service.GraphAPIService
 
         public static async Task<string> CreatNewFolder(GraphServiceClient graphClient, HttpContext httpContext, string itemId, string folderName)
         {
-            try
+            /*try
             {
                 var driveItem = new DriveItem
                 {
@@ -157,8 +157,18 @@ namespace Aide.Service.GraphAPIService
                     default:
                         return JsonConvert.SerializeObject(new ExceptionMessage { Message = "An unknown error has occurred." }, Formatting.Indented);
                 }
-            }
+            }*/
 
+            var driveItem = new DriveItem
+            {
+                Name = folderName,
+                Folder = new Folder()
+            };
+            var children = await graphClient.Me.Drive.Items[itemId].Children
+                                .Request()
+                                .AddAsync(driveItem);
+
+            return JsonConvert.SerializeObject(children, Formatting.Indented);
         }
 
         public static async Task<string> UplaodAnExistingFile(GraphServiceClient graphClient, HttpContext httpContext, string driveItemId, string filePath)

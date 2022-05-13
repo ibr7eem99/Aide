@@ -31,9 +31,4 @@ namespace Aide.Service.GraphAPIService
                 }));
 
     }
-
-    public interface IGraphServiceClientFactory
-    {
-        GraphServiceClient GetAuthenticatedGraphClient(ClaimsIdentity userIdentity);
-    }
 }

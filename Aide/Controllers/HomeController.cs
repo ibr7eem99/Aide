@@ -2,6 +2,7 @@
 using Aide.Extensions;
 using Aide.Models;
 using Aide.Service;
+using Aide.Service.ExcelSheetService;
 using Aide.Service.GraphAPIService;
 using Aide.Service.OneDriveService;
 using Microsoft.AspNetCore.Mvc;
@@ -51,7 +52,15 @@ namespace Aide.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
-                ViewData["Response"] = await _oneDriveService.GetProfessorFolder(HttpContext, graphClient);
+                try
+                {
+                    DriveItem professorFolder = await _oneDriveService.GetProfessorFolder(HttpContext, graphClient) as DriveItem;
+                    DriveItem studentFolder = await _oneDriveService.GetStudentFolder(HttpContext, graphClient, professorFolder.Id, "Ibraheem Fatayer 201810116") as DriveItem;
+                }
+                catch
+                {
+
+                }
                 /*var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
                 string jsonString = await GraphService.GetAllItemsInsideDrive(graphClient, HttpContext);
                 try

@@ -63,13 +63,4 @@ namespace Aide.Service.GraphAPIService
             return await _app.AcquireTokenByAuthorizationCode(_scopes, authorizationCode).ExecuteAsync();
         }
     }
-
-    public interface IGraphAuthProvider
-    {
-        string Authority { get; }
-
-        Task<string> GetUserAccessTokenAsync(string userId);
-
-        Task<AuthenticationResult> GetUserAccessTokenByAuthorizationCode(string authorizationCode);
-    }
 }
