@@ -11,7 +11,9 @@
         public int StudentID { get; set; }
         public string StudentNameAr { get; set; }
         public string StudentNameEn { get; set; }
-        public int MajorId { get; set; }
+        public string SpecNameEn { get; set; }
+        public string SpecNameAr { get; set; }
+        public double SpecCode { get; set; }
         public int SemesterStudyPlan { get; set; }
         public int Year { get; set; }
         public int Semester { get; set; }
