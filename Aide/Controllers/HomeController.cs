@@ -46,7 +46,7 @@ namespace Aide.Controllers
             _graphServiceClientFactory = graphServiceClientFactory;
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public async Task<IActionResult> Test()
         {
             if (User.Identity.IsAuthenticated)
@@ -54,14 +54,14 @@ namespace Aide.Controllers
                 var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
                 try
                 {
-                    DriveItem professorFolder = await _oneDriveService.GetProfessorFolder(HttpContext, graphClient) as DriveItem;
-                    DriveItem studentFolder = await _oneDriveService.GetStudentFolder(HttpContext, graphClient, professorFolder.Id, "Ibraheem Fatayer 201810116") as DriveItem;
+                    DriveItem professorFolder = await _oneDriveService.GetProfessorFolder(graphClient) as DriveItem;
+                    DriveItem studentFolder = await _oneDriveService.GetStudentFolder(graphClient, professorFolder.Id, "Ibraheem Fatayer 201810116") as DriveItem;
                 }
                 catch
                 {
 
                 }
-                /*var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
+                *//*var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
                 string jsonString = await GraphService.GetAllItemsInsideDrive(graphClient, HttpContext);
                 try
                 {
@@ -73,11 +73,11 @@ namespace Aide.Controllers
                 {
                     ExceptionMessage message = null;
                     message = Newtonsoft.Json.JsonConvert.DeserializeObject<ExceptionMessage>(jsonString);
-                }*/
+                }*//*
             }
 
             return View();
-        }
+        }*/
 
         [HttpGet]
         public IActionResult Index()
@@ -117,11 +117,12 @@ namespace Aide.Controllers
             {
                 IEnumerable<Supuervised> Supuervised = null;
                 Token token = null;
-                if (ConvertJsonStringToObject() is not null)
+                token = CookiSpace.GetToken(HttpContext);
+                string user= CookiSpace.GetUser(HttpContext);
+                if (token is not null && user is not null)
                 {
                     if (!string.IsNullOrEmpty(_configuration["GetStudentinfo:passCode"]))
                     {
-                        token = ConvertJsonStringToObject();
                         using (var client = new HttpClient())
                         {
                             client.BaseAddress = new Uri("https://api.asu.edu.jo/");
@@ -136,7 +137,8 @@ namespace Aide.Controllers
                                 HttpContent httpContent = result.Content;
                                 string jsoncontent = httpContent.ReadAsStringAsync().Result;
                                 Supuervised = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Supuervised>>(jsoncontent);
-                                await _studyPlan.GenarateExcelSheet(Supuervised);
+                                var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
+                                await _studyPlan.GenarateExcelSheet(Supuervised, user, graphClient);
                             }
                             else
                             {
@@ -152,18 +154,6 @@ namespace Aide.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
-        }
-
-        private Token ConvertJsonStringToObject()
-        {
-            byte[] tokenbyts = null;
-            string tokenvalue = null;
-            if (HttpContext.Session.TryGetValue("token", out tokenbyts))
-            {
-                tokenvalue = System.Text.Encoding.ASCII.GetString(tokenbyts);
-                return JsonSerializer.Deserialize<Token>(tokenvalue);
-            }
-            return null;
         }
 
         public IActionResult Privacy()

@@ -1,4 +1,5 @@
 ﻿using Aide.Data;
+using oneDrive = Aide.Service.OneDriveService;
 using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -8,21 +9,27 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.Graph;
 
 namespace Aide.Service.ExcelSheetService
 {
     public class StudyPlan : IStudyPlan
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private oneDrive.IOneDriveService _oneDriveService;
 
-        public StudyPlan(IWebHostEnvironment webHostEnvironment)
+
+
+        public StudyPlan(IWebHostEnvironment webHostEnvironment, oneDrive.IOneDriveService oneDriveService)
         {
             _webHostEnvironment = webHostEnvironment;
+            _oneDriveService = oneDriveService;
         }
 
-        public async Task<bool> GenarateExcelSheet(IEnumerable<Supuervised> supuerviseds)
+        public async Task<bool> GenarateExcelSheet(IEnumerable<Supuervised> supuerviseds, string professorName, GraphServiceClient graphServiceClient)
         {
             string advisingMaterialPath = $@"{_webHostEnvironment.WebRootPath}\\AdvisingMaterial\\StudentAdvisingPlanFolder";
+            DriveItem professorFolder = await _oneDriveService.GetProfessorFolder(graphServiceClient, professorName) as DriveItem;
 
             if (!System.IO.Directory.Exists(advisingMaterialPath))
             {
@@ -41,8 +48,19 @@ namespace Aide.Service.ExcelSheetService
                     {
                         isClosed = false;
                         CreateExcelSheet(advisingMaterialPath, supuervised);
+                        advisingMaterialPath += $@"\\{supuervised.StudentNameEn} {supuervised.StudentID}.xlsx";
                         var studentSupuervised = supuerviseds.Where(s => s.StudentID == supuervised.StudentID);
                         await OpenNewExcelPackag(advisingMaterialPath, studentSupuervised);
+                        DriveItem studentFolder = await _oneDriveService.GetStudentFolder(
+                                                        graphServiceClient,
+                                                        professorFolder.Id, $"{supuervised.StudentNameEn} {supuervised.StudentID}"
+                                                        ) as DriveItem;
+                        await _oneDriveService.UplodExcelSheet(graphServiceClient, studentFolder.Id, advisingMaterialPath);
+                        FileInfo exclesheetfile= new FileInfo(advisingMaterialPath);
+                        if (exclesheetfile.Exists)
+                        {
+                            exclesheetfile.Delete();
+                        }
                     }
                 }
                 else

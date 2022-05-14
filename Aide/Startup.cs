@@ -32,6 +32,7 @@ namespace Aide
         {
             services.AddControllersWithViews();
             services.AddDistributedMemoryCache();
+            services.AddHttpContextAccessor();
 
             services.AddScoped<IOneDriveService, OneDriveService>();
             services.AddScoped<IStudyPlan, StudyPlan>();

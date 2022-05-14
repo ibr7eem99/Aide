@@ -48,7 +48,7 @@ namespace Aide.Service.GraphAPIService
             }
         }*/
 
-        public static async Task<string> CreateFolderInsideDriveRoot(GraphServiceClient graphClient, HttpContext httpContext, string folderName)
+        public static async Task<string> CreateFolderInsideDriveRoot(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string folderName)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace Aide.Service.GraphAPIService
                     case "AuthenticationFailure":
                         return JsonConvert.SerializeObject(new { ex.Error.Message }, Formatting.Indented);
                     case "TokenNotFound":
-                        await httpContext.ChallengeAsync();
+                        await httpContext.HttpContext.ChallengeAsync();
                         return JsonConvert.SerializeObject(new { ex.Error.Message }, Formatting.Indented);
                     default:
                         return JsonConvert.SerializeObject(new { Message = "An unknown error has occurred." }, Formatting.Indented);
@@ -79,7 +79,7 @@ namespace Aide.Service.GraphAPIService
             }
         }
 
-        public static async Task<string> GetAllItemsInsideDrive(GraphServiceClient graphClient, HttpContext httpContext)
+        public static async Task<string> GetAllItemsInsideDrive(GraphServiceClient graphClient, IHttpContextAccessor httpContext)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace Aide.Service.GraphAPIService
                     case "AuthenticationFailure":
                         return JsonConvert.SerializeObject(new { ex.Error.Message }, Formatting.Indented);
                     case "TokenNotFound":
-                        await httpContext.ChallengeAsync();
+                        await httpContext.HttpContext.ChallengeAsync();
                         return JsonConvert.SerializeObject(new { ex.Error.Message }, Formatting.Indented);
                     default:
                         return JsonConvert.SerializeObject(new { Message = "An unknown error has occurred." }, Formatting.Indented);
@@ -105,7 +105,7 @@ namespace Aide.Service.GraphAPIService
             }
         }
 
-        public static async Task<string> GetAllItemsInsideFolder(GraphServiceClient graphClient, HttpContext httpContext, string itemId)
+        public static async Task<string> GetAllItemsInsideFolder(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string itemId)
         {
             try
             {
@@ -122,7 +122,7 @@ namespace Aide.Service.GraphAPIService
                     case "AuthenticationFailure":
                         return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
                     case "TokenNotFound":
-                        await httpContext.ChallengeAsync();
+                        await httpContext.HttpContext.ChallengeAsync();
                         return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
                     default:
                         return JsonConvert.SerializeObject(new ExceptionMessage { Message = "An unknown error has occurred." }, Formatting.Indented);
@@ -130,7 +130,7 @@ namespace Aide.Service.GraphAPIService
             }
         }
 
-        public static async Task<string> CreatNewFolder(GraphServiceClient graphClient, HttpContext httpContext, string itemId, string folderName)
+        public static async Task<string> CreatNewFolder(GraphServiceClient graphClient, string itemId, string folderName)
         {
             /*try
             {
@@ -171,7 +171,7 @@ namespace Aide.Service.GraphAPIService
             return JsonConvert.SerializeObject(children, Formatting.Indented);
         }
 
-        public static async Task<string> UplaodAnExistingFile(GraphServiceClient graphClient, HttpContext httpContext, string driveItemId, string filePath)
+        public static async Task<string> UplaodAnExistingFile(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string driveItemId, string filePath)
         {
             try
             {
@@ -193,7 +193,7 @@ namespace Aide.Service.GraphAPIService
                     case "AuthenticationFailure":
                         return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
                     case "TokenNotFound":
-                        await httpContext.ChallengeAsync();
+                        await httpContext.HttpContext.ChallengeAsync();
                         return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
                     default:
                         return JsonConvert.SerializeObject(new ExceptionMessage { Message = "An unknown error has occurred." }, Formatting.Indented);

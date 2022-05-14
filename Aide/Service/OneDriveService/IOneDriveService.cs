@@ -6,7 +6,14 @@ namespace Aide.Service.OneDriveService
 {
     public interface IOneDriveService
     {
-        Task<object> GetProfessorFolder(HttpContext httpContext, GraphServiceClient graphServiceClient);
-        Task<object> GetStudentFolder(HttpContext httpContext, GraphServiceClient graphServiceClient, string ProfessorfolderId, string studentfolderName);
+        Task<object> GetProfessorFolder(GraphServiceClient graphServiceClient, string professorName);
+        Task<object> GetStudentFolder(GraphServiceClient graphServiceClient, string ProfessorfolderId, string studentfolderName);
+
+        Task<bool> UplodExcelSheet(GraphServiceClient graphServiceClient, string studentFolderId, string ecxelSheetPath);
+        
+    
+
     }
+
+
 }
