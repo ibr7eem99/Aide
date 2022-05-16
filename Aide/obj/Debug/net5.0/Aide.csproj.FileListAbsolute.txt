@@ -291,6 +291,29 @@ C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\refint\Aide.dll
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Aide.pdb
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Aide.genruntimeconfig.cache
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\ref\Aide.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\EPPlus.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\EPPlus.Interfaces.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\EPPlus.System.Drawing.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Azure.Core.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Microsoft.Graph.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Microsoft.Graph.Core.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Memory.Data.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Text.Encodings.Web.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Text.Json.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Test.cshtml.g.cs
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.AssemblyReference.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.AssemblyInfoInputs.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.AssemblyInfo.cs
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.CoreCompileInputs.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.RazorAssemblyInfo.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.RazorAssemblyInfo.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\appsettings.Development.json
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\appsettings.json
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aide.exe
@@ -302,7 +325,12 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\ref\Aide.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aide.pdb
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aide.Views.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aide.Views.pdb
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Azure.Core.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\EPPlus.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\EPPlus.Interfaces.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\EPPlus.System.Drawing.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Humanizer.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.AspNetCore.Razor.Language.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.CodeAnalysis.dll
@@ -317,12 +345,15 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.EntityFrame
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.SqlServer.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.Graph.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.Graph.Core.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.Identity.Client.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.IO.RecyclableMemoryStream.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.VisualStudio.Web.CodeGeneration.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.VisualStudio.Web.CodeGeneration.Contracts.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll
@@ -340,8 +371,12 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Composition.Ty
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Configuration.ConfigurationManager.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Memory.Data.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Runtime.Caching.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Text.Encodings.Web.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Text.Json.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\cs\Microsoft.CodeAnalysis.resources.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\de\Microsoft.CodeAnalysis.resources.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\es\Microsoft.CodeAnalysis.resources.dll
@@ -408,21 +443,17 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\runtimes\win-arm\lib\
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\runtimes\win-arm64\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.AssemblyInfoInputs.cache
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.AssemblyInfo.cs
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.CoreCompileInputs.cache
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.RazorAssemblyInfo.cache
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.RazorAssemblyInfo.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\scopedcss\bundle\Aide.styles.css
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\staticwebassets\Aide.StaticWebAssets.Manifest.cache
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.TagHelpers.input.cache
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.TagHelpers.output.cache
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.RazorCoreGenerate.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Test.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_LoginLayout.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
@@ -436,34 +467,3 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\ref\Aide.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.pdb
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.genruntimeconfig.cache
-C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\EPPlus.dll
-C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\EPPlus.Interfaces.dll
-C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\EPPlus.System.Drawing.dll
-C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Microsoft.IO.RecyclableMemoryStream.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\EPPlus.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\EPPlus.Interfaces.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\EPPlus.System.Drawing.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.IO.RecyclableMemoryStream.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Azure.Core.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.Graph.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Microsoft.Graph.Core.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Memory.Data.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Text.Encodings.Web.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\System.Text.Json.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Test.cshtml.g.cs
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.AssemblyReference.cache
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
-C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Azure.Core.dll
-C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
-C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Microsoft.Graph.dll
-C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Microsoft.Graph.Core.dll
-C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Memory.Data.dll
-C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
-C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Text.Encodings.Web.dll
-C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Text.Json.dll
-C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
-C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Test.cshtml.g.cs
-C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs

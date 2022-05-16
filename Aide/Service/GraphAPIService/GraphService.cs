@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Aide.Service.GraphAPIService
@@ -176,13 +179,11 @@ namespace Aide.Service.GraphAPIService
             try
             {
                 string path = filePath;
-                byte[] bytes = System.IO.File.ReadAllBytes(path);
-                using (MemoryStream stream = new MemoryStream(bytes))
+                using (var stream = new System.IO.FileStream(path, FileMode.Open))
                 {
-                    var item = await graphClient.Me.Drive.Items[driveItemId].Content
-                                    .Request()
-                                    .PutAsync<DriveItem>(stream);
-
+                    var item = await graphClient.Me.Drive.Items[$"{driveItemId}:/{20211}.xlsx:"].Content
+                                        .Request()
+                                        .PutAsync<DriveItem>(stream);
                     return JsonConvert.SerializeObject(item, Formatting.Indented);
                 }
             }

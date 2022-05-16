@@ -54,8 +54,10 @@ namespace Aide.Controllers
                         HttpContent content = result.Content;
                         string jsoncontent = content.ReadAsStringAsync().Result;
                         HttpContext.Session.Set("token", System.Text.Encoding.ASCII.GetBytes(jsoncontent));
+                        /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_albashayreh"));*/
                         HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_aloudat"));
-                        return RedirectToAction(nameof(HomeController.Test), "Home");
+                        /*return RedirectToAction(nameof(Index), "Home");*/
+                        return RedirectToAction(nameof(SignIn));
                     }
                     else
                     {
@@ -71,7 +73,7 @@ namespace Aide.Controllers
         [HttpGet]
         public IActionResult SignIn()
         {
-            var redirectUrl = Url.Action(nameof(HomeController.Test), "Home");
+            var redirectUrl = Url.Action(nameof(Index), "Home");
             return Challenge(
                 new AuthenticationProperties { RedirectUri = redirectUrl },
                 OpenIdConnectDefaults.AuthenticationScheme);
@@ -93,7 +95,7 @@ namespace Aide.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 // Redirect to home page if the user is authenticated.
-                return RedirectToAction(nameof(HomeController.Test), "Home");
+                return RedirectToAction(nameof(Index), "Home");
             }
 
             return View();

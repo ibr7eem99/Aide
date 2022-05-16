@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Graph;
+using System.Globalization;
 
 namespace Aide.Service.ExcelSheetService
 {
@@ -17,8 +18,6 @@ namespace Aide.Service.ExcelSheetService
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private oneDrive.IOneDriveService _oneDriveService;
-
-
 
         public StudyPlan(IWebHostEnvironment webHostEnvironment, oneDrive.IOneDriveService oneDriveService)
         {
@@ -28,13 +27,20 @@ namespace Aide.Service.ExcelSheetService
 
         public async Task<bool> GenarateExcelSheet(IEnumerable<Supuervised> supuerviseds, string professorName, GraphServiceClient graphServiceClient)
         {
-            string advisingMaterialPath = $@"{_webHostEnvironment.WebRootPath}\\AdvisingMaterial\\StudentAdvisingPlanFolder";
+            string advisingMaterialPath = $@"{_webHostEnvironment.WebRootPath}\AdvisingMaterial\StudentAdvisingPlanFolder";
             DriveItem professorFolder = await _oneDriveService.GetProfessorFolder(graphServiceClient, professorName) as DriveItem;
 
             if (!System.IO.Directory.Exists(advisingMaterialPath))
             {
                 CreateDirectory(advisingMaterialPath);
             }
+
+            /*var results = from s in supuerviseds
+                          group s by s.StudentID into g
+                          select new
+                          {
+                              StudentID = g.Key
+                          };*/
 
             bool isClosed = true;
 
@@ -47,8 +53,10 @@ namespace Aide.Service.ExcelSheetService
                     if (isClosed)
                     {
                         isClosed = false;
+                        TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                        advisingMaterialPath += $@"\{textInfo.ToTitleCase(supuervised.StudentNameEn)} {supuervised.StudentID}.xlsx";
+                        /*advisingMaterialPath += $@"\{textInfo.ToTitleCase(supuervised.StudentNameEn)} {supuervised.StudentID}.xlsx";*/
                         CreateExcelSheet(advisingMaterialPath, supuervised);
-                        advisingMaterialPath += $@"\\{supuervised.StudentNameEn} {supuervised.StudentID}.xlsx";
                         var studentSupuervised = supuerviseds.Where(s => s.StudentID == supuervised.StudentID);
                         await OpenNewExcelPackag(advisingMaterialPath, studentSupuervised);
                         DriveItem studentFolder = await _oneDriveService.GetStudentFolder(
@@ -56,7 +64,7 @@ namespace Aide.Service.ExcelSheetService
                                                         professorFolder.Id, $"{supuervised.StudentNameEn} {supuervised.StudentID}"
                                                         ) as DriveItem;
                         await _oneDriveService.UplodExcelSheet(graphServiceClient, studentFolder.Id, advisingMaterialPath);
-                        FileInfo exclesheetfile= new FileInfo(advisingMaterialPath);
+                        FileInfo exclesheetfile = new FileInfo(advisingMaterialPath);
                         if (exclesheetfile.Exists)
                         {
                             exclesheetfile.Delete();
@@ -67,6 +75,7 @@ namespace Aide.Service.ExcelSheetService
                 {
                     isClosed = true;
                     supuervised = supuerviseds.ElementAt(i);
+                    advisingMaterialPath = $@"{_webHostEnvironment.WebRootPath}\AdvisingMaterial\StudentAdvisingPlanFolder";
                 }
             }
 
@@ -110,7 +119,8 @@ namespace Aide.Service.ExcelSheetService
         */
         private async Task<bool> OpenNewExcelPackag(string path, IEnumerable<Supuervised> studentSupuervised)
         {
-            string copyExcelSheetPath = GetExcelSheetInTheDirectory(path);
+            /*string copyExcelSheetPath = GetExcelSheetInTheDirectory(path);*/
+            string copyExcelSheetPath = path;
             FileInfo fileInfo = new FileInfo(copyExcelSheetPath);
             using (ExcelPackage package = new ExcelPackage(fileInfo))
             {
@@ -247,25 +257,28 @@ namespace Aide.Service.ExcelSheetService
 
         private string GetExcelSheetInTheDirectory(string path)
         {
-            return System.IO.Directory.GetFiles(path).FirstOrDefault();
+            return System.IO.Directory.GetFiles(path).LastOrDefault();
         }
 
-        /*
-            TODO:
-            remove the path parameter
-        */
         private void CreateExcelSheet(string path, Supuervised supuervised)
         {
             try
             {
                 // Create Empty Excel Sheet
-                System.IO.File.Create($@"{path}\{supuervised.StudentID} {supuervised.StudentNameAr}.xlsx").Close();
+                using (FileStream fs = System.IO.File.Create(path))
+                {
+                    fs.Close();
+                    CopyExcelSheetTempleate(path, supuervised);
+                }
                 // Copy Existing Excel Sheet Template to the Empty Excel Sheet
-                CopyExcelSheetTempleate(path, supuervised);
             }
-            catch
+            catch (Exception ex)
             {
-                System.IO.File.Create($@"{path}\{supuervised.StudentID} {supuervised.StudentNameEn}.xlsx");
+                /*System.IO.File.Create($@"{path}\{supuervised.StudentNameEn} {supuervised.StudentID}.xlsx");*/
+            }
+            finally
+            {
+
             }
         }
 
@@ -273,7 +286,7 @@ namespace Aide.Service.ExcelSheetService
         {
             // Get Student Advising Plan File based on MajorId & StudentId
             string existingExcelSheetPath = GetStudentPalnSheetFile(supuervised.SemesterStudyPlan, supuervised.SpecNameEn);
-            System.IO.File.Copy(existingExcelSheetPath, $@"{path}\{supuervised.StudentID} {supuervised.StudentNameAr}.xlsx", true);
+            System.IO.File.Copy(existingExcelSheetPath, path, true);
         }
 
         private void CreateDirectory(string path)
@@ -294,7 +307,7 @@ namespace Aide.Service.ExcelSheetService
 
             switch (majorName.ToUpper())
             {
-                case "COMPUTER SCIENCE":
+                case "COMPUTER SCIENCE":
                     FullFileName += "CS_Plans";
                     FullFileName = GetStudentPalnSheetFileName(FullFileName, semesterStudyPlan);
                     break;
