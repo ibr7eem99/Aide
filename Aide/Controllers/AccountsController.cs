@@ -10,11 +10,11 @@ using System.Net.Http;
 
 namespace Aide.Controllers
 {
-    public class AccountController : Controller
+    public class AccountsController : Controller
     {
         private readonly IConfiguration _configuration;
 
-        public AccountController(IConfiguration configuration)
+        public AccountsController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -55,7 +55,9 @@ namespace Aide.Controllers
                         string jsoncontent = content.ReadAsStringAsync().Result;
                         HttpContext.Session.Set("token", System.Text.Encoding.ASCII.GetBytes(jsoncontent));
                         /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_albashayreh"));*/
-                        HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_aloudat"));
+                        /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_aloudat"));*/
+                        /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("a_abusamaha"));*/
+                        HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("y_alqasrawi"));
                         /*return RedirectToAction(nameof(Index), "Home");*/
                         return RedirectToAction(nameof(SignIn));
                     }

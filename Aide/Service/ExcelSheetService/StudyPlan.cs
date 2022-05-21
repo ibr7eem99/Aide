@@ -315,6 +315,10 @@ namespace Aide.Service.ExcelSheetService
                     FullFileName += "SE_Plans";
                     FullFileName = GetStudentPalnSheetFileName(FullFileName, semesterStudyPlan);
                     break;
+                case "CYBER SECURITY":
+                    FullFileName += "CyberSecurity_Plans";
+                    FullFileName = GetStudentPalnSheetFileName(FullFileName, semesterStudyPlan);
+                    break;
             }
             return FullFileName;
         }

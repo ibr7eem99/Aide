@@ -103,7 +103,7 @@ namespace Aide
                 endpoints.MapHealthChecks("/healthcheck");
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=Login}/{id?}");
+                    pattern: "{controller=Accounts}/{action=Login}/{id?}");
                 /*pattern: "{controller=Home}/{action=Test}/{id?}");*/
             });
         }
