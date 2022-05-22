@@ -10,33 +10,86 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <header class="header w-100 shadow">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6 ">
-                    <img src="/images/ASU-Logo.png" class="h-100 d-inline" />
-                </div>
 
-                <div class="col-sm-6">
-                    <ul class="nav justify-content-end">
-                        @if (!User.Identity.IsAuthenticated)
+    <aside class="sidebar">
+        <div class="side-inner">
+            <div class="p-xl-3 py-4 text-center">
+                <apan class="nav-link text-white">m_albashayreh@asu.edu.jo</apan>
+            </div>
+
+            <hr class="bg-light my-0" />
+
+            <div class="share">
+                <ul class="w-100 list-group">
+                    @if (ViewBag.MajorsName is not null)
+                    {
+                        foreach (var major in (string[])ViewBag.MajorsName)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="SignIn">SignIn</a>
+                            string majorName = System.IO.Path.GetFileName(major);
+                            <li>
+                                <button type="button" id="major" class="btn shadow-none text-left text-white w-100" style="box-sizing:border-box">@majorName</button>
+                                <ul id="major-plan-tree" data-major="@majorName" style="display: none;">
+                                    @{
+                                        string planTreeFilePath = major + @"\PlanTree";
+                                        if (!System.IO.Directory.Exists(planTreeFilePath))
+                                        {
+                                            System.IO.Directory.CreateDirectory(planTreeFilePath);
+                                        }
+                                        string[] planTreeFileList = System.IO.Directory.GetFiles(planTreeFilePath);
+                                    }
+                                    @if (planTreeFileList.Any())
+                                    {
+                                        foreach (var file in planTreeFileList)
+                                        {
+                                            <li class="mb-2"><a href="~/AdvisingMaterial/Majors/@majorName/PlanTree/@file.Split(@"\").Last()" target="_blank" class="text-white text-decoration-none">@System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " ")</a></li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li>No File Uploaded</li>
+                                    }
+                                </ul>
                             </li>
                         }
+                    }
+                </ul>
+            </div>
 
-                        @*<li class="nav-item dropdown">
-                            <a class="nav-link text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+        </div>
+
+    </aside>
+
+    <header class="header w-100">
+        <div class="container-fluid h-100">
+            <div class="row flex-nowrap justify-content-between h-100">
+                <div class="col-lg-5 col-sm-4 px-0 h-100">
+                    <img src="/images/ASU-Logo.png" class="h-100" />
+                </div>
+
+                <div class="col-sm-5 px-0 h-100">
+                    <ul class="navbar justify-content-end">
+                        @*<li class="nav-item">
+                            <apan class="nav-link text-white">m_albashayreh@asu.edu.jo</apan>
+                            </li>*@
+
+                        <li class="nav-item">
+                            @*<a class="nav-link text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-list" style="font-size: 25px"></i>
+                                </a>*@
+                            @*<div class="dropdown-menu" style="left: auto; right: 0" aria-labelledby="navbarDropdown">
+                                @if (ViewBag.MajorsName is not null)
+                                {
+                                foreach (var major in (string[])ViewBag.MajorsName)
+                                {
+                                string majorName = major.Split(@"\").Last();
+                                <button type="button" data-major="@majorName" class="dropdown-item">@majorName</button>
+                                }
+                                }
+                                </div>*@
+                            <a href="#" class="js-menu-toggle nav-link text-white" role="button" aria-expanded="false">
                                 <i class="bi bi-list" style="font-size: 25px"></i>
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </li>*@
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -4,6 +4,7 @@ using Aide.Models;
 using Aide.Service.ExcelSheetService;
 using Aide.Service.GraphAPIService;
 using Aide.Service.OneDriveService;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -24,57 +25,23 @@ namespace Aide.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
         private IStudyPlan _studyPlan;
-        private IOneDriveService _oneDriveService;
         private readonly IGraphServiceClientFactory _graphServiceClientFactory;
-
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public HomeController(
             ILogger<HomeController> logger,
             IConfiguration configuration,
             IStudyPlan studyPlan,
-            IOneDriveService oneDriveService,
-            IGraphServiceClientFactory graphServiceClientFactory
+            IGraphServiceClientFactory graphServiceClientFactory,
+            IWebHostEnvironment webHostEnvironment
             )
         {
             _logger = logger;
             _configuration = configuration;
             _studyPlan = studyPlan;
-            _oneDriveService = oneDriveService;
             _graphServiceClientFactory = graphServiceClientFactory;
+            _webHostEnvironment = webHostEnvironment;
         }
-
-        /*[HttpGet]
-        public async Task<IActionResult> Test()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
-                try
-                {
-                    DriveItem professorFolder = await _oneDriveService.GetProfessorFolder(graphClient) as DriveItem;
-                    DriveItem studentFolder = await _oneDriveService.GetStudentFolder(graphClient, professorFolder.Id, "Ibraheem Fatayer 201810116") as DriveItem;
-                }
-                catch
-                {
-
-                }
-                *//*var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
-                string jsonString = await GraphService.GetAllItemsInsideDrive(graphClient, HttpContext);
-                try
-                {
-                    IEnumerable<DriveItem> folderInfo = null;
-                    folderInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<DriveItem>>(jsonString);
-                    ViewData["Response"] = folderInfo;
-                }
-                catch (Exception ex)
-                {
-                    ExceptionMessage message = null;
-                    message = Newtonsoft.Json.JsonConvert.DeserializeObject<ExceptionMessage>(jsonString);
-                }*//*
-            }
-
-            return View();
-        }*/
 
         [HttpGet]
         public IActionResult Index()
@@ -101,7 +68,7 @@ namespace Aide.Controllers
                 {
                     semester = year.ToString() + 3;
                 }*/
-
+                ViewData["MajorsName"] = GetMajorsName();
                 return View(new StudentPlanInfo { Year = 0 });
             }
             return RedirectToAction(nameof(Login), "Accounts");
@@ -154,6 +121,21 @@ namespace Aide.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
+        }
+
+        private string[] GetMajorsName()
+        {
+            string advisingMaterialFolder = $@"{_webHostEnvironment.WebRootPath}\AdvisingMaterial";
+            if (!System.IO.Directory.Exists(advisingMaterialFolder))
+            {
+                System.IO.Directory.CreateDirectory(advisingMaterialFolder);
+            }
+            advisingMaterialFolder += $@"\Majors";
+            if (!System.IO.Directory.Exists(advisingMaterialFolder))
+            {
+                System.IO.Directory.CreateDirectory(advisingMaterialFolder);
+            }
+            return System.IO.Directory.GetDirectories(advisingMaterialFolder);
         }
 
         public IActionResult Privacy()

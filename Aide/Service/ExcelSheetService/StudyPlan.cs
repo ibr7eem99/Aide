@@ -303,20 +303,20 @@ namespace Aide.Service.ExcelSheetService
 
         private string GetStudentPalnSheetFile(int semesterStudyPlan, string majorName)
         {
-            string FullFileName = $"{_webHostEnvironment.WebRootPath}\\AdvisingMaterial\\";
+            string FullFileName = $"{_webHostEnvironment.WebRootPath}\\AdvisingMaterial\\Majors\\";
 
             switch (majorName.ToUpper())
             {
                 case "COMPUTER SCIENCE":
-                    FullFileName += "CS_Plans";
+                    FullFileName += @"Computer Science\Plans";
                     FullFileName = GetStudentPalnSheetFileName(FullFileName, semesterStudyPlan);
                     break;
                 case "SOFTWARE ENGINEERING":
-                    FullFileName += "SE_Plans";
+                    FullFileName += @"Software Engineer\Plans";
                     FullFileName = GetStudentPalnSheetFileName(FullFileName, semesterStudyPlan);
                     break;
                 case "CYBER SECURITY":
-                    FullFileName += "CyberSecurity_Plans";
+                    FullFileName += @"Cyber Security\Plans";
                     FullFileName = GetStudentPalnSheetFileName(FullFileName, semesterStudyPlan);
                     break;
             }

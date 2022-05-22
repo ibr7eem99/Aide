@@ -450,7 +450,6 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.TagHelpers.outpu
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.RazorCoreGenerate.cache
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Test.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs

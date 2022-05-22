@@ -1,4 +1,33 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(function () {
 
-// Write your JavaScript code.
+    'use strict';
+
+    $('.js-menu-toggle').click(function () {
+
+        var $this = $(this);
+
+        if ($('aside').hasClass('show-sidebar')) {
+            $('aside').removeClass('show-sidebar');
+            $this.removeClass('active');
+        } else {
+            $('aside').addClass('show-sidebar');
+        }
+    });
+
+    // click outisde offcanvas
+    $(document).mouseup(function (e) {
+        var container = $(".sidebar");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            if ($('aside').hasClass('show-sidebar')) {
+                $(`ul#major-plan-tree`).slideUp();
+                $('aside').removeClass('show-sidebar');
+            }
+        }
+    });
+
+    $("button#major").click((e) => {
+        $(`ul#major-plan-tree:not(ul[data-major='${e.target.innerHTML}'])`).slideUp();
+        $(`ul[data-major='${e.target.innerHTML}']`).slideToggle();
+    });
+
+});
