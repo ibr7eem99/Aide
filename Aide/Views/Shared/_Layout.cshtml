@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Aide</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     @await RenderSectionAsync("Styles", required: false)
@@ -20,6 +21,10 @@
             <hr class="bg-light my-0" />
 
             <div class="share">
+                <div class="position-relative pb-1 mb-2">
+                    <h5 class="px-3">Major Tree Plans</h5>
+                </div>
+
                 <ul class="w-100 list-group">
                     @if (ViewBag.MajorsName is not null)
                     {
@@ -27,7 +32,7 @@
                         {
                             string majorName = System.IO.Path.GetFileName(major);
                             <li>
-                                <button type="button" id="major" class="btn shadow-none text-left text-white w-100" style="box-sizing:border-box">@majorName</button>
+                                <button type="button" id="major" class="btn text-left text-white w-100 py-2" style="box-sizing:border-box">@majorName</button>
                                 <ul id="major-plan-tree" data-major="@majorName" style="display: none;">
                                     @{
                                         string planTreeFilePath = major + @"\PlanTree";
@@ -41,7 +46,12 @@
                                     {
                                         foreach (var file in planTreeFileList)
                                         {
-                                            <li class="mb-2"><a href="~/AdvisingMaterial/Majors/@majorName/PlanTree/@file.Split(@"\").Last()" target="_blank" class="text-white text-decoration-none">@System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " ")</a></li>
+                                            <li class="mb-2">
+                                                <a href="~/AdvisingMaterial/Majors/@majorName/PlanTree/@file.Split(@"\").Last()" target="_blank" class="text-white text-decoration-none">
+                                                    <span class="mr-2"><i class="bi bi-link"></i></span>
+                                                    @System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " ")
+                                                </a>
+                                            </li>
                                         }
                                     }
                                     else

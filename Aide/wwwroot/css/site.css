@@ -50,8 +50,15 @@ html {
     height: 75px;
 }
 
-/* sidebar */
+#major:focus {
+    box-shadow: none;
+}
 
+/*#major:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: 0.8s
+}*/
+/* sidebar */
 .show-sidebar {
     -webkit-transform: translateX(0%);
     -ms-transform: translateX(0%);
@@ -68,13 +75,13 @@ aside {
     min-height: 580px;
     width: 330px;
     right: 0;
-    z-index: 1000;
+    z-index: 1050;
     position: fixed;
     -webkit-transform: translateX(100%);
     -ms-transform: translateX(100%);
     transform: translateX(100%);
     color: #fff;
-    background-color: #181723;
+    background-color: #171C23;
     -webkit-transition: 1s -webkit-transform cubic-bezier(0.23, 1, 0.32, 1);
     transition: 1s -webkit-transform cubic-bezier(0.23, 1, 0.32, 1);
     -o-transition: 1s transform cubic-bezier(0.23, 1, 0.32, 1);
@@ -93,8 +100,8 @@ aside {
         }
 
         /*aside .side-inner::-webkit-scrollbar-thumb {*/
-            /*background-color: darkgrey;*/
-            /*outline: 1px solid slategrey;
+        /*background-color: darkgrey;*/
+        /*outline: 1px solid slategrey;
         }*/
 
         aside .side-inner::-webkit-scrollbar-thumb {
@@ -105,4 +112,14 @@ aside {
 
         aside .side-inner .share {
             padding: 20px 0px;
+        }
+
+        aside .side-inner h5:before {
+            content: "";
+            position: absolute;
+            left: 18px;
+            bottom: 0;
+            width: 110px;
+            height: 1px;
+            background-color: #fff;
         }

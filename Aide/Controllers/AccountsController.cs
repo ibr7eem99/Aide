@@ -55,9 +55,9 @@ namespace Aide.Controllers
                         string jsoncontent = content.ReadAsStringAsync().Result;
                         HttpContext.Session.Set("token", System.Text.Encoding.ASCII.GetBytes(jsoncontent));
                         /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_albashayreh"));*/
-                        /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_aloudat"));*/
+                        HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_aloudat"));
                         /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("a_abusamaha"));*/
-                        HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("y_alqasrawi"));
+                        /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("y_alqasrawi"));*/
                         /*return RedirectToAction(nameof(Index), "Home");*/
                         return RedirectToAction(nameof(SignIn));
                     }

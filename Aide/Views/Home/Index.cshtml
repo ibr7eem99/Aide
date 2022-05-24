@@ -4,16 +4,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-@{
-    byte[] userbyts = null;
-    string uservalue = null;
-    if (Context.Session.TryGetValue("user", out userbyts))
-    {
-        // get User cookies to check, if the user was MohammedAlodat
-        uservalue = System.Text.Encoding.ASCII.GetString(userbyts);
-    }
-}
-
 <section class="w-100 bg-img position-relative" style="min-height: calc(100vh - 75px); background-image: url(/images/ASU.jpeg);">
     <div style="top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 1;"
          class="position-absolute h-100 w-100"></div>

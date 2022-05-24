@@ -41,82 +41,36 @@ namespace Aide.Service.ExcelSheetService
                           {
                               StudentID = g.Key
                           };*/
+            var students = supuerviseds.GroupBy(s => s.StudentID);
 
-            bool isClosed = true;
-
-            Supuervised supuervised = supuerviseds.FirstOrDefault();
-
-            for (int i = 0; i < supuerviseds.Count(); i++)
+            foreach (var student in students)
             {
-                if (supuerviseds.ElementAt(i).StudentID == supuervised.StudentID)
+                var studentSupuervised = supuerviseds.Where(s => s.StudentID == student.Key);
+                Supuervised supuervised = studentSupuervised.FirstOrDefault();
+                supuervised.StudentNameEn = supuervised.StudentNameEn.Replace("'", "");
+                TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                advisingMaterialPath += $@"\{textInfo.ToTitleCase(supuervised.StudentNameEn)} {supuervised.StudentID}.xlsx";
+                /*advisingMaterialPath += $@"\{textInfo.ToTitleCase(supuervised.StudentNameEn)} {supuervised.StudentID}.xlsx";*/
+                CreateExcelSheet(advisingMaterialPath, supuervised);
+                await OpenNewExcelPackag(advisingMaterialPath, studentSupuervised);
+                DriveItem studentFolder = await _oneDriveService.GetStudentFolder(
+                                                graphServiceClient,
+                                                professorFolder.Id, $"{supuervised.StudentNameEn} {supuervised.StudentID}"
+                                                ) as DriveItem;
+                await _oneDriveService.UplodExcelSheet(graphServiceClient, studentFolder.Id, advisingMaterialPath);
+                FileInfo exclesheetfile = new FileInfo(advisingMaterialPath);
+                if (exclesheetfile.Exists)
                 {
-                    if (isClosed)
-                    {
-                        isClosed = false;
-                        TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-                        advisingMaterialPath += $@"\{textInfo.ToTitleCase(supuervised.StudentNameEn)} {supuervised.StudentID}.xlsx";
-                        /*advisingMaterialPath += $@"\{textInfo.ToTitleCase(supuervised.StudentNameEn)} {supuervised.StudentID}.xlsx";*/
-                        CreateExcelSheet(advisingMaterialPath, supuervised);
-                        var studentSupuervised = supuerviseds.Where(s => s.StudentID == supuervised.StudentID);
-                        await OpenNewExcelPackag(advisingMaterialPath, studentSupuervised);
-                        DriveItem studentFolder = await _oneDriveService.GetStudentFolder(
-                                                        graphServiceClient,
-                                                        professorFolder.Id, $"{supuervised.StudentNameEn} {supuervised.StudentID}"
-                                                        ) as DriveItem;
-                        await _oneDriveService.UplodExcelSheet(graphServiceClient, studentFolder.Id, advisingMaterialPath);
-                        FileInfo exclesheetfile = new FileInfo(advisingMaterialPath);
-                        if (exclesheetfile.Exists)
-                        {
-                            exclesheetfile.Delete();
-                        }
-                    }
+                    exclesheetfile.Delete();
                 }
-                else
-                {
-                    isClosed = true;
-                    supuervised = supuerviseds.ElementAt(i);
-                    advisingMaterialPath = $@"{_webHostEnvironment.WebRootPath}\AdvisingMaterial\StudentAdvisingPlanFolder";
-                }
+                advisingMaterialPath = $@"{_webHostEnvironment.WebRootPath}\AdvisingMaterial\StudentAdvisingPlanFolder";
+
             }
 
             // TODO
             return true;
-            /*foreach (var supuervised in supuerviseds)
-            {
-                if (supuervised.StudentID == studentId)
-                {
-                    CreateExcelSheet(path, student);
-
-                    string copyExcelSheetPath = GetLastEcelSheetInTheDirectory(path);
-                    FileInfo fileInfo = new FileInfo(copyExcelSheetPath);
-                    using (ExcelPackage package = new ExcelPackage(fileInfo))
-                    {
-                        ExcelWorksheet worksheet = GetSpecificWorkSheet(package);
-                        FillStudentAdvisingPlanTemplate(worksheet, student);
-
-                        try
-                        {
-                            await package.SaveAsync();
-                        }
-                        catch
-                        {
-
-                        }
-                    }
-                }
-                else
-                {
-                    studentId = supuervised.StudentID;
-                }
-                *//*return true;*//*
-            }*/
         }
 
-
-        /*
-            TODO:
-            remove the path parameter
-        */
         private async Task<bool> OpenNewExcelPackag(string path, IEnumerable<Supuervised> studentSupuervised)
         {
             /*string copyExcelSheetPath = GetExcelSheetInTheDirectory(path);*/
