@@ -303,8 +303,6 @@ C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Memory.Dat
 C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
 C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Text.Encodings.Web.dll
 C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Text.Json.dll
-C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
-C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Test.cshtml.g.cs
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.AssemblyReference.cache
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.GeneratedMSBuildEditorConfig.editorconfig
@@ -466,3 +464,5 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\ref\Aide.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.pdb
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.genruntimeconfig.cache
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Accounts\Login.cshtml.g.cs
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Accounts\Login.cshtml.g.cs
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Plans\UplodFile.cshtml.g.cs

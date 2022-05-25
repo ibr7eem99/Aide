@@ -68,7 +68,7 @@ namespace Aide.Controllers
                 {
                     semester = year.ToString() + 3;
                 }*/
-                ViewData["MajorsName"] = GetMajorsName();
+                ViewData["MajorsName"] = AdvicingMatelrialFolderMangment.GetMajorsName(_webHostEnvironment);
                 return View(new StudentPlanInfo { Year = 0 });
             }
             return RedirectToAction(nameof(Login), "Accounts");
@@ -121,21 +121,6 @@ namespace Aide.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
-        }
-
-        private string[] GetMajorsName()
-        {
-            string advisingMaterialFolder = $@"{_webHostEnvironment.WebRootPath}\AdvisingMaterial";
-            if (!System.IO.Directory.Exists(advisingMaterialFolder))
-            {
-                System.IO.Directory.CreateDirectory(advisingMaterialFolder);
-            }
-            advisingMaterialFolder += $@"\Majors";
-            if (!System.IO.Directory.Exists(advisingMaterialFolder))
-            {
-                System.IO.Directory.CreateDirectory(advisingMaterialFolder);
-            }
-            return System.IO.Directory.GetDirectories(advisingMaterialFolder);
         }
 
         public IActionResult Privacy()

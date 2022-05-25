@@ -58,6 +58,25 @@ html {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     transition: 0.8s
 }*/
+.form__upload-btn {
+    position: relative;
+    background-color: #86172f;
+    padding: 8px 30px;
+    max-width: max-content;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+    .form__upload-btn > input[type=file] {
+        position: absolute;
+        transform: scale(2);
+        opacity: 0;
+    }
+
+        .form__upload-btn > input[type=file],
+        .form__upload-btn > input[type=file]::-webkit-file-upload-button {
+            cursor: pointer;
+        }
 /* sidebar */
 .show-sidebar {
     -webkit-transform: translateX(0%);
