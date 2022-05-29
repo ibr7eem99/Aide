@@ -28,5 +28,13 @@ namespace Aide.Extensions
             }
             return tokenvalue;
         }
+
+        public static void ClearAllCookis(HttpRequest request, HttpResponse response)
+        {
+            foreach (var key in request.Cookies.Keys)
+            {
+                response.Cookies.Delete(key);
+            }
+        }
     }
 }

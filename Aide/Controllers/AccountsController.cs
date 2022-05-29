@@ -1,4 +1,5 @@
 ﻿using Aide.Data;
+using Aide.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -13,10 +14,12 @@ namespace Aide.Controllers
     public class AccountsController : Controller
     {
         private readonly IConfiguration _configuration;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public AccountsController(IConfiguration configuration)
+        public AccountsController(IConfiguration configuration, IHttpClientFactory clientFactory)
         {
             _configuration = configuration;
+            _clientFactory = clientFactory;
         }
 
         // Aide Project Login
@@ -42,7 +45,6 @@ namespace Aide.Controllers
                 dict.Add("username", login.Username);
                 dict.Add("password", login.Password);
 
-                /*Token token1 = null;*/
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri("https://id.asu.edu.jo");
@@ -82,25 +84,14 @@ namespace Aide.Controllers
         }
 
         [HttpGet]
-        public IActionResult SignOut()
+        public IActionResult SignedOut()
         {
-            var callbackUrl = Url.Action(nameof(SignedOut), "Account", values: null, protocol: Request.Scheme);
+            var callbackUrl = Url.Action(nameof(Login), "Accounts", values: null, protocol: Request.Scheme);
+            CookiSpace.ClearAllCookis(Request, Response);
             return SignOut(
                 new AuthenticationProperties { RedirectUri = callbackUrl },
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 OpenIdConnectDefaults.AuthenticationScheme);
-        }
-
-        [HttpGet]
-        public IActionResult SignedOut()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                // Redirect to home page if the user is authenticated.
-                return RedirectToAction(nameof(Index), "Home");
-            }
-
-            return View();
         }
     }
 }

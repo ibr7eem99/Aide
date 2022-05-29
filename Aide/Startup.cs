@@ -38,11 +38,13 @@ namespace Aide
             services.AddScoped<IStudyPlan, StudyPlan>();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromDays(1); // It depends on user requirements.
+                options.IdleTimeout = TimeSpan.FromDays(1);
                 options.Cookie.Name = ".My.Session";
-                options.Cookie.HttpOnly = true;// Give a cookie name for session which will be visible in request payloads.
+                options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+
+            services.AddHttpClient();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -51,17 +53,14 @@ namespace Aide
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddAuthentication(sharedOptions =>
+            services.AddAuthentication(options =>
             {
-                sharedOptions.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                sharedOptions.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
             .AddAzureAd(options => Configuration.Bind("AzureAd", options))
             .AddCookie();
-
-            /*services.AddMvc();
-            services.AddControllers();*/
 
             // Add application services.
             services.AddSingleton<IGraphAuthProvider, GraphAuthProvider>();
@@ -85,6 +84,7 @@ namespace Aide
             }
             else
             {
+                app.UseStatusCodePages();
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();

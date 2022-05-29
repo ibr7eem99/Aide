@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Graph;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -11,69 +12,33 @@ namespace Aide.Service.GraphAPIService
 {
     public class GraphService
     {
-        /*private const string PlaceholderImage = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz4NCjxzdmcgd2lkdGg9IjQwMXB4IiBoZWlnaHQ9IjQwMXB4IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDMxMi44MDkgMCA0MDEgNDAxIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjMxMi44MDkgMCA0MDEgNDAxIiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPGcgdHJhbnNmb3JtPSJtYXRyaXgoMS4yMjMgMCAwIDEuMjIzIC00NjcuNSAtODQzLjQ0KSI+DQoJPHJlY3QgeD0iNjAxLjQ1IiB5PSI2NTMuMDciIHdpZHRoPSI0MDEiIGhlaWdodD0iNDAxIiBmaWxsPSIjRTRFNkU3Ii8+DQoJPHBhdGggZD0ibTgwMi4zOCA5MDguMDhjLTg0LjUxNSAwLTE1My41MiA0OC4xODUtMTU3LjM4IDEwOC42MmgzMTQuNzljLTMuODctNjAuNDQtNzIuOS0xMDguNjItMTU3LjQxLTEwOC42MnoiIGZpbGw9IiNBRUI0QjciLz4NCgk8cGF0aCBkPSJtODgxLjM3IDgxOC44NmMwIDQ2Ljc0Ni0zNS4xMDYgODQuNjQxLTc4LjQxIDg0LjY0MXMtNzguNDEtMzcuODk1LTc4LjQxLTg0LjY0MSAzNS4xMDYtODQuNjQxIDc4LjQxLTg0LjY0MWM0My4zMSAwIDc4LjQxIDM3LjkgNzguNDEgODQuNjR6IiBmaWxsPSIjQUVCNEI3Ii8+DQo8L2c+DQo8L3N2Zz4NCg==";*/
-
-        // Load user's profile in formatted JSON.
-        /*public static async Task<string> GetUserJson(GraphServiceClient graphClient, string email, HttpContext httpContext)
-        {
-            if (email == null) return JsonConvert.SerializeObject(new { Message = "Email address cannot be null." }, Formatting.Indented);
-
-            try
-            {
-                // Load user profile.
-                var user = await graphClient.Users[email].Request().GetAsync();
-                return JsonConvert.SerializeObject(user, Formatting.Indented);
-            }
-            catch (ServiceException e)
-            {
-                switch (e.Error.Code)
-                {
-                    case "Request_ResourceNotFound":
-                    case "ResourceNotFound":
-                    case "ErrorItemNotFound":
-                    case "itemNotFound":
-                        return JsonConvert.SerializeObject(new { Message = $"User '{email}' was not found." }, Formatting.Indented);
-                    case "ErrorInvalidUser":
-                        return JsonConvert.SerializeObject(new { Message = $"The requested user '{email}' is invalid." }, Formatting.Indented);
-                    case "AuthenticationFailure":
-                        return JsonConvert.SerializeObject(new { e.Error.Message }, Formatting.Indented);
-                    case "TokenNotFound":
-                        await httpContext.ChallengeAsync();
-                        return JsonConvert.SerializeObject(new { e.Error.Message }, Formatting.Indented);
-                    default:
-                        return JsonConvert.SerializeObject(new { Message = "An unknown error has occurred." }, Formatting.Indented);
-                }
-            }
-        }*/
-
         #region Get Items From OneDrive
-        public static async Task<string> GetAllItemsInsideDrive(GraphServiceClient graphClient, IHttpContextAccessor httpContext)
+        public static async Task<IEnumerable<DriveItem>> GetAllItemsInsideDrive(GraphServiceClient graphClient, IHttpContextAccessor httpContext)
         {
             try
             {
-                var children = await graphClient.Me.Drive.Root.Children
+                IEnumerable<DriveItem> children = await graphClient.Me.Drive.Root.Children
                                     .Request()
                                     .Filter("name eq 'Shared'")
                                     .GetAsync();
-
-                return JsonConvert.SerializeObject(children, Formatting.Indented);
+                return children;
             }
             catch (ServiceException ex)
             {
                 switch (ex.Error.Code)
                 {
                     case "AuthenticationFailure":
-                        return JsonConvert.SerializeObject(new { ex.Error.Message }, Formatting.Indented);
+                        throw new AuthenticationException(ex.Error);
                     case "TokenNotFound":
                         await httpContext.HttpContext.ChallengeAsync();
-                        return JsonConvert.SerializeObject(new { ex.Error.Message }, Formatting.Indented);
+                        throw new AuthenticationException(ex.Error);
                     default:
-                        return JsonConvert.SerializeObject(new { Message = "An unknown error has occurred." }, Formatting.Indented);
+                        throw new Exception("An unknown error has occurred.");
                 }
             }
         }
 
-        public static async Task<string> GetItemInsideFolder(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string itemId, string folderName)
+        public static async Task<IEnumerable<DriveItem>> GetItemInsideFolder(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string itemId, string folderName)
         {
             try
             {
@@ -83,27 +48,26 @@ namespace Aide.Service.GraphAPIService
                                     .Filter(filterQuery)
                                     .GetAsync();
 
-                return JsonConvert.SerializeObject(children, Formatting.Indented);
+                return children;
             }
             catch (ServiceException ex)
             {
                 switch (ex.Error.Code)
                 {
                     case "AuthenticationFailure":
-                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
+                        throw new AuthenticationException(ex.Error);
                     case "TokenNotFound":
                         await httpContext.HttpContext.ChallengeAsync();
-                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
+                        throw new AuthenticationException(ex.Error);
                     default:
-                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = "An unknown error has occurred." }, Formatting.Indented);
+                        throw new Exception("An unknown error has occurred.");
                 }
             }
         }
-
         #endregion
 
         #region Create Folder inside OneDrive
-        public static async Task<string> CreateFolderInsideDriveRoot(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string folderName)
+        public static async Task<DriveItem> CreateFolderInsideDriveRoot(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string folderName)
         {
             try
             {
@@ -117,66 +81,56 @@ namespace Aide.Service.GraphAPIService
                     .Request()
                     .AddAsync(driveItem);
 
-                return JsonConvert.SerializeObject(responce, Formatting.Indented);
+                return responce;
             }
             catch (ServiceException ex)
             {
                 switch (ex.Error.Code)
                 {
                     case "AuthenticationFailure":
-                        return JsonConvert.SerializeObject(new { ex.Error.Message }, Formatting.Indented);
+                        throw new AuthenticationException(ex.Error);
                     case "TokenNotFound":
                         await httpContext.HttpContext.ChallengeAsync();
-                        return JsonConvert.SerializeObject(new { ex.Error.Message }, Formatting.Indented);
+                        throw new AuthenticationException(ex.Error);
                     default:
-                        return JsonConvert.SerializeObject(new { Message = "An unknown error has occurred." }, Formatting.Indented);
+                        throw new Exception("An unknown error has occurred.");
                 }
             }
         }
 
-        public static async Task<string> CreatNewFolder(GraphServiceClient graphClient, string itemId, string folderName)
+        public static async Task<DriveItem> CreatNewFolder(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string itemId, string folderName)
         {
-            /*try
+            try
             {
                 var driveItem = new DriveItem
                 {
                     Name = folderName,
                     Folder = new Folder()
                 };
+
                 var children = await graphClient.Me.Drive.Items[itemId].Children
                                     .Request()
                                     .AddAsync(driveItem);
 
-                return JsonConvert.SerializeObject(children, Formatting.Indented);
+                return children;
             }
             catch (ServiceException ex)
             {
                 switch (ex.Error.Code)
                 {
                     case "AuthenticationFailure":
-                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
+                        throw new AuthenticationException(ex.Error);
                     case "TokenNotFound":
-                        await httpContext.ChallengeAsync();
-                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
+                        await httpContext.HttpContext.ChallengeAsync();
+                        throw new AuthenticationException(ex.Error);
                     default:
-                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = "An unknown error has occurred." }, Formatting.Indented);
+                        throw new Exception("An unknown error has occurred.");
                 }
-            }*/
-
-            var driveItem = new DriveItem
-            {
-                Name = folderName,
-                Folder = new Folder()
-            };
-            var children = await graphClient.Me.Drive.Items[itemId].Children
-                                .Request()
-                                .AddAsync(driveItem);
-
-            return JsonConvert.SerializeObject(children, Formatting.Indented);
+            }
         }
         #endregion
 
-        public static async Task<string> UplaodAnExistingFile(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string driveItemId, string filePath)
+        public static async Task<DriveItem> UplaodAnExistingFile(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string driveItemId, string filePath)
         {
             try
             {
@@ -186,7 +140,8 @@ namespace Aide.Service.GraphAPIService
                     var item = await graphClient.Me.Drive.Items[$"{driveItemId}:/{20211}.xlsx:"].Content
                                         .Request()
                                         .PutAsync<DriveItem>(stream);
-                    return JsonConvert.SerializeObject(item, Formatting.Indented);
+
+                    return item;
                 }
             }
             catch (ServiceException ex)
@@ -194,12 +149,12 @@ namespace Aide.Service.GraphAPIService
                 switch (ex.Error.Code)
                 {
                     case "AuthenticationFailure":
-                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
+                        throw new AuthenticationException(ex.Error);
                     case "TokenNotFound":
                         await httpContext.HttpContext.ChallengeAsync();
-                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = ex.Error.Message }, Formatting.Indented);
+                        throw new AuthenticationException(ex.Error);
                     default:
-                        return JsonConvert.SerializeObject(new ExceptionMessage { Message = "An unknown error has occurred." }, Formatting.Indented);
+                        throw new Exception("An unknown error has occurred.");
                 }
             }
         }

@@ -1,4 +1,6 @@
-﻿namespace Aide.Extensions
+﻿using System;
+
+namespace Aide.Extensions
 {
     public class ExceptionMessage
     {

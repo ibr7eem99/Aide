@@ -1,4 +1,5 @@
-﻿using Aide.Data;
+﻿using Aide.Controllers;
+using Aide.Data;
 using Aide.Extensions;
 using Aide.Service.GraphAPIService;
 using Microsoft.AspNetCore.Http;
@@ -24,49 +25,36 @@ namespace Aide.Service.OneDriveService
         private async Task<DriveItem> GetFolderFromRootDrive(GraphServiceClient graphServiceClient)
         {
             DriveItem drive = null;
-            var graphClient = graphServiceClient;
-            string jsonString = await GraphService.GetAllItemsInsideDrive(graphClient, _httpContextAccessor);
             IEnumerable<DriveItem> foldersInfo = null;
-            foldersInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<DriveItem>>(jsonString);
+            var graphClient = graphServiceClient;
+
+            foldersInfo = await GraphService.GetAllItemsInsideDrive(graphClient, _httpContextAccessor);
             if (Enumerable.Any(foldersInfo))
             {
                 drive = Enumerable.FirstOrDefault(foldersInfo);
             }
             else
             {
-                jsonString = await GraphService.CreateFolderInsideDriveRoot(graphClient, _httpContextAccessor, "Shared");
-                drive = Newtonsoft.Json.JsonConvert.DeserializeObject<DriveItem>(jsonString);
+                drive = await GraphService.CreateFolderInsideDriveRoot(graphClient, _httpContextAccessor, "Shared");
             }
             return drive;
         }
 
-        public async Task<object> GetProfessorFolder(GraphServiceClient graphServiceClient, string professorName)
+        public async Task<DriveItem> GetProfessorFolder(GraphServiceClient graphServiceClient, string professorName)
         {
             DriveItem drive = null;
             if (professorName is not null)
             {
                 var graphClient = graphServiceClient;
                 DriveItem sharedFolder = await GetFolderFromRootDrive(graphClient);
-                string jsonString = await GraphService.GetItemInsideFolder(graphClient, _httpContextAccessor, sharedFolder.Id, professorName);
-                try
+                IEnumerable<DriveItem> foldersInfo = await GraphService.GetItemInsideFolder(graphClient, _httpContextAccessor, sharedFolder.Id, professorName);
+                if (Enumerable.Any(foldersInfo))
                 {
-                    IEnumerable<DriveItem> foldersInfo = null;
-                    foldersInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<DriveItem>>(jsonString);
-                    if (Enumerable.Any(foldersInfo))
-                    {
-                        drive = Enumerable.FirstOrDefault(foldersInfo);
-                    }
-                    else
-                    {
-                        jsonString = await GraphService.CreatNewFolder(graphClient, sharedFolder.Id, professorName);
-                        drive = Newtonsoft.Json.JsonConvert.DeserializeObject<DriveItem>(jsonString);
-                    }
+                    drive = Enumerable.FirstOrDefault(foldersInfo);
                 }
-                catch (Exception ex)
+                else
                 {
-                    ExceptionMessage message = null;
-                    message = Newtonsoft.Json.JsonConvert.DeserializeObject<ExceptionMessage>(jsonString);
-                    return message;
+                    drive = await GraphService.CreatNewFolder(graphClient, _httpContextAccessor, sharedFolder.Id, professorName);
                 }
             }
             return drive;
@@ -74,36 +62,23 @@ namespace Aide.Service.OneDriveService
         #endregion
 
         #region StudentsFolder
-        public async Task<object> GetStudentFolder(GraphServiceClient graphServiceClient, string ProfessorfolderId, string studentfolderName)
+        public async Task<DriveItem> GetStudentFolder(GraphServiceClient graphServiceClient, string ProfessorfolderId, string studentfolderName)
         {
             DriveItem drive = null;
-
             var graphClient = graphServiceClient;
-            string jsonString = await GraphService.GetItemInsideFolder(graphClient, _httpContextAccessor, ProfessorfolderId, studentfolderName);
-            try
+            IEnumerable<DriveItem> foldersInfo = await GraphService.GetItemInsideFolder(graphClient, _httpContextAccessor, ProfessorfolderId, studentfolderName);
+
+            if (Enumerable.Any(foldersInfo))
             {
-                IEnumerable<DriveItem> foldersInfo = null;
-                foldersInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<DriveItem>>(jsonString);
-                if (Enumerable.Any(foldersInfo))
-                {
-                    drive = Enumerable.FirstOrDefault(foldersInfo);
-                }
-                else
-                {
-                    jsonString = await GraphService.CreatNewFolder(graphClient, ProfessorfolderId, studentfolderName);
-                    drive = Newtonsoft.Json.JsonConvert.DeserializeObject<DriveItem>(jsonString);
-                }
+                drive = Enumerable.FirstOrDefault(foldersInfo);
             }
-            catch (Exception ex)
+            else
             {
-                ExceptionMessage message = null;
-                message = Newtonsoft.Json.JsonConvert.DeserializeObject<ExceptionMessage>(jsonString);
-                return message;
+                drive = await GraphService.CreatNewFolder(graphClient, _httpContextAccessor, ProfessorfolderId, studentfolderName);
             }
 
             return drive;
         }
-
         #endregion
 
         public async Task<bool> UplodExcelSheet(GraphServiceClient graphServiceClient, string studentFolderId, string ecxelSheetPath)
@@ -114,6 +89,4 @@ namespace Aide.Service.OneDriveService
             return true;
         }
     }
-
-
 }

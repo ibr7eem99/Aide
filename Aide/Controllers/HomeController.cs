@@ -3,7 +3,6 @@ using Aide.Extensions;
 using Aide.Models;
 using Aide.Service.ExcelSheetService;
 using Aide.Service.GraphAPIService;
-using Aide.Service.OneDriveService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -46,9 +45,7 @@ namespace Aide.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            byte[] tokenbyts = null;
-
-            if (HttpContext.Session.TryGetValue("token", out tokenbyts))
+            if (Request.Cookies.Keys.Contains(".My.Session"))
             {
                 int year = DateTime.Now.Year - 1;
 
@@ -80,9 +77,9 @@ namespace Aide.Controllers
             if (ModelState.IsValid)
             {
                 IEnumerable<Supuervised> Supuervised = null;
-                Token token = null;
-                token = CookiSpace.GetToken(HttpContext);
-                string user= CookiSpace.GetUser(HttpContext);
+                Token token = CookiSpace.GetToken(HttpContext);
+                string user = CookiSpace.GetUser(HttpContext);
+
                 if (token is not null && user is not null)
                 {
                     if (!string.IsNullOrEmpty(_configuration["GetStudentinfo:passCode"]))
@@ -105,7 +102,14 @@ namespace Aide.Controllers
                                 string jsoncontent = httpContent.ReadAsStringAsync().Result;
                                 Supuervised = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Supuervised>>(jsoncontent);
                                 var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
-                                await _studyPlan.GenarateExcelSheet(Supuervised, user, graphClient);
+                                try
+                                {
+                                    await _studyPlan.GenarateExcelSheet(Supuervised, user, graphClient);
+                                }
+                                catch (Exception ex) when (ex.GetType().Name == "AuthenticationException")
+                                {
+                                    return RedirectToAction(nameof(AccountsController.SignedOut), "Accounts");
+                                }
                             }
                             else
                             {
@@ -116,6 +120,7 @@ namespace Aide.Controllers
                     else
                     {
                         // TODO
+                        return StatusCode(500);
                     }
                 }
                 return RedirectToAction(nameof(Index));
