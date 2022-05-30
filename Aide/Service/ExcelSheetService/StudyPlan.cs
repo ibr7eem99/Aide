@@ -25,14 +25,14 @@ namespace Aide.Service.ExcelSheetService
             _oneDriveService = oneDriveService;
         }
 
-        public async Task<bool> GenarateExcelSheet(IEnumerable<Supuervised> supuerviseds, string professorName, GraphServiceClient graphServiceClient)
+        public async Task GenarateExcelSheet(IEnumerable<Supuervised> supuerviseds, string professorName, GraphServiceClient graphServiceClient)
         {
             string advisingMaterialPath = $@"{_webHostEnvironment.WebRootPath}\AdvisingMaterial\StudentAdvisingPlanFolder";
-            DriveItem professorFolder = await _oneDriveService.GetProfessorFolder(graphServiceClient, professorName) as DriveItem;
+            DriveItem professorFolder = await _oneDriveService.GetProfessorFolder(graphServiceClient, professorName);
 
             if (!System.IO.Directory.Exists(advisingMaterialPath))
             {
-                CreateDirectory(advisingMaterialPath);
+                CreateNewDirectory(advisingMaterialPath);
             }
 
             var students = supuerviseds.GroupBy(s => s.StudentID);
@@ -50,31 +50,45 @@ namespace Aide.Service.ExcelSheetService
                                                 graphServiceClient,
                                                 professorFolder.Id, $"{supuervised.StudentNameEn} {supuervised.StudentID}"
                                                 ) as DriveItem;
+
                 await _oneDriveService.UplodExcelSheet(graphServiceClient, studentFolder.Id, advisingMaterialPath);
-                FileInfo exclesheetfile = new FileInfo(advisingMaterialPath);
-                if (exclesheetfile.Exists)
+
+                if (System.IO.File.Exists(advisingMaterialPath))
                 {
-                    exclesheetfile.Delete();
+                    DeleteFile(advisingMaterialPath);
                 }
                 advisingMaterialPath = $@"{_webHostEnvironment.WebRootPath}\AdvisingMaterial\StudentAdvisingPlanFolder";
-
             }
 
-            // TODO
-            return true;
         }
 
-        private async Task<bool> OpenNewExcelPackag(string path, IEnumerable<Supuervised> studentSupuervised)
+        private async Task OpenNewExcelPackag(string path, IEnumerable<Supuervised> studentSupuervised)
         {
-            FileInfo fileInfo = new FileInfo(path);
-            using (ExcelPackage package = new ExcelPackage(fileInfo))
+            try
             {
-                ExcelWorksheet worksheet = GetSpecificWorkSheet(package);
-                FillStudentAdvisingPlanTemplate(worksheet, studentSupuervised);
-
-                await package.SaveAsync();
+                FileInfo fileInfo = new FileInfo(path);
+                using (ExcelPackage package = new ExcelPackage(fileInfo))
+                {
+                    try
+                    {
+                        ExcelWorksheet worksheet = GetSpecificWorkSheet(package);
+                        FillStudentAdvisingPlanTemplate(worksheet, studentSupuervised);
+                        await package.SaveAsync();
+                    }
+                    catch (ArgumentNullException ex)
+                    {
+                        throw new ArgumentNullException(ex.ParamName, "Excel Worksheet not found, Plese try again or contact with computer center");
+                    }
+                }
             }
-            return true;
+            catch (LicenseException ex)
+            {
+                throw new Exception($"{ex.Message}, Plese contact with computer center to add EPPlus lincense");
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         private void FillStudentAdvisingPlanTemplate(
@@ -94,92 +108,99 @@ namespace Aide.Service.ExcelSheetService
             {
                 throw new ArgumentNullException(nameof(worksheet));
             }
-            else
+
+            ExcelCellAddress start = worksheet.Dimension.Start;
+            ExcelCellAddress end = worksheet.Dimension.End;
+            Regex reg = new Regex(@"([0-9])");
+
+            var currentStudent = studentSupuervised.ToList<Supuervised>();
+
+            for (int row = 5; row <= end.Row - 3 || row <= end.Row - 2; row++)
             {
-                ExcelCellAddress start = worksheet.Dimension.Start;
-                ExcelCellAddress end = worksheet.Dimension.End;
-                Regex reg = new Regex(@"([0-9])");
-
-                var currentStudent = studentSupuervised.ToList<Supuervised>();
-
-                for (int row = 5; row <= end.Row - 3 || row <= end.Row - 2; row++)
+                for (int col = 2; col <= end.Column; col++)
                 {
-                    for (int col = 2; col <= end.Column; col++)
+                    string colText = worksheet.Cells[3, col].Text;
+                    if (colText == "Course Number" || colText == "Subject Number")
                     {
-                        string colText = worksheet.Cells[3, col].Text;
-                        if (colText == "Course Number" || colText == "Subject Number")
+                        var currentCource = currentStudent.Where(c => c.CourseNumber
+                                        .ToString()
+                                        .Equals(worksheet.Cells[row, col].Text))
+                                        .OrderBy(c => c.Mark)
+                                        .LastOrDefault();
+
+                        if (currentCource is not null)
                         {
-                            var currentCource = currentStudent.
-                                            FirstOrDefault(c => c.CourseNumber.
-                                            ToString().
-                                            Equals(worksheet.Cells[row, col].Text));
-
-                            if (currentCource is not null)
+                            if (currentCource.Mark >= 50 && currentCource.Mark <= 100)
                             {
-                                if (currentCource.Mark >= 50 && currentCource.Mark <= 100)
+                                if (reg.IsMatch(worksheet.Cells[row, col].Text))
                                 {
-                                    if (reg.IsMatch(worksheet.Cells[row, col].Text))
-                                    {
-                                        worksheet.Cells[row, col].AutoFitColumns(11);
+                                    worksheet.Cells[row, col].AutoFitColumns(11);
 
-                                        worksheet.Cells[row, col + 6].Value = $"{currentCource.Year}{currentCource.Semester}";
-                                        currentStudent.Remove(currentCource);
-                                    }
-                                }
-                                else
-                                {
+                                    worksheet.Cells[row, col + 6].Value = $"{currentCource.Year}{currentCource.Semester}";
                                     currentStudent.Remove(currentCource);
                                 }
                             }
+
+                            // TODO
+                            /*if (currentStudent
+                                .Where(c => c.CourseNumber
+                                .ToString()
+                                .Equals(worksheet.Cells[row, col].Text)).Count() > 0
+                                )
+                            {
+
+                            }*/
                         }
                     }
                 }
+            }
 
-                if (currentStudent.Count() > 0)
+            if (currentStudent.Count() > 0)
+            {
+                worksheet.Cells[end.Row + 2, 2].Value = "Course Number";
+                worksheet.Cells[end.Row + 2, 2].AutoFitColumns(10);
+                worksheet.Cells[end.Row + 2, 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
+                worksheet.Cells[end.Row + 2, 2, end.Row + 3, 2].Merge = true;
+                worksheet.Cells[end.Row + 2, 2].Style.WrapText = true;
+                worksheet.Cells[end.Row + 2, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells[end.Row + 2, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                worksheet.Cells[end.Row + 2, 3].Value = "Course Title";
+                worksheet.Cells[end.Row + 2, 3].Style.Border.Top.Style = ExcelBorderStyle.Thick;
+                worksheet.Cells[end.Row + 2, 3].Style.Border.Right.Style = ExcelBorderStyle.Thick;
+                worksheet.Cells[end.Row + 2, 3].Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+                worksheet.Cells[end.Row + 2, 3, end.Row + 3, 3].Merge = true;
+                worksheet.Cells[end.Row + 2, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells[end.Row + 2, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                worksheet.Cells[end.Row + 2, 4].Value = "Registered At";
+                worksheet.Cells[end.Row + 2, 4, end.Row + 3, 5].Merge = true;
+                worksheet.Cells[end.Row + 2, 4].Style.Border.BorderAround(ExcelBorderStyle.Thick);
+                worksheet.Cells[end.Row + 2, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells[end.Row + 2, 4].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                for (int i = 0; i < currentStudent.Count(); i++)
                 {
-                    worksheet.Cells[end.Row + 2, 2].Value = "Course Number";
-                    worksheet.Cells[end.Row + 2, 2].AutoFitColumns(10);
-                    worksheet.Cells[end.Row + 2, 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
-                    worksheet.Cells[end.Row + 2, 2, end.Row + 3, 2].Merge = true;
-                    worksheet.Cells[end.Row + 2, 2].Style.WrapText = true;
-                    worksheet.Cells[end.Row + 2, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[end.Row + 2, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    worksheet.Cells[end.Row + 2, 3].Value = "Course Title";
-                    worksheet.Cells[end.Row + 2, 3].Style.Border.Top.Style = ExcelBorderStyle.Thick;
-                    worksheet.Cells[end.Row + 2, 3].Style.Border.Right.Style = ExcelBorderStyle.Thick;
-                    worksheet.Cells[end.Row + 2, 3].Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
-                    worksheet.Cells[end.Row + 2, 3, end.Row + 3, 3].Merge = true;
-                    worksheet.Cells[end.Row + 2, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[end.Row + 2, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    worksheet.Cells[end.Row + 2, 4].Value = "Registered At";
-                    worksheet.Cells[end.Row + 2, 4, end.Row + 3, 5].Merge = true;
-                    worksheet.Cells[end.Row + 2, 4].Style.Border.BorderAround(ExcelBorderStyle.Thick);
-                    worksheet.Cells[end.Row + 2, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[end.Row + 2, 4].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    for (int i = 0; i < currentStudent.Count(); i++)
-                    {
-                        worksheet.Cells[end.Row + 2 + (i + 1), 2].Value = currentStudent[i].CourseNumber;
-                        worksheet.Cells[end.Row + 2 + (i + 1), 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
-                        worksheet.Cells[end.Row + 2 + (i + 1), 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                        worksheet.Cells[end.Row + 2 + (i + 1), 3].Value = currentStudent[i].CourseNameEn;
-                        worksheet.Cells[end.Row + 2 + (i + 1), 3].Style.Border.BorderAround(ExcelBorderStyle.Thick);
-                        worksheet.Cells[end.Row + 2 + (i + 1), 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                        worksheet.Cells[end.Row + 2 + (i + 1), 4].Value = $"{currentStudent[i].Year}{currentStudent[i].Semester}";
-                        worksheet.Cells[end.Row + 2 + (i + 1), 4].Style.Border.BorderAround(ExcelBorderStyle.Thick);
-                        worksheet.Cells[end.Row + 2 + (i + 1), 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    }
+                    worksheet.Cells[end.Row + 2 + (i + 1), 2].Value = currentStudent[i].CourseNumber;
+                    worksheet.Cells[end.Row + 2 + (i + 1), 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
+                    worksheet.Cells[end.Row + 2 + (i + 1), 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[end.Row + 2 + (i + 1), 3].Value = currentStudent[i].CourseNameEn;
+                    worksheet.Cells[end.Row + 2 + (i + 1), 3].Style.Border.BorderAround(ExcelBorderStyle.Thick);
+                    worksheet.Cells[end.Row + 2 + (i + 1), 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[end.Row + 2 + (i + 1), 4].Value = $"{currentStudent[i].Year}{currentStudent[i].Semester}";
+                    worksheet.Cells[end.Row + 2 + (i + 1), 4].Style.Border.BorderAround(ExcelBorderStyle.Thick);
+                    worksheet.Cells[end.Row + 2 + (i + 1), 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 }
             }
         }
 
         private ExcelWorksheet GetSpecificWorkSheet(ExcelPackage package)
         {
-            return package.Workbook.Worksheets.FirstOrDefault(w => w.Name.Contains("SE - Adv E") || w.Name.Contains("CS-Adv-E"));
-        }
-
-        private string GetExcelSheetInTheDirectory(string path)
-        {
-            return System.IO.Directory.GetFiles(path).LastOrDefault();
+            if (package.Workbook.Worksheets is null)
+            {
+                throw new ArgumentNullException("Study Plan Excel Sheet Should have at least one sheet");
+            }
+            return package.Workbook.Worksheets.FirstOrDefault(w => w.Name.Contains("SE - Adv E") || w.Name.Contains("CS-Adv-E") || w.Name.Contains("Cyber-Adv-E"));
         }
 
         private void CreateExcelSheet(string path, Supuervised supuervised)
@@ -194,13 +215,10 @@ namespace Aide.Service.ExcelSheetService
                 }
                 // Copy Existing Excel Sheet Template to the Empty Excel Sheet
             }
-            catch (Exception ex)
+            catch
             {
-                /*System.IO.File.Create($@"{path}\{supuervised.StudentNameEn} {supuervised.StudentID}.xlsx");*/
-            }
-            finally
-            {
-
+                DeleteFile(path);
+                throw;
             }
         }
 
@@ -208,15 +226,38 @@ namespace Aide.Service.ExcelSheetService
         {
             // Get Student Advising Plan File based on MajorId & StudentId
             string existingExcelSheetPath = GetStudentPalnSheetFile(supuervised.SemesterStudyPlan, supuervised.SpecNameEn);
-            if (existingExcelSheetPath is not null)
+            try
             {
                 System.IO.File.Copy(existingExcelSheetPath, path, true);
             }
+            catch
+            {
+                throw;
+            }
         }
 
-        private void CreateDirectory(string path)
+        private void CreateNewDirectory(string path)
         {
-            System.IO.Directory.CreateDirectory(path);
+            try
+            {
+                System.IO.Directory.CreateDirectory(path);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private void DeleteFile(string path)
+        {
+            try
+            {
+                System.IO.File.Delete(path);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         private string GetStudentPalnSheetFile(int semesterStudyPlan, string majorName)
@@ -233,7 +274,7 @@ namespace Aide.Service.ExcelSheetService
                     FullFileName += @"Software Engineer\Plans";
                     FullFileName = GetStudentPalnSheetFileName(FullFileName, semesterStudyPlan);
                     break;
-                case "CYBER SECURITY":
+                case "CYBERSECURITY AND CLOUD COMPUTING":
                     FullFileName += @"Cyber Security\Plans";
                     FullFileName = GetStudentPalnSheetFileName(FullFileName, semesterStudyPlan);
                     break;
@@ -243,10 +284,17 @@ namespace Aide.Service.ExcelSheetService
 
         private string GetStudentPalnSheetFileName(string FullFileName, int semesterStudyPlan)
         {
-            return System.IO.Directory.GetFiles(FullFileName)
-                   .FirstOrDefault(f => f.Split("-")[0]
-                   .Contains(semesterStudyPlan.ToString()
-                   .Remove(semesterStudyPlan.ToString().Count() - 1)));
+            try
+            {
+                return System.IO.Directory.GetFiles(FullFileName)
+                       .FirstOrDefault(f => f.Split("-")[0]
+                       .Contains(semesterStudyPlan.ToString()
+                       .Remove(semesterStudyPlan.ToString().Count() - 1)));
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 

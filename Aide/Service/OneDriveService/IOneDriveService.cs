@@ -9,7 +9,7 @@ namespace Aide.Service.OneDriveService
         Task<DriveItem> GetProfessorFolder(GraphServiceClient graphServiceClient, string professorName);
         Task<DriveItem> GetStudentFolder(GraphServiceClient graphServiceClient, string ProfessorfolderId, string studentfolderName);
 
-        Task<bool> UplodExcelSheet(GraphServiceClient graphServiceClient, string studentFolderId, string ecxelSheetPath);
+        Task UplodExcelSheet(GraphServiceClient graphServiceClient, string studentFolderId, string ecxelSheetPath);
     }
 
 

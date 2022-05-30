@@ -14,14 +14,13 @@ namespace Aide.Controllers
     public class AccountsController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly IHttpClientFactory _clientFactory;
 
-        public AccountsController(IConfiguration configuration, IHttpClientFactory clientFactory)
+        public AccountsController(IConfiguration configuration)
         {
             _configuration = configuration;
-            _clientFactory = clientFactory;
         }
 
+        #region ASU Login
         // Aide Project Login
         [HttpGet]
         public IActionResult Login()
@@ -34,45 +33,51 @@ namespace Aide.Controllers
         {
             if (ModelState.IsValid)
             {
-                login.grand_type = _configuration["GetToken:grand_type"];
-                login.client_id = _configuration["GetToken:client_id"];
-                login.scope = _configuration["GetToken:scope"];
-
-                var dict = new Dictionary<string, string>();
-                dict.Add("grant_type", login.grand_type);
-                dict.Add("client_id", login.client_id);
-                dict.Add("scope", login.scope);
-                dict.Add("username", login.Username);
-                dict.Add("password", login.Password);
-
-                using (var client = new HttpClient())
+                _configuration.Bind("GetToken", login);
+                if (!string.IsNullOrEmpty(login.grand_type) && !string.IsNullOrEmpty(login.client_id) && !string.IsNullOrEmpty(login.scope))
                 {
-                    client.BaseAddress = new Uri("https://id.asu.edu.jo");
-                    var responce = client.PostAsync("connect/token", new FormUrlEncodedContent(dict));
-                    responce.Wait();
-                    var result = responce.Result;
-                    if (result.IsSuccessStatusCode)
+                    var dict = new Dictionary<string, string>();
+                    dict.Add("grant_type", login.grand_type);
+                    dict.Add("client_id", login.client_id);
+                    dict.Add("scope", login.scope);
+                    dict.Add("username", login.Username);
+                    dict.Add("password", login.Password);
+
+                    using (var client = new HttpClient())
                     {
-                        HttpContent content = result.Content;
-                        string jsoncontent = content.ReadAsStringAsync().Result;
-                        HttpContext.Session.Set("token", System.Text.Encoding.ASCII.GetBytes(jsoncontent));
-                        /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_albashayreh"));*/
-                        HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_aloudat"));
-                        /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("a_abusamaha"));*/
-                        /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("y_alqasrawi"));*/
-                        /*return RedirectToAction(nameof(Index), "Home");*/
-                        return RedirectToAction(nameof(SignIn));
+                        client.BaseAddress = new Uri("https://id.asu.edu.jo");
+                        var responce = client.PostAsync("connect/token", new FormUrlEncodedContent(dict));
+                        responce.Wait();
+                        var result = responce.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            HttpContent content = result.Content;
+                            string jsoncontent = content.ReadAsStringAsync().Result;
+                            HttpContext.Session.Set("token", System.Text.Encoding.ASCII.GetBytes(jsoncontent));
+                            /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_albashayreh"));*/
+                            HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_aloudat"));
+                            /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("a_abusamaha"));*/
+                            /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("y_alqasrawi"));*/
+                            /*HttpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("w_manaseer"));*/
+                            return RedirectToAction(nameof(SignIn));
+                        }
+                        int statusCode = (int)result.StatusCode;
+                        TempData["StatusCodeError"] = result.StatusCode.ToString();
+                        return StatusCode(statusCode);
                     }
-                    else
-                    {
-                        return View();
-                    }
+                }
+                else
+                {
+                    TempData["ErrorCause"] = "grant_type, client_id or scope value shouldn't be empty, please Contact Computer Center to fix this issues";
+                    return StatusCode(500);
                 }
 
             }
             return View(login);
         }
+        #endregion
 
+        #region Microsoft Login
         // Microsoft Login
         [HttpGet]
         public IActionResult SignIn()
@@ -93,5 +98,6 @@ namespace Aide.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 OpenIdConnectDefaults.AuthenticationScheme);
         }
+        #endregion
     }
 }

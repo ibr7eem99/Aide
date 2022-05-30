@@ -43,20 +43,18 @@ namespace Aide.Service.OneDriveService
         public async Task<DriveItem> GetProfessorFolder(GraphServiceClient graphServiceClient, string professorName)
         {
             DriveItem drive = null;
-            if (professorName is not null)
+            var graphClient = graphServiceClient;
+            DriveItem sharedFolder = await GetFolderFromRootDrive(graphClient);
+            IEnumerable<DriveItem> foldersInfo = await GraphService.GetItemInsideFolder(graphClient, _httpContextAccessor, sharedFolder.Id, professorName);
+            if (Enumerable.Any(foldersInfo))
             {
-                var graphClient = graphServiceClient;
-                DriveItem sharedFolder = await GetFolderFromRootDrive(graphClient);
-                IEnumerable<DriveItem> foldersInfo = await GraphService.GetItemInsideFolder(graphClient, _httpContextAccessor, sharedFolder.Id, professorName);
-                if (Enumerable.Any(foldersInfo))
-                {
-                    drive = Enumerable.FirstOrDefault(foldersInfo);
-                }
-                else
-                {
-                    drive = await GraphService.CreatNewFolder(graphClient, _httpContextAccessor, sharedFolder.Id, professorName);
-                }
+                drive = Enumerable.FirstOrDefault(foldersInfo);
             }
+            else
+            {
+                drive = await GraphService.CreatNewFolder(graphClient, _httpContextAccessor, sharedFolder.Id, professorName);
+            }
+
             return drive;
         }
         #endregion
@@ -64,6 +62,17 @@ namespace Aide.Service.OneDriveService
         #region StudentsFolder
         public async Task<DriveItem> GetStudentFolder(GraphServiceClient graphServiceClient, string ProfessorfolderId, string studentfolderName)
         {
+            if (string.IsNullOrEmpty(ProfessorfolderId))
+            {
+                /*throw new ArgumentNullException("Professor Id should not be empty");*/
+                throw new ArgumentNullException(nameof(ProfessorfolderId));
+            }
+
+            if (string.IsNullOrEmpty(studentfolderName))
+            {
+                throw new ArgumentNullException("Student Folder Name should not be empty");
+            }
+
             DriveItem drive = null;
             var graphClient = graphServiceClient;
             IEnumerable<DriveItem> foldersInfo = await GraphService.GetItemInsideFolder(graphClient, _httpContextAccessor, ProfessorfolderId, studentfolderName);
@@ -81,12 +90,21 @@ namespace Aide.Service.OneDriveService
         }
         #endregion
 
-        public async Task<bool> UplodExcelSheet(GraphServiceClient graphServiceClient, string studentFolderId, string ecxelSheetPath)
+        public async Task UplodExcelSheet(GraphServiceClient graphServiceClient, string studentFolderId, string ecxelSheetPath)
         {
+            if (string.IsNullOrEmpty(studentFolderId))
+            {
+                /*throw new ArgumentNullException("Professor Id should not be empty");*/
+                throw new ArgumentNullException(nameof(studentFolderId));
+            }
+
+            if (string.IsNullOrEmpty(ecxelSheetPath))
+            {
+                throw new ArgumentNullException("Ecxel Sheet Path should not be empty");
+            }
+
             var graphClient = graphServiceClient;
             await GraphService.UplaodAnExistingFile(graphClient, _httpContextAccessor, studentFolderId, ecxelSheetPath);
-
-            return true;
         }
     }
 }

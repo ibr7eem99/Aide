@@ -26,6 +26,7 @@ namespace Aide.Controllers
             }
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
+
         [HttpPost]
         public IActionResult UplodFile(string planType, UplodPlanFile uplodPlanFile, IFormFile planeFile)
         {
@@ -36,11 +37,11 @@ namespace Aide.Controllers
                     if (planeFile is not null)
                     {
                         string planepath = $"{_webHostEnvironment.WebRootPath}\\AdvisingMaterial\\Majors";
-
-                        if (!System.IO.Directory.Exists(planepath))
+                        
+                        /*if (!System.IO.Directory.Exists(planepath))
                         {
                             System.IO.Directory.CreateDirectory(planepath);
-                        }
+                        }*/
                         if (uplodPlanFile.IsActive)
                         {
                             planepath += uplodPlanFile.NewMajorName;

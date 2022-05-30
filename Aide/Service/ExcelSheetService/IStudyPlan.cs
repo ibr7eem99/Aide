@@ -7,6 +7,6 @@ namespace Aide.Service.ExcelSheetService
 {
     public interface IStudyPlan
     {
-        public Task<bool> GenarateExcelSheet(IEnumerable<Supuervised> supuerviseds, string professorName, GraphServiceClient graphServiceClient);
+        public Task GenarateExcelSheet(IEnumerable<Supuervised> supuerviseds, string professorName, GraphServiceClient graphServiceClient);
     }
 }

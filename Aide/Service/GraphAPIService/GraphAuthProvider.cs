@@ -46,7 +46,6 @@ namespace Aide.Service.GraphAPIService
                 var result = await _app.AcquireTokenSilent(_scopes, account).ExecuteAsync();
                 return result.AccessToken;
             }
-
             // Unable to retrieve the access token silently.
             catch (Exception)
             {

@@ -59,6 +59,8 @@ namespace Aide.Service.GraphAPIService
                     case "TokenNotFound":
                         await httpContext.HttpContext.ChallengeAsync();
                         throw new AuthenticationException(ex.Error);
+                    case "invalidRequest":
+                        throw new ServiceException(new Error { Message = "", Code = ex.Error.Code }); // TODO
                     default:
                         throw new Exception("An unknown error has occurred.");
                 }

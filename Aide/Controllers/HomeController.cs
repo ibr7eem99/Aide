@@ -45,7 +45,7 @@ namespace Aide.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            if (Request.Cookies.Keys.Contains(".My.Session"))
+            if (Request.Cookies.Keys.Contains("cookiesession"))
             {
                 int year = DateTime.Now.Year - 1;
 
@@ -89,6 +89,7 @@ namespace Aide.Controllers
                             client.BaseAddress = new Uri("https://api.asu.edu.jo/");
                             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token.token_type, token.access_token);
                             int semester = (int)model.Semester;
+                            /*ProfessorInfo professor = new ProfessorInfo { Username = "w_manaseer", passCode = _configuration["GetStudentinfo:passCode"] };*/
                             ProfessorInfo professor = new ProfessorInfo { Username = "m_aloudat", passCode = _configuration["GetStudentinfo:passCode"] };
                             /*ProfessorInfo professor = new ProfessorInfo { Username = "a_abusamaha", passCode = _configuration["GetStudentinfo:passCode"] };*/
                             /*ProfessorInfo professor = new ProfessorInfo { Username = "m_albashayreh", passCode = _configuration["GetStudentinfo:passCode"] };*/
@@ -123,14 +124,14 @@ namespace Aide.Controllers
                         return StatusCode(500);
                     }
                 }
+                else
+                {
+                    TempData["ErrorCause"] = "access token or email not found, Please Login again or contact Computer Center to fix this issues";
+                    throw new UnauthorizedAccessException();
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
