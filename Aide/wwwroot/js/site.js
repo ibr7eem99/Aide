@@ -30,4 +30,10 @@
         $(`ul[data-major='${e.target.innerHTML}']`).slideToggle();
     });
 
+    if ($(".error-alert").hasClass("validation-summary-errors")) {
+        $(".error-alert").addClass("alert alert-danger");
+    }
+    else {
+        $(".error-alert").removeClass("alert alert-danger");
+    }
 });

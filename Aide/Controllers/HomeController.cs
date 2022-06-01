@@ -89,8 +89,8 @@ namespace Aide.Controllers
                             client.BaseAddress = new Uri("https://api.asu.edu.jo/");
                             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token.token_type, token.access_token);
                             int semester = (int)model.Semester;
-                            /*ProfessorInfo professor = new ProfessorInfo { Username = "w_manaseer", passCode = _configuration["GetStudentinfo:passCode"] };*/
-                            ProfessorInfo professor = new ProfessorInfo { Username = "m_aloudat", passCode = _configuration["GetStudentinfo:passCode"] };
+                            ProfessorInfo professor = new ProfessorInfo { Username = "w_manaseer", passCode = _configuration["GetStudentinfo:passCode"] };
+                            /*ProfessorInfo professor = new ProfessorInfo { Username = "m_aloudat", passCode = _configuration["GetStudentinfo:passCode"] };*/
                             /*ProfessorInfo professor = new ProfessorInfo { Username = "a_abusamaha", passCode = _configuration["GetStudentinfo:passCode"] };*/
                             /*ProfessorInfo professor = new ProfessorInfo { Username = "m_albashayreh", passCode = _configuration["GetStudentinfo:passCode"] };*/
                             /*ProfessorInfo professor = new ProfessorInfo { Username = "y_alqasrawi", passCode = _configuration["GetStudentinfo:passCode"] };*/

@@ -85,7 +85,7 @@ namespace Aide.Service.ExcelSheetService
             {
                 throw new Exception($"{ex.Message}, Plese contact with computer center to add EPPlus lincense");
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }
@@ -96,14 +96,8 @@ namespace Aide.Service.ExcelSheetService
             IEnumerable<Supuervised> studentSupuervised
             )
         {
-            /*int courseNumberAddress1 = 0;
-            int courseNumberAddress2 = 0;
-            int registeredAtAddress1 = 0;
-            int registeredAtAddress2 = 0;
-            string yearAddress1;
-            string yearAddress2;
-            string semesterAddress1;
-            string semesterAddress2;*/
+            /*int courseNumberAddress = 0;*/
+
             if (worksheet is null)
             {
                 throw new ArgumentNullException(nameof(worksheet));
@@ -267,15 +261,15 @@ namespace Aide.Service.ExcelSheetService
             switch (majorName.ToUpper())
             {
                 case "COMPUTER SCIENCE":
-                    FullFileName += @"Computer Science\Plans";
+                    FullFileName += @"Computer Science\StudyPlan";
                     FullFileName = GetStudentPalnSheetFileName(FullFileName, semesterStudyPlan);
                     break;
                 case "SOFTWARE ENGINEERING":
-                    FullFileName += @"Software Engineer\Plans";
+                    FullFileName += @"Software Engineer\StudyPlan";
                     FullFileName = GetStudentPalnSheetFileName(FullFileName, semesterStudyPlan);
                     break;
                 case "CYBERSECURITY AND CLOUD COMPUTING":
-                    FullFileName += @"Cyber Security\Plans";
+                    FullFileName += @"Cyber Security\StudyPlan";
                     FullFileName = GetStudentPalnSheetFileName(FullFileName, semesterStudyPlan);
                     break;
             }
@@ -286,10 +280,11 @@ namespace Aide.Service.ExcelSheetService
         {
             try
             {
+                string studyPalnYear = semesterStudyPlan.ToString()
+                    .Remove(semesterStudyPlan.ToString().Count() - 1);
+
                 return System.IO.Directory.GetFiles(FullFileName)
-                       .FirstOrDefault(f => f.Split("-")[0]
-                       .Contains(semesterStudyPlan.ToString()
-                       .Remove(semesterStudyPlan.ToString().Count() - 1)));
+                       .FirstOrDefault(f => f.Split("-")[0].Contains(studyPalnYear));
             }
             catch
             {

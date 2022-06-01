@@ -1,4 +1,4 @@
-﻿@model Aide.Data.UplodPlanFile
+﻿@model UplodPlanFile
 
 @{
     ViewData["Title"] = "UplodFile";
@@ -11,7 +11,10 @@
     <div class="d-flex justify-content-center align-items-center" style="min-height: inherit">
         <div class="card rounded-lg border-0" style="width: 25rem; z-index: 1000">
             <div class="card-body">
-                <form asp-action="Index" method="post" class="form">
+                <form asp-action="UplodFile" method="post" class="form" enctype="multipart/form-data">
+
+                    <div asp-validation-summary="All" class="text-danger error-alert"></div>
+
                     <div class="col-sm-12">
                         <div id="major-name" class="form-group">
                             <label asp-for="MajorName"></label>
@@ -27,22 +30,27 @@
                         <div id="new-major-name" class="form-group d-none">
                             <label asp-for="NewMajorName"></label>
                             <input asp-for="NewMajorName" class="form-control">
-                            <span asp-validation-for="NewMajorName" class="text-danger"></span>
                         </div>
                     </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label asp-for="PlanSemester"></label>
+                            <input asp-for="PlanSemester" class="form-control" />
+                        </div>
+                    </div>
+
                     <div class="col-sm-12">
                         <div class="form-group">
                             <input type="checkbox" onchange="viewAddMajorNameTextfiled()" asp-for="IsActive" />
                             <label>
                                 Add Major Name
                             </label>
-
                         </div>
                     </div>
                     <div class="form-group">
-                        @*<label>Upload  File</label>*@
                         <div class="form__upload-btn rounded-pill mx-auto mb-1">
-                            <input type="file" class="form__input" id="upload-data-sheet-input" />
+                            <input class="form__input" asp-for="PlanFile" id="upload-data-sheet-input" />
                             <span class="form__text" style="color:#fff">Upload Plane File</span>
                         </div>
                         <div class="text-center text-muted" id="data-sheet-path">No file upload yet</div>
@@ -58,7 +66,6 @@
     </div>
 </section>
 
-
 @section Scripts {
     @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -66,6 +73,11 @@
 
 <script>
     function viewAddMajorNameTextfiled() {
+        $("#new-major-name").toggleClass("d-none");
+        $("#major-name").toggleClass("d-none");
+    }
+
+    if ($("input[type='checkbox']").attr("checked")) {
         $("#new-major-name").toggleClass("d-none");
         $("#major-name").toggleClass("d-none");
     }

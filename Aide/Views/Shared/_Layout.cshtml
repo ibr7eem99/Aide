@@ -28,13 +28,13 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-white" asp-controller="Plans" asp-action="UplodFile" asp-route-planType="TreePlane">
+                                        <a class="nav-link text-white" asp-controller="Plans" asp-action="UplodFile" asp-route-planType="TreePlan">
                                             Tree Plane
                                         </a>
 
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-white" asp-controller="Plans" asp-action="UplodFile" asp-route-planType="StudyPlane">
+                                        <a class="nav-link text-white" asp-controller="Plans" asp-action="UplodFile" asp-route-planType="StudyPlan">
                                             Study Plane
                                         </a>
                                     </li>
@@ -70,7 +70,7 @@
                                                 <button type="button" id="major" class="btn text-left text-white w-100 py-2" style="box-sizing:border-box">@majorName</button>
                                                 <ul id="major-plan-tree" data-major="@majorName" style="display: none;">
                                                     @{
-                                                        string planTreeFilePath = major + @"\PlanTree";
+                                                        string planTreeFilePath = major + @"\TreePlan";
                                                         if (!System.IO.Directory.Exists(planTreeFilePath))
                                                         {
                                                             System.IO.Directory.CreateDirectory(planTreeFilePath);
@@ -82,7 +82,7 @@
                                                         foreach (var file in planTreeFileList)
                                                         {
                                                             <li class="mb-2">
-                                                                <a href="~/AdvisingMaterial/Majors/@majorName/PlanTree/@file.Split(@"\").Last()" target="_blank" class="text-white text-decoration-none">
+                                                                <a href="~/AdvisingMaterial/Majors/@majorName/TreePlan/@file.Split(@"\").Last()" target="_blank" class="text-white text-decoration-none">
                                                                     <span class="mr-2"><i class="bi bi-link"></i></span>
                                                                     @System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " ")
                                                                 </a>

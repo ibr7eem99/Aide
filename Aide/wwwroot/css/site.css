@@ -23,11 +23,16 @@ li {
     border-color: #1861ac;
 }
 
-/* Sticky styles
--------------------------------------------------- */
-html {
-    font-size: 14px;
+.validation-summary-errors > ul {
+    padding-inline-start: 0 !important;
+    margin-block-start: 0 !important;
+    margin-block-end: 0 !important;
 }
+    /* Sticky styles
+-------------------------------------------------- */
+    html {
+        font-size: 14px;
+    }
 
 @media (min-width: 768px) {
     html {
