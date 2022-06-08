@@ -3,6 +3,7 @@ using Aide.Service;
 using Aide.Service.ExcelSheetService;
 using Aide.Service.GraphAPIService;
 using Aide.Service.OneDriveService;
+using Aide.Service.SupuervisedInfoAPIService;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -34,8 +35,6 @@ namespace Aide
             services.AddDistributedMemoryCache();
             services.AddHttpContextAccessor();
 
-            services.AddScoped<IOneDriveService, OneDriveService>();
-            services.AddScoped<IStudyPlan, StudyPlan>();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromDays(1);
@@ -62,8 +61,13 @@ namespace Aide
             .AddCookie();
 
             // Add application services.
+            services.AddScoped<IOneDriveService, OneDriveService>();
+            services.AddScoped<IStudyPlan, StudyPlan>();
+            services.AddScoped<ISupuervisedInfoService, SupuervisedInfoService>();
+
             services.AddSingleton<IGraphAuthProvider, GraphAuthProvider>();
             services.AddSingleton<IGraphServiceClientFactory, GraphServiceClientFactory>();
+            services.AddTransient<IGraphService, GraphService>();
 
             services.Configure<HstsOptions>(options =>
             {

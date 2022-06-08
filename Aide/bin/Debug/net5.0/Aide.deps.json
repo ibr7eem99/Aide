@@ -33,6 +33,7 @@
     ".NETCoreApp,Version=v5.0": {
       "Aide/1.0.0": {
         "dependencies": {
+          "Aspose.Cells": "22.5.0",
           "EPPlus": "6.0.3",
           "Microsoft.AspNetCore.Authentication.OpenIdConnect": "5.0.16",
           "Microsoft.AspNetCore.Session": "2.2.0",
@@ -325,6 +326,21 @@
         },
         "compile": {
           "Aide.dll": {}
+        }
+      },
+      "Aspose.Cells/22.5.0": {
+        "dependencies": {
+          "System.Drawing.Common": "5.0.0",
+          "System.Text.Encoding.CodePages": "5.0.0"
+        },
+        "runtime": {
+          "lib/net50/Aspose.Cells.dll": {
+            "assemblyVersion": "22.5.0.0",
+            "fileVersion": "22.5.0.0"
+          }
+        },
+        "compile": {
+          "lib/net50/Aspose.Cells.dll": {}
         }
       },
       "Azure.Core/1.22.0": {
@@ -3468,6 +3484,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Aspose.Cells/22.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ufs/x8W44a+fr8UES5/Z3ywpZ4cGORqZ6MCbEIWY3gCGnJU2Kz0/ZZmcQfsAu1brFfLIJoPFw5kF1bf//2C/ug==",
+      "path": "aspose.cells/22.5.0",
+      "hashPath": "aspose.cells.22.5.0.nupkg.sha512"
     },
     "Azure.Core/1.22.0": {
       "type": "package",

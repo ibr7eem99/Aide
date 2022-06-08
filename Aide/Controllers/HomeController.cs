@@ -3,6 +3,7 @@ using Aide.Extensions;
 using Aide.Models;
 using Aide.Service.ExcelSheetService;
 using Aide.Service.GraphAPIService;
+using Aide.Service.SupuervisedInfoAPIService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -24,22 +25,22 @@ namespace Aide.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
         private IStudyPlan _studyPlan;
-        private readonly IGraphServiceClientFactory _graphServiceClientFactory;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ISupuervisedInfoService _supuervisedInfoService;
 
         public HomeController(
             ILogger<HomeController> logger,
             IConfiguration configuration,
             IStudyPlan studyPlan,
-            IGraphServiceClientFactory graphServiceClientFactory,
-            IWebHostEnvironment webHostEnvironment
+            IWebHostEnvironment webHostEnvironment,
+            ISupuervisedInfoService supuervisedInfoService
             )
         {
             _logger = logger;
             _configuration = configuration;
             _studyPlan = studyPlan;
-            _graphServiceClientFactory = graphServiceClientFactory;
             _webHostEnvironment = webHostEnvironment;
+            _supuervisedInfoService = supuervisedInfoService;
         }
 
         [HttpGet]
@@ -76,45 +77,24 @@ namespace Aide.Controllers
         {
             if (ModelState.IsValid)
             {
-                IEnumerable<Supuervised> Supuervised = null;
                 Token token = CookiSpace.GetToken(HttpContext);
                 string user = CookiSpace.GetUser(HttpContext);
 
                 if (token is not null && user is not null)
                 {
-                    if (!string.IsNullOrEmpty(_configuration["GetStudentinfo:passCode"]))
+                    string passCode = _configuration["GetStudentinfo:passCode"];
+                    if (!string.IsNullOrEmpty(passCode))
                     {
-                        using (var client = new HttpClient())
+                        IEnumerable<Supuervised> Supuervised = _supuervisedInfoService.GetSupuervisedInfo(HttpContext, model, passCode);
+                        if (Supuervised.Any())
                         {
-                            client.BaseAddress = new Uri("https://api.asu.edu.jo/");
-                            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token.token_type, token.access_token);
-                            int semester = (int)model.Semester;
-                            ProfessorInfo professor = new ProfessorInfo { Username = "w_manaseer", passCode = _configuration["GetStudentinfo:passCode"] };
-                            /*ProfessorInfo professor = new ProfessorInfo { Username = "m_aloudat", passCode = _configuration["GetStudentinfo:passCode"] };*/
-                            /*ProfessorInfo professor = new ProfessorInfo { Username = "a_abusamaha", passCode = _configuration["GetStudentinfo:passCode"] };*/
-                            /*ProfessorInfo professor = new ProfessorInfo { Username = "m_albashayreh", passCode = _configuration["GetStudentinfo:passCode"] };*/
-                            /*ProfessorInfo professor = new ProfessorInfo { Username = "y_alqasrawi", passCode = _configuration["GetStudentinfo:passCode"] };*/
-                            var responce = client.PostAsJsonAsync($"api/Courses/Supervisored?year={model.Year}&semester={semester}", professor);
-                            responce.Wait();
-                            var result = responce.Result;
-                            if (result.IsSuccessStatusCode)
+                            try
                             {
-                                HttpContent httpContent = result.Content;
-                                string jsoncontent = httpContent.ReadAsStringAsync().Result;
-                                Supuervised = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Supuervised>>(jsoncontent);
-                                var graphClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)User.Identity);
-                                try
-                                {
-                                    await _studyPlan.GenarateExcelSheet(Supuervised, user, graphClient);
-                                }
-                                catch (Exception ex) when (ex.GetType().Name == "AuthenticationException")
-                                {
-                                    return RedirectToAction(nameof(AccountsController.SignedOut), "Accounts");
-                                }
+                                await _studyPlan.GenarateExcelSheet(Supuervised, user);
                             }
-                            else
+                            catch (Exception ex) when (ex.GetType().Name == "AuthenticationException")
                             {
-                                Supuervised = Enumerable.Empty<Supuervised>();
+                                return RedirectToAction(nameof(AccountsController.SignedOut), "Accounts");
                             }
                         }
                     }

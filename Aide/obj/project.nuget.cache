@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "YUcXMyRUJEEL6U3v3JbXCGRaZG6cpRYTTDH1+RpXbgP1LdKE1K+OQ4LFo+ENDtl3whlruRHvYFczjvLWdN9MdA==",
+  "dgSpecHash": "7cF5TEYsGhAySq37sCfxcp9EPZkchZFyM/mIC2drZ3wCZ9WeIP6lx9WiAcrSq1SWWJOj0+n0cGBa3WPgIWkXhQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\ib_ra\\Documents\\GitHub\\Aide\\Aide\\Aide.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\ib_ra\\.nuget\\packages\\aspose.cells\\22.5.0\\aspose.cells.22.5.0.nupkg.sha512",
     "C:\\Users\\ib_ra\\.nuget\\packages\\azure.core\\1.22.0\\azure.core.1.22.0.nupkg.sha512",
     "C:\\Users\\ib_ra\\.nuget\\packages\\epplus\\6.0.3\\epplus.6.0.3.nupkg.sha512",
     "C:\\Users\\ib_ra\\.nuget\\packages\\epplus.interfaces\\6.0.0\\epplus.interfaces.6.0.0.nupkg.sha512",

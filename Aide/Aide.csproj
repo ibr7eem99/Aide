@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspose.Cells" Version="22.5.0" />
     <PackageReference Include="EPPlus" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />

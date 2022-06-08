@@ -2,6 +2,19 @@
   "version": 3,
   "targets": {
     "net5.0": {
+      "Aspose.Cells/22.5.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Drawing.Common": "4.7.0",
+          "System.Text.Encoding.CodePages": "4.7.0"
+        },
+        "compile": {
+          "lib/net50/Aspose.Cells.dll": {}
+        },
+        "runtime": {
+          "lib/net50/Aspose.Cells.dll": {}
+        }
+      },
       "Azure.Core/1.22.0": {
         "type": "package",
         "dependencies": {
@@ -1936,6 +1949,40 @@
     }
   },
   "libraries": {
+    "Aspose.Cells/22.5.0": {
+      "sha512": "ufs/x8W44a+fr8UES5/Z3ywpZ4cGORqZ6MCbEIWY3gCGnJU2Kz0/ZZmcQfsAu1brFfLIJoPFw5kF1bf//2C/ug==",
+      "type": "package",
+      "path": "aspose.cells/22.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Help/Aspose.Cells For .NET Documentation.chm",
+        "Help/Aspose.Cells.GridJs for .NETSTANDARD Documentation.chm",
+        "License/Aspose_End-User-License-Agreement.txt",
+        "License/thirdpartylicenses.Aspose.Cells.for.NET.pdf",
+        "aspose.cells.22.5.0.nupkg.sha512",
+        "aspose.cells.nuspec",
+        "images/aspose_cells-for-net.png",
+        "lib/MonoAndroid44/Aspose.Cells.dll",
+        "lib/MonoAndroid44/Aspose.Cells.xml",
+        "lib/net20/Aspose.Cells.dll",
+        "lib/net20/Aspose.Cells.xml",
+        "lib/net35/Aspose.Cells.dll",
+        "lib/net35/Aspose.Cells.xml",
+        "lib/net40-client/Aspose.Cells.dll",
+        "lib/net40-client/Aspose.Cells.xml",
+        "lib/net40/Aspose.Cells.dll",
+        "lib/net40/Aspose.Cells.xml",
+        "lib/net50/Aspose.Cells.dll",
+        "lib/net50/Aspose.Cells.xml",
+        "lib/net60/Aspose.Cells.dll",
+        "lib/net60/Aspose.Cells.xml",
+        "lib/netstandard20/Aspose.Cells.dll",
+        "lib/netstandard20/Aspose.Cells.xml",
+        "lib/xamarinios10/Aspose.Cells.dll",
+        "lib/xamarinios10/Aspose.Cells.xml"
+      ]
+    },
     "Azure.Core/1.22.0": {
       "sha512": "ze/xRCHSSDe5TIk5vBDbVrauW1EN7UIbnBvIBfMH8KSt/I9+/7yPAjTBDgNBk0IwG6WBV+BBHp4IUtS/PGAQwQ==",
       "type": "package",
@@ -6371,6 +6418,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "Aspose.Cells >= 22.5.0",
       "EPPlus >= 6.0.3",
       "Microsoft.AspNetCore.Authentication.OpenIdConnect >= 5.0.16",
       "Microsoft.AspNetCore.Session >= 2.2.0",
@@ -6420,6 +6468,10 @@
       "net5.0": {
         "targetAlias": "net5.0",
         "dependencies": {
+          "Aspose.Cells": {
+            "target": "Package",
+            "version": "[22.5.0, )"
+          },
           "EPPlus": {
             "target": "Package",
             "version": "[6.0.3, )"

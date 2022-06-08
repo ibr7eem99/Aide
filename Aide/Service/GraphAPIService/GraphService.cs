@@ -6,21 +6,35 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Aide.Service.GraphAPIService
 {
-    public class GraphService
+    public class GraphService : IGraphService
     {
+        private readonly IGraphServiceClientFactory _graphServiceClientFactory;
+        private readonly IHttpContextAccessor _httpContext;
+        private GraphServiceClient graphServiceClient;
+
+        public GraphService(IGraphServiceClientFactory graphServiceClientFactory, IHttpContextAccessor httpContext)
+        {
+            _graphServiceClientFactory = graphServiceClientFactory;
+            _httpContext = httpContext;
+            graphServiceClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)_httpContext.HttpContext.User.Identity);
+            /*Console.WriteLine($"This is a GraphService Class, {_httpContext.HttpContext.User.Identity.Name}");*/
+        }
+
         #region Get Items From OneDrive
-        public static async Task<IEnumerable<DriveItem>> GetAllItemsInsideDrive(GraphServiceClient graphClient, IHttpContextAccessor httpContext)
+        public async Task<IEnumerable<DriveItem>> GetAllItemsInsideDrive()
         {
             try
             {
-                IEnumerable<DriveItem> children = await graphClient.Me.Drive.Root.Children
-                                    .Request()
-                                    .Filter("name eq 'Shared'")
-                                    .GetAsync();
+                IEnumerable<DriveItem> children = await graphServiceClient
+                                                        .Me.Drive.Root.Children
+                                                        .Request()
+                                                        .Filter("name eq 'Shared'")
+                                                        .GetAsync();
                 return children;
             }
             catch (ServiceException ex)
@@ -30,7 +44,7 @@ namespace Aide.Service.GraphAPIService
                     case "AuthenticationFailure":
                         throw new AuthenticationException(ex.Error);
                     case "TokenNotFound":
-                        await httpContext.HttpContext.ChallengeAsync();
+                        await _httpContext.HttpContext.ChallengeAsync();
                         throw new AuthenticationException(ex.Error);
                     default:
                         throw new Exception("An unknown error has occurred.");
@@ -38,12 +52,13 @@ namespace Aide.Service.GraphAPIService
             }
         }
 
-        public static async Task<IEnumerable<DriveItem>> GetItemInsideFolder(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string itemId, string folderName)
+        public async Task<IEnumerable<DriveItem>> GetItemInsideFolder(string itemId, string folderName)
         {
             try
             {
                 string filterQuery = $@"name eq '{folderName}'";
-                var children = await graphClient.Me.Drive.Items[itemId].Children
+                var children = await graphServiceClient
+                                    .Me.Drive.Items[itemId].Children
                                     .Request()
                                     .Filter(filterQuery)
                                     .GetAsync();
@@ -57,7 +72,7 @@ namespace Aide.Service.GraphAPIService
                     case "AuthenticationFailure":
                         throw new AuthenticationException(ex.Error);
                     case "TokenNotFound":
-                        await httpContext.HttpContext.ChallengeAsync();
+                        await _httpContext.HttpContext.ChallengeAsync();
                         throw new AuthenticationException(ex.Error);
                     case "invalidRequest":
                         throw new ServiceException(new Error { Message = "", Code = ex.Error.Code }); // TODO
@@ -69,7 +84,7 @@ namespace Aide.Service.GraphAPIService
         #endregion
 
         #region Create Folder inside OneDrive
-        public static async Task<DriveItem> CreateFolderInsideDriveRoot(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string folderName)
+        public async Task<DriveItem> CreateFolderInsideDriveRoot(string folderName)
         {
             try
             {
@@ -79,9 +94,10 @@ namespace Aide.Service.GraphAPIService
                     Folder = new Folder()
                 };
 
-                var responce = await graphClient.Me.Drive.Root.Children
-                    .Request()
-                    .AddAsync(driveItem);
+                var responce = await graphServiceClient
+                                    .Me.Drive.Root.Children
+                                    .Request()
+                                    .AddAsync(driveItem);
 
                 return responce;
             }
@@ -92,7 +108,7 @@ namespace Aide.Service.GraphAPIService
                     case "AuthenticationFailure":
                         throw new AuthenticationException(ex.Error);
                     case "TokenNotFound":
-                        await httpContext.HttpContext.ChallengeAsync();
+                        await _httpContext.HttpContext.ChallengeAsync();
                         throw new AuthenticationException(ex.Error);
                     default:
                         throw new Exception("An unknown error has occurred.");
@@ -100,7 +116,7 @@ namespace Aide.Service.GraphAPIService
             }
         }
 
-        public static async Task<DriveItem> CreatNewFolder(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string itemId, string folderName)
+        public async Task<DriveItem> CreatNewFolder(string itemId, string folderName)
         {
             try
             {
@@ -110,7 +126,8 @@ namespace Aide.Service.GraphAPIService
                     Folder = new Folder()
                 };
 
-                var children = await graphClient.Me.Drive.Items[itemId].Children
+                var children = await graphServiceClient
+                                    .Me.Drive.Items[itemId].Children
                                     .Request()
                                     .AddAsync(driveItem);
 
@@ -123,7 +140,7 @@ namespace Aide.Service.GraphAPIService
                     case "AuthenticationFailure":
                         throw new AuthenticationException(ex.Error);
                     case "TokenNotFound":
-                        await httpContext.HttpContext.ChallengeAsync();
+                        await _httpContext.HttpContext.ChallengeAsync();
                         throw new AuthenticationException(ex.Error);
                     default:
                         throw new Exception("An unknown error has occurred.");
@@ -132,16 +149,17 @@ namespace Aide.Service.GraphAPIService
         }
         #endregion
 
-        public static async Task<DriveItem> UplaodAnExistingFile(GraphServiceClient graphClient, IHttpContextAccessor httpContext, string driveItemId, string filePath)
+        public async Task<DriveItem> UplaodAnExistingFile(string driveItemId, string filePath)
         {
             try
             {
                 string path = filePath;
                 using (var stream = new System.IO.FileStream(path, FileMode.Open))
                 {
-                    var item = await graphClient.Me.Drive.Items[$"{driveItemId}:/{20211}.xlsx:"].Content
-                                        .Request()
-                                        .PutAsync<DriveItem>(stream);
+                    var item = await graphServiceClient
+                                    .Me.Drive.Items[$"{driveItemId}:/{20211}.xlsx:"].Content
+                                    .Request()
+                                    .PutAsync<DriveItem>(stream);
 
                     return item;
                 }
@@ -153,7 +171,7 @@ namespace Aide.Service.GraphAPIService
                     case "AuthenticationFailure":
                         throw new AuthenticationException(ex.Error);
                     case "TokenNotFound":
-                        await httpContext.HttpContext.ChallengeAsync();
+                        await _httpContext.HttpContext.ChallengeAsync();
                         throw new AuthenticationException(ex.Error);
                     default:
                         throw new Exception("An unknown error has occurred.");

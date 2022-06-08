@@ -304,7 +304,6 @@ C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Runtime.Co
 C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Text.Encodings.Web.dll
 C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Text.Json.dll
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.AssemblyReference.cache
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.AssemblyInfoInputs.cache
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.AssemblyInfo.cs
@@ -467,3 +466,5 @@ C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Accou
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Plans\UplodFile.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Plans\UplodFile.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Error\Error.cshtml.g.cs
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aspose.Cells.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.AssemblyReference.cache

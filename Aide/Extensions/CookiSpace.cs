@@ -6,6 +6,20 @@ namespace Aide.Extensions
 {
     public static class CookiSpace
     {
+        public static void AddToken(HttpContext httpContext, string jsoncontent)
+        {
+            httpContext.Session.Set("token", System.Text.Encoding.ASCII.GetBytes(jsoncontent));
+        }
+
+        public static void AddUser(HttpContext httpContext)
+        {
+            /*httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_albashayreh"));*/
+            httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_aloudat"));
+            /*httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("a_abusamaha"));*/
+            /*httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("y_alqasrawi"));*/
+            /*httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("w_manaseer"));*/
+        }
+
         public static Token GetToken(HttpContext httpContext)
         {
             byte[] tokenbyts = null;
