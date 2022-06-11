@@ -285,7 +285,7 @@ namespace Aide.Service.ExcelSheetService
 
                 for (int i = 0; i < studentSupuervisedList.Count(); i++)
                 {
-                    int row = end.Row + 2 + (i + 1);
+                    int row = (end.Row + 3) + (i + 1);
                     worksheet.Cells[row, 2].Value = studentSupuervisedList[i].CourseNumber;
                     worksheet.Cells[row, 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
                     worksheet.Cells[row, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;

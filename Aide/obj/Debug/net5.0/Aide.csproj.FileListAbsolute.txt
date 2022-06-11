@@ -468,3 +468,4 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Plans\Upl
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Error\Error.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aspose.Cells.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.AssemblyReference.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_ProgressBarPartial.cshtml.g.cs
