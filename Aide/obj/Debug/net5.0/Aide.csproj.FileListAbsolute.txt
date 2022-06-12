@@ -275,7 +275,6 @@ C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Aide.TagHelpers.i
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Aide.TagHelpers.output.cache
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Aide.RazorCoreGenerate.cache
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
-C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_LoginLayout.cshtml.g.cs
@@ -469,3 +468,6 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Error\Err
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aspose.Cells.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_ProgressBarPartial.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.AssemblyReference.cache
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Aspose.Cells.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Error\Error.cshtml.g.cs
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_ProgressBarPartial.cshtml.g.cs
