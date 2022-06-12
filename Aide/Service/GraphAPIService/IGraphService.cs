@@ -12,5 +12,6 @@ namespace Aide.Service.GraphAPIService
         public Task<DriveItem> CreateFolderInsideDriveRoot(string folderName);
         public Task<DriveItem> CreatNewFolder(string itemId, string folderName);
         public Task<DriveItem> UplaodAnExistingFile(string driveItemId, string filePath);
+        public Task DeleteAnExistingFile(string driveItemId);
     }
 }

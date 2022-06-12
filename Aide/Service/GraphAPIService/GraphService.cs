@@ -179,6 +179,13 @@ namespace Aide.Service.GraphAPIService
             }
         }
 
+        public async Task DeleteAnExistingFile(string driveItemId)
+        {
+            await graphServiceClient.Me.Drive.Items[$"{driveItemId}"]
+                    .Request()
+                    .DeleteAsync();
+        }
+
         // Load user's profile picture in base64 string.
         /*public static async Task<string> GetPictureBase64(GraphServiceClient graphClient, string email, HttpContext httpContext)
         {

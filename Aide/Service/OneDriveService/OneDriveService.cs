@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -14,14 +15,11 @@ namespace Aide.Service.OneDriveService
 {
     public class OneDriveService : IOneDriveService
     {
-        /*private readonly IHttpContextAccessor _httpContextAccessor;*/
         private readonly IGraphService _graphService;
 
         public OneDriveService(IGraphService graphService)
         {
-            /*_httpContextAccessor = httpContextAccessor;*/
             _graphService = graphService;
-            /*Console.WriteLine("This is a OneDriveService Class");*/
         }
 
         #region ProfessorFolder
@@ -65,7 +63,6 @@ namespace Aide.Service.OneDriveService
         {
             if (string.IsNullOrEmpty(ProfessorfolderId))
             {
-                /*throw new ArgumentNullException("Professor Id should not be empty");*/
                 throw new ArgumentNullException(nameof(ProfessorfolderId));
             }
 
@@ -75,11 +72,11 @@ namespace Aide.Service.OneDriveService
             }
 
             DriveItem drive = null;
-            IEnumerable<DriveItem> foldersInfo = await _graphService.GetItemInsideFolder(ProfessorfolderId, studentfolderName);
+            DriveItem foldersInfo = await GetExistingFile(ProfessorfolderId, studentfolderName);
 
-            if (Enumerable.Any(foldersInfo))
+            if (foldersInfo is not null)
             {
-                drive = Enumerable.FirstOrDefault(foldersInfo);
+                drive = foldersInfo;
             }
             else
             {
@@ -90,20 +87,35 @@ namespace Aide.Service.OneDriveService
         }
         #endregion
 
-        public async Task UplodExcelSheet(string studentFolderId, string ecxelSheetPath)
+        public async Task UplodExcelSheet(string studentFolderId, string excelSheetPath)
         {
             if (string.IsNullOrEmpty(studentFolderId))
             {
-                /*throw new ArgumentNullException("Professor Id should not be empty");*/
                 throw new ArgumentNullException(nameof(studentFolderId));
             }
 
-            if (string.IsNullOrEmpty(ecxelSheetPath))
+            if (string.IsNullOrEmpty(excelSheetPath))
             {
-                throw new ArgumentNullException("Ecxel Sheet Path should not be empty");
+                throw new ArgumentNullException(nameof(excelSheetPath), "Ecxel Sheet Path should not be empty");
             }
 
-            await _graphService.UplaodAnExistingFile(studentFolderId, ecxelSheetPath);
+            DriveItem excelSheet = await GetExistingFile(studentFolderId, Path.GetFileName(excelSheetPath));
+            if (excelSheet is not null)
+            {
+                await _graphService.DeleteAnExistingFile(excelSheet.Id);
+            }
+            await _graphService.UplaodAnExistingFile(studentFolderId, excelSheetPath);
+        }
+
+        private async Task<DriveItem> GetExistingFile(string studentFolderId, string fileName)
+        {
+            IEnumerable<DriveItem> file = await _graphService.GetItemInsideFolder(studentFolderId, fileName);
+            if (file.Any())
+            {
+                return file.FirstOrDefault();
+            }
+
+            return null;
         }
     }
 }

@@ -141,35 +141,24 @@ namespace Aide.Service.ExcelSheetService
                 .Where(c => (c.Start.Column == leftCourseNumberCol || c.Start.Column == rightCourseNumberCol) && reg.IsMatch(c.Text))
                 .ToList();
 
-            int rangeBase = worksheet.Dimension.End.Row / 4;
-            int semesterYear = 0;
-
+            int rowRangeBase = worksheet.Dimension.End.Row / 4;
+            int colRangeBase = 18 / 2;
             foreach (Supuervised currentSupuervised in studentSupuervised)
             {
                 if ((currentSupuervised.Mark >= 50.0 && currentSupuervised.Mark <= 100.0))
                 {
-                    var courseNumberAddress = x.FirstOrDefault(c => c.Text.Equals($"{currentSupuervised.CourseNumber}"));
+                    ExcelRangeBase courseNumberAddress = x.FirstOrDefault(c => c.Text.Equals($"{currentSupuervised.CourseNumber}"));
                     if (courseNumberAddress is not null)
                     {
-                        registeredAddress = worksheet.Cells[courseNumberAddress.Start.Row, (courseNumberAddress.Start.Column + 6)];
+                        int courseNumberRow = courseNumberAddress.Start.Row;
+                        registeredAddress = worksheet.Cells[courseNumberRow, (courseNumberAddress.Start.Column + 6)];
                         registeredAddress.Value = $"{currentSupuervised.Year}{currentSupuervised.Semester}";
-                        switch (courseNumberAddress.Start.Row)
-                        {
-                            case int row when row <= rangeBase:
-                                semesterYear = firstYear;
-                                break;
-                            case int row when row > rangeBase && row <= rangeBase * 2:
-                                semesterYear = firstYear + 1;
-                                break;
-                            case int row when row > rangeBase * 2 && row <= rangeBase * 3:
-                                semesterYear = firstYear + 2;
-                                break;
-                            case int row when row > rangeBase * 3:
-                                semesterYear = firstYear + 3;
-                                break;
-                        }
-                        worksheet.Cells[courseNumberAddress.Start.Row, (courseNumberAddress.Start.Column + 7)]
-                        .Value = GetStatusShape(currentSupuervised, semesterYear);
+                        worksheet.Cells[courseNumberRow, (courseNumberAddress.Start.Column + 7)]
+                        .Value = GetStatusShape(
+                            currentSupuervised,
+                            GetCourseYearBasedOnStudyPlan(courseNumberRow, rowRangeBase, firstYear),
+                            GetCourseSemesterBasedOnStudyPlan(courseNumberAddress, colRangeBase)
+                            );
                     }
                     else
                     {
@@ -181,81 +170,6 @@ namespace Aide.Service.ExcelSheetService
                     continue;
                 }
             }
-
-            /*Regex reg = new Regex(@"([0-9])");
-            Supuervised currentCource = null;
-            bool flag = false;
-            string semester = null;
-            for (int row = start.Row + 1; row <= end.Row - 3 || row <= end.Row - 2; row++)
-            {
-                if (reg.IsMatch(worksheet.Cells[row, leftCourseNumberCol].Text))
-                {
-                    currentCource = GetSupuervisedInfo(studentSupuervisedList, worksheet.Cells[row, leftCourseNumberCol].Text);
-
-                    if (currentCource is not null)
-                    {
-                        semester = $"{currentCource.Year}{currentCource.Semester}";
-                        worksheet.Cells[row, (leftCourseNumberCol + 6)].Value = semester;
-                        *//*int semesterYearRow = registeredAtAddress.FirstOrDefault(r => r.Start.Column ==
-                            worksheet.Cells[row, (leftCourseNumberCol + 6)].Start.Column)
-                            .Start.Row - 2;
-                        string semesterYear = worksheet.Cells[semesterYearRow, (leftCourseNumberCol + 6)].Text.Split("-")[0];
-                        worksheet.Cells[row, (leftCourseNumberCol + 7)].Value = GetStatusShape(currentCource, Convert.ToInt32(semesterYear));*//*
-                        studentSupuervisedList.RemoveAll(s => s.CourseNumber == currentCource.CourseNumber);
-                    }
-                }
-
-                if (reg.IsMatch(worksheet.Cells[row, rightCourseNumberCol].Text))
-                {
-                    
-                    currentCource = GetSupuervisedInfo(studentSupuervisedList, worksheet.Cells[row, rightCourseNumberCol].Text);
-
-                    if (currentCource is not null)
-                    {
-                        semester = $"{currentCource.Year}{currentCource.Semester}";
-                        worksheet.Cells[row, (rightCourseNumberCol + 6)].Value = semester;
-                        *//*int semesterYearRow = registeredAtAddress.FirstOrDefault(r => r.Start.Column ==
-                            worksheet.Cells[row, (rightCourseNumberCol + 6)].Start.Column)
-                            .Start.Row - 2;
-                        string semesterYear = worksheet.Cells[semesterYearRow, (rightCourseNumberCol + 6)].Text.Split("-")[0];
-                        worksheet.Cells[row, (rightCourseNumberCol + 7)].Value = GetStatusShape(currentCource, Convert.ToInt32(semesterYear));*//*
-                        studentSupuervisedList.RemoveAll(s => s.CourseNumber == currentCource.CourseNumber);
-                    }
-                }
-                *//*if (flag)
-                {
-                    flag = false;
-                    year++;
-                }*//*
-            }*/
-
-            /*for (int row = 5; row <= end.Row - 3 || row <= end.Row - 2; row++)
-            {
-                for (int col = 2; col <= end.Column; col++)
-                {
-                    string colText = worksheet.Cells[3, col].Text;
-                    if (colText == "Course Number" || colText == "Subject Number")
-                    {
-                        var currentCource = studentSupuervisedList.Where(c => c.CourseNumber
-                                        .ToString()
-                                        .Equals(worksheet.Cells[row, col].Text));
-
-                        if (currentCource is not null)
-                        {
-                            *//*if (currentCource.Mark >= 50 && currentCource.Mark <= 100)
-                            {*//*
-                            if (reg.IsMatch(worksheet.Cells[row, col].Text))
-                            {
-                                worksheet.Cells[row, col].AutoFitColumns(11);
-
-                                worksheet.Cells[row, col + 6].Value = $"{currentCource.Year}{currentCource.Semester}";
-                                studentSupuervisedList.Remove(currentCource);
-                            }
-                            *//*}*//*
-                        }
-                    }
-                }
-            }*/
 
             if (studentSupuervisedList.Count() > 0)
             {
@@ -307,28 +221,67 @@ namespace Aide.Service.ExcelSheetService
                     .OrderByDescending(s => s.Mark).LastOrDefault();
         }
 
-        private string GetStatusShape(Supuervised supuervised, int year)
+        private int GetCourseYearBasedOnStudyPlan(int courseNumberAddress, int rowRangeBase, int firstYear)
         {
-            string shape = "";
-            if (supuervised.Year == year)
+            int semesterYear = 0;
+            switch (courseNumberAddress)
+            {
+                case int row when row <= rowRangeBase:
+                    semesterYear = firstYear;
+                    break;
+                case int row when row > rowRangeBase && row <= rowRangeBase * 2:
+                    semesterYear = firstYear + 1;
+                    break;
+                case int row when row > rowRangeBase * 2 && row <= rowRangeBase * 3:
+                    semesterYear = firstYear + 2;
+                    break;
+                case int row when row > rowRangeBase * 3:
+                    semesterYear = firstYear + 3;
+                    break;
+            }
+            return semesterYear;
+        }
+
+        private int GetCourseSemesterBasedOnStudyPlan(ExcelAddressBase courseAddress, int colRangeBase)
+        {
+            int semester = 0;
+            if (courseAddress.Start.Column < colRangeBase)
+            {
+                semester = 1;
+            }
+            else if (courseAddress.Start.Column > colRangeBase)
+            {
+                semester = 2;
+            }
+            return semester;
+        }
+
+        private string GetStatusShape(Supuervised supuervised, int yearBase, int semesterBase)
+        {
+            string shape = string.Empty;
+            if (supuervised.Year == yearBase)
             {
                 int semester = supuervised.Semester;
-                if (semester == 1 || semester == 2)
+                if (semester == semesterBase)
                 {
                     shape = "☼";
                 }
-                else if (semester == 3)
+                else if (semester < semesterBase)
+                {
+                    shape = "◄";
+                }
+                else if (semester == 3 || semester > semesterBase)
                 {
                     shape = "►";
                 }
             }
-            else if (supuervised.Year > year)
-            {
-                shape = "►";
-            }
-            else if (supuervised.Year < year)
+            else if (supuervised.Year > yearBase)
             {
                 shape = "◄";
+            }
+            else if (supuervised.Year < yearBase)
+            {
+                shape = "►";
             }
             return shape;
         }

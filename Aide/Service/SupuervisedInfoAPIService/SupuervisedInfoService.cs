@@ -51,9 +51,9 @@ namespace Aide.Service.SupuervisedInfoAPIService
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token.token_type, token.access_token);
                 int semester = (int)model.Semester;
                 /*ProfessorInfo professor = new ProfessorInfo { Username = "w_manaseer", passCode = passCode };*/
-                ProfessorInfo professor = new ProfessorInfo { Username = "m_aloudat", passCode = passCode };
+                /*ProfessorInfo professor = new ProfessorInfo { Username = "m_aloudat", passCode = passCode };*/
                 /*ProfessorInfo professor = new ProfessorInfo { Username = "a_abusamaha", passCode = passCode };*/
-                /*ProfessorInfo professor = new ProfessorInfo { Username = "m_albashayreh", passCode = passCode };*/
+                ProfessorInfo professor = new ProfessorInfo { Username = "m_albashayreh", passCode = passCode };
                 /*ProfessorInfo professor = new ProfessorInfo { Username = "y_alqasrawi", passCode = passCode };*/
                 var responce = client.PostAsJsonAsync($"api/Courses/Supervisored?year={model.Year}&semester={semester}", professor);
                 responce.Wait();
