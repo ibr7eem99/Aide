@@ -14,95 +14,40 @@
 
     <header class="header w-100">
         <div class="container-fluid h-100">
-            <div class="d-flex justify-content-between h-100">
-                <div class="col-lg-6 col-sm-4 px-0">
-                    <div class="navbar p-0 navbar-expand-lg">
-                        <img src="/images/ASU-Logo.png" height="75" />
+            <div class="d-flex h-100">
+                <div class="col-lg-6 col-md-9 col-sm-10 px-0">
+                    <div class="navbar p-0 navbar-expand h-100">
+                        <div style="width: max-content">
+                            <img src="/images/ASU-Logo.png" height="60" class="w-100" />
+                        </div>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <div class="navbar-collapse collapse">
-                                <ul class="navbar-nav">
-                                    <li>
-                                        <a class="nav-link text-white" asp-controller="Home" asp-action="Index">
-                                            Home
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white" asp-controller="Plans" asp-action="UplodFile" asp-route-planType="TreePlan">
-                                            Tree Plane
-                                        </a>
-
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white" asp-controller="Plans" asp-action="UplodFile" asp-route-planType="StudyPlan">
-                                            Study Plane
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                            <ul class="navbar-nav flex-row">
+                                <li class="mx-lg-auto mx-md-3 mx-sm-3">
+                                    <a class="nav-link text-white" asp-controller="Home" asp-action="Index">
+                                        Home
+                                    </a>
+                                </li>
+                                <li class="mx-lg-auto mx-md-3 mx-sm-3">
+                                    <a class="nav-link text-white" asp-controller="Plans" asp-action="UplodFile" asp-route-planType="TreePlan">
+                                        Tree Plane
+                                    </a>
+                                </li>
+                                <li class="mx-lg-auto mx-md-3 mx-sm-3">
+                                    <a class="nav-link text-white" asp-controller="Plans" asp-action="UplodFile" asp-route-planType="StudyPlan">
+                                        Study Plane
+                                    </a>
+                                </li>
+                            </ul>
                         }
                     </div>
                 </div>
 
                 @if (ViewBag.MajorsName is not null)
                 {
-                    <div class="col-sm-5 px-0 h-100">
-
-                        <aside class="sidebar">
-                            <div class="side-inner">
-                                <div class="p-xl-3 py-4 text-center">
-                                    <apan class="nav-link text-white">m_albashayreh@asu.edu.jo</apan>
-                                </div>
-
-                                <hr class="bg-light my-0" />
-
-                                <div class="share">
-                                    <div class="position-relative pb-1 mb-2">
-                                        <h5 class="px-3">Major Tree Plans</h5>
-                                    </div>
-
-                                    <ul class="w-100 list-group">
-
-                                        @foreach (var major in (string[])ViewBag.MajorsName)
-                                        {
-                                            string majorName = System.IO.Path.GetFileName(major);
-                                            <li>
-                                                <button type="button" id="major" class="btn text-left text-white w-100 py-2" style="box-sizing:border-box">@majorName</button>
-                                                <ul id="major-plan-tree" data-major="@majorName" style="display: none;">
-                                                    @{
-                                                        string planTreeFilePath = major + @"\TreePlan";
-                                                        if (!System.IO.Directory.Exists(planTreeFilePath))
-                                                        {
-                                                            System.IO.Directory.CreateDirectory(planTreeFilePath);
-                                                        }
-                                                        string[] planTreeFileList = System.IO.Directory.GetFiles(planTreeFilePath);
-                                                    }
-                                                    @if (planTreeFileList.Any())
-                                                    {
-                                                        foreach (var file in planTreeFileList)
-                                                        {
-                                                            <li class="mb-2">
-                                                                <a href="~/AdvisingMaterial/Majors/@majorName/TreePlan/@file.Split(@"\").Last()" target="_blank" class="text-white text-decoration-none">
-                                                                    <span class="mr-2"><i class="bi bi-link"></i></span>
-                                                                    @System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " ")
-                                                                </a>
-                                                            </li>
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <li>No File Uploaded</li>
-                                                    }
-                                                </ul>
-                                            </li>
-                                        }
-                                    </ul>
-                                </div>
-
-                            </div>
-
-                        </aside>
-
+                    <partial name="_DeletWorningPartial" />
+                    <div class="col-lg-6 col-md-3 col-sm-2 px-0 h-100">
+                        <partial name="_SidebarPartial" />
                         <ul class="navbar justify-content-end">
                             <li class="nav-item">
                                 <a href="#" class="js-menu-toggle nav-link text-white" role="button" aria-expanded="false">

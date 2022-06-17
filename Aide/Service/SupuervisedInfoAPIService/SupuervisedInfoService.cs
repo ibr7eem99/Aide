@@ -39,7 +39,7 @@ namespace Aide.Service.SupuervisedInfoAPIService
             }
         }
 
-        public IEnumerable<Supuervised> GetSupuervisedInfo(HttpContext context, StudentPlanInfo model, string passCode)
+        public IEnumerable<Supuervised> GetSupuervisedInfo(HttpContext context, StudentPlanInfo model, ProfessorInfo professorInfo)
         {
             IEnumerable<Supuervised> Supuervised = null;
             Token token = CookiSpace.GetToken(context);
@@ -50,12 +50,7 @@ namespace Aide.Service.SupuervisedInfoAPIService
                 client.BaseAddress = new Uri("https://api.asu.edu.jo/");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token.token_type, token.access_token);
                 int semester = (int)model.Semester;
-                /*ProfessorInfo professor = new ProfessorInfo { Username = "w_manaseer", passCode = passCode };*/
-                /*ProfessorInfo professor = new ProfessorInfo { Username = "m_aloudat", passCode = passCode };*/
-                /*ProfessorInfo professor = new ProfessorInfo { Username = "a_abusamaha", passCode = passCode };*/
-                ProfessorInfo professor = new ProfessorInfo { Username = "m_albashayreh", passCode = passCode };
-                /*ProfessorInfo professor = new ProfessorInfo { Username = "y_alqasrawi", passCode = passCode };*/
-                var responce = client.PostAsJsonAsync($"api/Courses/Supervisored?year={model.Year}&semester={semester}", professor);
+                var responce = client.PostAsJsonAsync($"api/Courses/Supervisored?year={model.Year}&semester={semester}", professorInfo);
                 responce.Wait();
                 var result = responce.Result;
                 if (result.IsSuccessStatusCode)

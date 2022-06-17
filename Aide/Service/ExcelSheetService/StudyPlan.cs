@@ -277,11 +277,11 @@ namespace Aide.Service.ExcelSheetService
             }
             else if (supuervised.Year > yearBase)
             {
-                shape = "◄";
+                shape = "►";
             }
             else if (supuervised.Year < yearBase)
             {
-                shape = "►";
+                shape = "◄";
             }
             return shape;
         }

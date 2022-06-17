@@ -14,7 +14,7 @@ namespace Aide.Data
         [Required]
         [DataType(DataType.Password)]
         [StringLength(20, MinimumLength = 8)]
-        [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,20}$", ErrorMessage = "Password should contains Capital letters, small leters and numbers")]
+        /*[RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,20}$", ErrorMessage = "Password should contains Capital letters, small leters and numbers")]*/
         public string Password { get; set; }
     }
 }

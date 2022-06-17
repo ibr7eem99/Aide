@@ -2,7 +2,6 @@
 using Aide.Extensions;
 using Aide.Models;
 using Aide.Service.ExcelSheetService;
-using Aide.Service.GraphAPIService;
 using Aide.Service.SupuervisedInfoAPIService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Aide.Controllers
@@ -85,7 +80,8 @@ namespace Aide.Controllers
                     string passCode = _configuration["GetStudentinfo:passCode"];
                     if (!string.IsNullOrEmpty(passCode))
                     {
-                        IEnumerable<Supuervised> Supuervised = _supuervisedInfoService.GetSupuervisedInfo(HttpContext, model, passCode);
+                        ProfessorInfo info = new ProfessorInfo { Username = user, passCode = passCode};
+                        IEnumerable<Supuervised> Supuervised = _supuervisedInfoService.GetSupuervisedInfo(HttpContext, model, info);
                         if (Supuervised.Any())
                         {
                             try
