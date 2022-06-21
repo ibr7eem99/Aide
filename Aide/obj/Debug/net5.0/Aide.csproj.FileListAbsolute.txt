@@ -303,13 +303,11 @@ C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Runtime.Co
 C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Text.Encodings.Web.dll
 C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\System.Text.Json.dll
 C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.AssemblyInfoInputs.cache
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.AssemblyInfo.cs
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.CoreCompileInputs.cache
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.RazorAssemblyInfo.cache
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.RazorAssemblyInfo.cs
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Accounts\Login.cshtml.g.cs
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Plans\UplodFile.cshtml.g.cs
+C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Aspose.Cells.dll
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Error\Error.cshtml.g.cs
+C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_ProgressBarPartial.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\appsettings.Development.json
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\appsettings.json
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aide.exe
@@ -317,10 +315,10 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aide.deps.json
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aide.runtimeconfig.json
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aide.runtimeconfig.dev.json
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aide.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\ref\Aide.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aide.pdb
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aide.Views.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aide.Views.pdb
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aspose.Cells.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Azure.Core.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\EPPlus.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\EPPlus.Interfaces.dll
@@ -439,16 +437,30 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\runtimes\win-arm\lib\
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\runtimes\win-arm64\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.AssemblyReference.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.AssemblyInfoInputs.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.AssemblyInfo.cs
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.CoreCompileInputs.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.RazorAssemblyInfo.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.RazorAssemblyInfo.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\scopedcss\bundle\Aide.styles.css
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\staticwebassets\Aide.StaticWebAssets.Manifest.cache
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.TagHelpers.input.cache
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.TagHelpers.output.cache
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.RazorCoreGenerate.cache
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Accounts\Login.cshtml.g.cs
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Error\Error.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Plans\UplodFile.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_DeletWorningPartial.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_LoaderProcessPartial.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_LoginLayout.cshtml.g.cs
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_SidebarPartial.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\_ViewImports.cshtml.g.cs
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\_ViewStart.cshtml.g.cs
@@ -457,19 +469,7 @@ C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.RazorTargetAssem
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.Views.pdb
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.CopyComplete
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\ref\Aide.dll
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\refint\Aide.dll
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.pdb
 C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.genruntimeconfig.cache
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Accounts\Login.cshtml.g.cs
-C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Accounts\Login.cshtml.g.cs
-C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Plans\UplodFile.cshtml.g.cs
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Plans\UplodFile.cshtml.g.cs
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Error\Error.cshtml.g.cs
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\bin\Debug\net5.0\Aspose.Cells.dll
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Aide.csproj.AssemblyReference.cache
-C:\Users\My Laptop\Documents\github\Aide\Aide\bin\Debug\net5.0\Aspose.Cells.dll
-C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Error\Error.cshtml.g.cs
-C:\Users\My Laptop\Documents\github\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_ProgressBarPartial.cshtml.g.cs
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_DeletWorningPartial.cshtml.g.cs
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_LoaderProcessPartial.cshtml.g.cs
-C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\Razor\Views\Shared\_SidebarPartial.cshtml.g.cs
+C:\Users\ib_ra\Documents\GitHub\Aide\Aide\obj\Debug\net5.0\ref\Aide.dll

@@ -68,6 +68,7 @@ namespace Aide.Controllers
         }
 
         [HttpPost]
+        [SessionExpiredAttribute]
         public async Task<IActionResult> Index(StudentPlanInfo model)
         {
             if (ModelState.IsValid)
@@ -75,36 +76,41 @@ namespace Aide.Controllers
                 Token token = CookiSpace.GetToken(HttpContext);
                 string user = CookiSpace.GetUser(HttpContext);
 
-                if (token is not null && user is not null)
+                /*if (token is not null && string.IsNullOrEmpty(user))
+                {*/
+                string passCode = _configuration["GetStudentinfo:passCode"];
+                if (!string.IsNullOrEmpty(passCode))
                 {
-                    string passCode = _configuration["GetStudentinfo:passCode"];
-                    if (!string.IsNullOrEmpty(passCode))
+                    ProfessorInfo info = new ProfessorInfo { Username = user, passCode = passCode };
+                    IEnumerable<Supuervised> Supuervised = _supuervisedInfoService.GetSupuervisedInfo(HttpContext, model, info);
+                    if (Supuervised.Any())
                     {
-                        ProfessorInfo info = new ProfessorInfo { Username = user, passCode = passCode};
-                        IEnumerable<Supuervised> Supuervised = _supuervisedInfoService.GetSupuervisedInfo(HttpContext, model, info);
-                        if (Supuervised.Any())
+                        try
                         {
-                            try
-                            {
-                                await _studyPlan.GenarateExcelSheet(Supuervised, user);
-                            }
-                            catch (Exception ex) when (ex.GetType().Name == "AuthenticationException")
-                            {
-                                return RedirectToAction(nameof(AccountsController.SignedOut), "Accounts");
-                            }
+                            await _studyPlan.GenarateExcelSheet(Supuervised, user);
+                        }
+                        catch (Exception ex) when (ex.GetType().Name == "AuthenticationException")
+                        {
+                            return RedirectToAction(nameof(AccountsController.SignedOut), "Accounts");
                         }
                     }
                     else
                     {
-                        // TODO
-                        return StatusCode(500);
+                        /*ModelState.AddModelError("Supuervised_API_Error", "There is no data for this account");*/
+                        TempData["SupuervisedAPIError"] = "There is no data for this account";
                     }
                 }
                 else
                 {
-                    TempData["ErrorCause"] = "access token or email not found, Please Login again or contact Computer Center to fix this issues";
-                    throw new UnauthorizedAccessException();
+                    // TODO
+                    return StatusCode(500);
                 }
+                /*}
+                else
+                {
+                    TempData["ErrorCause"] = "access token or email not found, Please Login again or contact Computer Center to fix this issues";
+                    return RedirectToAction(nameof(Login), "Accounts");
+                }*/
                 return RedirectToAction(nameof(Index));
             }
             return View(model);

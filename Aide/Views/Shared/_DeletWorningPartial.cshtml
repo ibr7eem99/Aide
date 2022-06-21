@@ -1,18 +1,15 @@
-﻿<div class="modal" id="exampleModal" tabindex="-1">
+﻿<div class="modal" id="deletePlan" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Delet Study Plane</h5>
-                @*<button type="button" class="Delet" data-dismiss="model" aria-label="Delet">
-                    <span aria-hidden="true">&times;</span>
-                </button>*@
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to deleat this StudyPlane</p>
+                <p>Are you sure you want to deleat this Study Plan</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger">Delete</button>
+                <a asp-action="DeleteFile" asp-controller="Plans" id="btn-delete-Plan" class="btn btn-danger">Delete</a>
             </div>
         </div>
     </div>

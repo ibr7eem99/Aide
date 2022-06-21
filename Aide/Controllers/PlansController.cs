@@ -106,5 +106,26 @@ namespace Aide.Controllers
             }
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
+
+        public IActionResult DeleteFile(string fileName, string major, string planType)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                TempData["ErrorCause"] = "Study Plane name could not be empty";
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
+            string filePath = $"{_webHostEnvironment.WebRootPath}\\AdvisingMaterial\\Majors\\{major}\\{planType}\\{fileName}";
+            if (System.IO.File.Exists(filePath))
+            {
+                TempData["SuccessMessage"] = "File deleted success";
+                System.IO.File.Delete(filePath);
+            }
+            else
+            {
+                TempData["ErrorCause"] = "No file found";
+            }
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
     }
 }

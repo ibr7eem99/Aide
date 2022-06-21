@@ -17,7 +17,8 @@ namespace Aide.Extensions
             /*httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_aloudat"));*/
             /*httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("a_abusamaha"));*/
             /*httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("y_alqasrawi"));*/
-            httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("w_manaseer"));
+            /*httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("w_manaseer"));*/
+            httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("b_kasasbeh"));
         }
 
         public static Token GetToken(HttpContext httpContext)

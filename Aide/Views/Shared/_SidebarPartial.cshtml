@@ -13,14 +13,14 @@
 
             <ul class="w-100 list-group">
 
-                @foreach (var major in (string[])ViewBag.MajorsName)
+                @foreach (var majorPath in (string[])ViewBag.MajorsName)
                 {
-                    string majorName = System.IO.Path.GetFileName(major);
+                    string majorName = System.IO.Path.GetFileName(majorPath);
                     <li>
                         <button type="button" id="major" class="btn text-left text-white w-100 py-2" style="box-sizing:border-box">@majorName</button>
                         <ul id="major-plan-tree" class="list-group px-3" data-major="@majorName" style="display: none;">
                             @{
-                                string planTreeFilePath = major + @"\TreePlan";
+                                string planTreeFilePath = majorPath + @"\TreePlan";
                                 if (!System.IO.Directory.Exists(planTreeFilePath))
                                 {
                                     System.IO.Directory.CreateDirectory(planTreeFilePath);
@@ -32,10 +32,12 @@
                                 foreach (var file in planTreeFileList)
                                 {
                                     <li class="mb-2">
-                                        <button type="button" class="btn btn-danger px-1 py-0 mr-2" data-toggle="modal" data-target="#exampleModal">
+                                        <button type="button" class="btn btn-danger px-1 py-0 mr-2"
+                                    data-fileName="@System.IO.Path.GetFileName(file)"
+                                    data-toggle="modal" data-magor="@majorName" data-target="#deletePlan">
                                             <i class="bi bi-trash3"></i>
                                         </button>
-                                        <a href="~/AdvisingMaterial/Majors/@majorName/TreePlan/@file.Split(@"\").Last()" target="_blank" class="text-white text-decoration-none">
+                                        <a href="~/AdvisingMaterial/Majors/@majorName/TreePlan/@System.IO.Path.GetFileName(file)" target="_blank" class="text-white text-decoration-none">
                                             <span class="mr-2"><i class="bi bi-link"></i></span>
                                             @System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " ")
                                         </a>
@@ -53,5 +55,4 @@
         </div>
 
     </div>
-
-</aside>                                                                                                
+</aside>

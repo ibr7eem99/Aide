@@ -37,7 +37,7 @@ namespace Aide
 
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromDays(1);
+                options.IdleTimeout = TimeSpan.FromSeconds(2);
                 options.Cookie.Name = "cookiesession";
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
@@ -89,10 +89,9 @@ namespace Aide
             {
                 app.UseStatusCodePages();
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                /*app.UseHsts();*/
+                app.UseHsts();
             }
-            /*app.UseHttpsRedirection();*/
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
