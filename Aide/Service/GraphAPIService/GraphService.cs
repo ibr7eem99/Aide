@@ -22,7 +22,6 @@ namespace Aide.Service.GraphAPIService
             _graphServiceClientFactory = graphServiceClientFactory;
             _httpContext = httpContext;
             graphServiceClient = _graphServiceClientFactory.GetAuthenticatedGraphClient((ClaimsIdentity)_httpContext.HttpContext.User.Identity);
-            /*Console.WriteLine($"This is a GraphService Class, {_httpContext.HttpContext.User.Identity.Name}");*/
         }
 
         #region Get Items From OneDrive

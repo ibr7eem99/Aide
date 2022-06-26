@@ -5,7 +5,6 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -19,13 +18,15 @@ namespace Aide.Service.ExcelSheetService
         private readonly IWebHostEnvironment _webHostEnvironment;
         private oneDrive.IOneDriveService _oneDriveService;
 
+        private IEnumerable<Supuervised> StudentCourseList { get; set; }
+
         public StudyPlan(IWebHostEnvironment webHostEnvironment, oneDrive.IOneDriveService oneDriveService)
         {
             _webHostEnvironment = webHostEnvironment;
             _oneDriveService = oneDriveService;
         }
 
-        public async Task GenarateExcelSheet(IEnumerable<Supuervised> supuerviseds, string professorName)
+        public async Task PlanGenerator(IEnumerable<Supuervised> supuerviseds, string professorName)
         {
             string advisingMaterialPath = $@"{_webHostEnvironment.WebRootPath}\AdvisingMaterial\StudentAdvisingPlanFolder";
             DriveItem professorFolder = await _oneDriveService.GetProfessorFolder(professorName);
@@ -39,11 +40,12 @@ namespace Aide.Service.ExcelSheetService
 
             foreach (var student in students)
             {
+                StudentCourseList = student;
                 Supuervised supuervised = student.FirstOrDefault();
                 supuervised.StudentNameEn = ToLowerLetter(supuervised.StudentNameEn).Replace("'", "");
                 advisingMaterialPath += $@"\{supuervised.StudentNameEn}{supuervised.StudentID}.xlsx";
                 CreateExcelSheet(advisingMaterialPath, supuervised);
-                await OpenNewExcelPackag(advisingMaterialPath, student);
+                await OpenNewExcelPackag(advisingMaterialPath);
                 DriveItem studentFolder = await _oneDriveService.GetStudentFolder(
                                                 professorFolder.Id, $"{supuervised.StudentNameEn}{supuervised.StudentID}"
                                                 ) as DriveItem;
@@ -70,18 +72,16 @@ namespace Aide.Service.ExcelSheetService
             return lowerNameLetter;
         }
 
-        private async Task OpenNewExcelPackag(string path, IEnumerable<Supuervised> studentSupuervised)
+        private async Task OpenNewExcelPackag(string path)
         {
             try
             {
-                /*Stopwatch sw = new Stopwatch();
-                sw.Start();*/
                 using (ExcelPackage package = new ExcelPackage(new FileInfo(path)))
                 {
                     try
                     {
                         ExcelWorksheet worksheet = GetSpecificWorkSheet(package);
-                        FillStudentAdvisingPlanTemplate(worksheet, studentSupuervised);
+                        FillStudentAdvisingPlanTemplate(worksheet, StudentCourseList);
                         await package.SaveAsync();
                     }
                     catch (ArgumentNullException ex)
@@ -89,9 +89,6 @@ namespace Aide.Service.ExcelSheetService
                         throw new ArgumentNullException(ex.ParamName, "Excel Worksheet not found, Plese try again or contact with computer center");
                     }
                 }
-                /*sw.Stop();
-                Console.WriteLine($"Milliseconds = {sw.ElapsedMilliseconds}");*/
-                /*throw new Exception();*/
             }
             catch (LicenseException ex)
             {
@@ -156,8 +153,8 @@ namespace Aide.Service.ExcelSheetService
                         worksheet.Cells[courseNumberRow, (courseNumberAddress.Start.Column + 7)]
                         .Value = GetStatusShape(
                             currentSupuervised,
-                            GetCourseYearBasedOnStudyPlan(courseNumberRow, rowRangeBase, firstYear),
-                            GetCourseSemesterBasedOnStudyPlan(courseNumberAddress, colRangeBase)
+                            GetActualCourseYearBasedOnStudyPlan(courseNumberRow, rowRangeBase, firstYear),
+                            GetActualCourseSemesterBasedOnStudyPlan(courseNumberAddress, colRangeBase)
                             );
                     }
                     else
@@ -178,24 +175,22 @@ namespace Aide.Service.ExcelSheetService
 
                 worksheet.Cells[end.Row + 2, 2].Value = "Course Number";
                 worksheet.Cells[end.Row + 2, 2].AutoFitColumns(10);
-                worksheet.Cells[end.Row + 2, 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
-                worksheet.Cells[end.Row + 2, 2, end.Row + 3, 2].Merge = true;
                 worksheet.Cells[end.Row + 2, 2].Style.WrapText = true;
-                worksheet.Cells[end.Row + 2, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells[end.Row + 2, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Cells[end.Row + 2, 2, end.Row + 3, 2].Merge = true;
 
                 worksheet.Cells[end.Row + 2, 3].Value = "Course Title";
                 worksheet.Cells[end.Row + 2, 3].AutoFitColumns(35);
-                worksheet.Cells[end.Row + 2, 3].Style.Border.BorderAround(ExcelBorderStyle.Thick);
                 worksheet.Cells[end.Row + 2, 3, end.Row + 3, 3].Merge = true;
-                worksheet.Cells[end.Row + 2, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells[end.Row + 2, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
                 worksheet.Cells[end.Row + 2, 4].Value = "Registered At";
                 worksheet.Cells[end.Row + 2, 4, end.Row + 3, 5].Merge = true;
-                worksheet.Cells[end.Row + 2, 4].Style.Border.BorderAround(ExcelBorderStyle.Thick);
-                worksheet.Cells[end.Row + 2, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells[end.Row + 2, 4].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                for (int i = 1; i <= 3; i++)
+                {
+                    worksheet.Cells[end.Row + 2, i += 1].Style.Border.BorderAround(ExcelBorderStyle.Thick);
+                    worksheet.Cells[end.Row + 2, i += 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[end.Row + 2, i += 1].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                }
 
                 for (int i = 0; i < studentSupuervisedList.Count(); i++)
                 {
@@ -221,7 +216,7 @@ namespace Aide.Service.ExcelSheetService
                     .OrderByDescending(s => s.Mark).LastOrDefault();
         }
 
-        private int GetCourseYearBasedOnStudyPlan(int courseNumberAddress, int rowRangeBase, int firstYear)
+        private int GetActualCourseYearBasedOnStudyPlan(int courseNumberAddress, int rowRangeBase, int firstYear)
         {
             int semesterYear = 0;
             switch (courseNumberAddress)
@@ -242,7 +237,7 @@ namespace Aide.Service.ExcelSheetService
             return semesterYear;
         }
 
-        private int GetCourseSemesterBasedOnStudyPlan(ExcelAddressBase courseAddress, int colRangeBase)
+        private int GetActualCourseSemesterBasedOnStudyPlan(ExcelAddressBase courseAddress, int colRangeBase)
         {
             int semester = 0;
             if (courseAddress.Start.Column < colRangeBase)

@@ -59,7 +59,7 @@ html {
 
 .bg-img {
     background-size: cover;
-    background-position: center bottom;
+    background-position: center top;
     background-repeat: no-repeat;
 }
 

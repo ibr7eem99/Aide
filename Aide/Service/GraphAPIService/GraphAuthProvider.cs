@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
 using Microsoft.Graph;
-using Aide.Extensions;
+using Aide.Service.GraphAPIService.Extensions;
 
 namespace Aide.Service.GraphAPIService
 {

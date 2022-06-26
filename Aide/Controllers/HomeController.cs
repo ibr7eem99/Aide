@@ -1,5 +1,5 @@
-﻿using Aide.Data;
-using Aide.Extensions;
+﻿using Aide.Attribute;
+using Aide.Data;
 using Aide.Models;
 using Aide.Service.ExcelSheetService;
 using Aide.Service.SupuervisedInfoAPIService;
@@ -41,43 +41,54 @@ namespace Aide.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            if (Request.Cookies.Keys.Contains("cookiesession"))
+            if (User.Identity.IsAuthenticated)
             {
-                int year = DateTime.Now.Year - 1;
+                if (Request.Cookies.Keys.Contains("cookiesession"))
+                {
+                    int year = DateTime.Now.Year - 1;
 
-                /*int month = DateTime.Now.Month;
-                int day = DateTime.Now.Day;
-                string semester = year.ToString();*/
+                    /*int month = DateTime.Now.Month;
+                    int day = DateTime.Now.Day;
+                    string semester = year.ToString();*/
 
-                /*if ((month >= 10 && month <= 1) || (month == 2 && day <= 10))
-                {
-                    semester = year.ToString();
+                    /*if ((month >= 10 && month <= 1) || (month == 2 && day <= 10))
+                    {
+                        semester = year.ToString();
+                    }
+                    else if ((month >= 3 && month <= 6) || (month == 2 && day >= 15))
+                    {
+                        semester = year.ToString() + 2;
+                    }
+                    else if (month >= 7 && month <= 8)
+                    {
+                        semester = year.ToString() + 3;
+                    }*/
+                    ViewData["MajorsName"] = AdvicingMatelrialFolderMangment.GetMajorsName(_webHostEnvironment);
+                    return View(new StudentPlanInfo { Year = 0 });
                 }
-                else if ((month >= 3 && month <= 6) || (month == 2 && day >= 15))
-                {
-                    semester = year.ToString() + 2;
-                }
-                else if (month >= 7 && month <= 8)
-                {
-                    semester = year.ToString() + 3;
-                }*/
-                ViewData["MajorsName"] = AdvicingMatelrialFolderMangment.GetMajorsName(_webHostEnvironment);
-                return View(new StudentPlanInfo { Year = 0 });
             }
             return RedirectToAction(nameof(Login), "Accounts");
         }
 
         [HttpPost]
         [SessionExpiredAttribute]
-        public async Task<IActionResult> Index(StudentPlanInfo model)
+        public async Task<IActionResult> Index([Bind("Year,Semester")] StudentPlanInfo model)
         {
             if (ModelState.IsValid)
             {
-                Token token = CookiSpace.GetToken(HttpContext);
-                string user = CookiSpace.GetUser(HttpContext);
+                if (model.Semester != 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
 
-                /*if (token is not null && string.IsNullOrEmpty(user))
-                {*/
+                if (model.Year != 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+                Token token = CookieAttribute.GetToken(HttpContext);
+                string user = CookieAttribute.GetUser(HttpContext);
+
                 string passCode = _configuration["GetStudentinfo:passCode"];
                 if (!string.IsNullOrEmpty(passCode))
                 {
@@ -87,7 +98,7 @@ namespace Aide.Controllers
                     {
                         try
                         {
-                            await _studyPlan.GenarateExcelSheet(Supuervised, user);
+                            await _studyPlan.PlanGenerator(Supuervised, user);
                         }
                         catch (Exception ex) when (ex.GetType().Name == "AuthenticationException")
                         {
@@ -96,23 +107,16 @@ namespace Aide.Controllers
                     }
                     else
                     {
-                        /*ModelState.AddModelError("Supuervised_API_Error", "There is no data for this account");*/
                         TempData["SupuervisedAPIError"] = "There is no data for this account";
                     }
                 }
                 else
                 {
-                    // TODO
-                    return StatusCode(500);
+                    return StatusCode(500, "HTTP ERROR 500, passCode can't be empty, Please contact with computer center to solve it");
                 }
-                /*}
-                else
-                {
-                    TempData["ErrorCause"] = "access token or email not found, Please Login again or contact Computer Center to fix this issues";
-                    return RedirectToAction(nameof(Login), "Accounts");
-                }*/
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["MajorsName"] = AdvicingMatelrialFolderMangment.GetMajorsName(_webHostEnvironment);
             return View(model);
         }
 

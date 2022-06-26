@@ -1,4 +1,4 @@
-﻿namespace Aide.Extensions
+﻿namespace Aide.Service.GraphAPIService.Extensions
 {
     public class AzureAdOptions
     {

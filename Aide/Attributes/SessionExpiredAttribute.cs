@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using System.Linq;
 
-namespace Aide.Extensions
+namespace Aide.Attribute
 {
     public class SessionExpiredAttribute : ActionFilterAttribute
     {

@@ -32,12 +32,13 @@ namespace Aide
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDistributedMemoryCache();
-            services.AddHttpContextAccessor();
+            services.AddHttpContextAccessor(); // Add a default implemantation for IHttpContextAccessor service
 
+            services.AddDistributedMemoryCache();
+            // Add Session state configration to store access token and professor username when login
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(2);
+                options.IdleTimeout = TimeSpan.FromSeconds(1800);
                 options.Cookie.Name = "cookiesession";
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
@@ -49,6 +50,8 @@ namespace Aide
             {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.Secure = CookieSecurePolicy.SameAsRequest;
+                options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
             });
 
             services.AddAuthentication(options =>
@@ -75,7 +78,7 @@ namespace Aide
                 options.MaxAge = TimeSpan.FromDays(365);
             });
 
-            services.AddHealthChecks();
+            /*services.AddHealthChecks();*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,11 +105,10 @@ namespace Aide
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecks("/healthcheck");
+                /*endpoints.MapHealthChecks("/healthcheck");*/
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Accounts}/{action=Login}/{id?}");
-                /*pattern: "{controller=Home}/{action=Test}/{id?}");*/
             });
         }
     }

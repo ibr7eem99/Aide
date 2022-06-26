@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Aide.Service.GraphAPIService;
+using Aide.Service.GraphAPIService.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,7 +43,7 @@ namespace Aide.Extensions
                 options.Authority = $"{_authProvider.Authority}v2.0";
                 options.UseTokenLifetime = true;
                 options.CallbackPath = _azureOptions.CallbackPath;
-                options.RequireHttpsMetadata = false;
+                options.RequireHttpsMetadata = false; // This Should be disabled only in development enviroment
                 options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
                 var allScopes = $"{_azureOptions.Scopes} {_azureOptions.GraphScopes}".Split(new[] { ' ' });
                 foreach (var scope in allScopes) { options.Scope.Add(scope); }

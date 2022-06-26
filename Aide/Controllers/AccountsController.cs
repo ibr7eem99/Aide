@@ -1,5 +1,5 @@
-﻿using Aide.Data;
-using Aide.Extensions;
+﻿using Aide.Attribute;
+using Aide.Data;
 using Aide.Service.SupuervisedInfoAPIService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
 
 namespace Aide.Controllers
 {
@@ -73,7 +71,7 @@ namespace Aide.Controllers
         public IActionResult SignedOut()
         {
             var callbackUrl = Url.Action(nameof(Login), "Accounts", values: null, protocol: Request.Scheme);
-            CookiSpace.ClearAllCookis(Request, Response);
+            CookieAttribute.ClearAllCookis(Request, Response);
             return SignOut(
                 new AuthenticationProperties { RedirectUri = callbackUrl },
                 CookieAuthenticationDefaults.AuthenticationScheme,

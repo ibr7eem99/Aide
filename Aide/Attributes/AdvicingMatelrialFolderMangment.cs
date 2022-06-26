@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.IO;
 
-namespace Aide.Extensions
+namespace Aide.Attribute
 {
     public static class AdvicingMatelrialFolderMangment
     {

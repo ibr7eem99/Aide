@@ -4,14 +4,11 @@ namespace Aide.Data
 {
     public class StudentPlanInfo
     {
-        /*[Required]
-        [MaxLength(255)]
-        [DataType(DataType.Text)]
-        [Display(Name = "Destination Path", Prompt = @"D:\StudyPlans")]
-        public string DestinationFolderPath { get; set; }*/
         [Required]
+        [RegularExpression(@"^([\d])+$", ErrorMessage = "The value is not valid, Year should be integer number")]
         [DataType(DataType.Text)]
         public int Year { get; set; }
+        [Required]
         public eSemester Semester { get; set; }
     }
 }

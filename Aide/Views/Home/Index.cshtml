@@ -23,12 +23,12 @@
 
 <partial name="_LoaderProcessPartial" />
 
-<section class="w-100 bg-img position-relative" style="min-height: calc(100vh - 75px); background-image: url(/images/ASU.jpeg);">
-    <div style="top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 1;"
-         class="position-absolute h-100 w-100"></div>
+<section class="w-100 position-relative" style="min-height: calc(100vh - 75px);">
+    @*<div style="top: 0; left: 0; background-color: rgba(0, 0, 0, 0.2); z-index: 1;"
+         class="position-absolute h-100 w-100"></div>*@
 
     <div class="d-flex justify-content-center align-items-center" style="min-height: inherit">
-        <div class="card rounded-lg border-0 supuervised-form" style="width: 25rem; z-index: 1000">
+        <div class="card rounded-lg supuervised-form" style="width: 25rem; z-index: 1000; box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;">
             <div class="card-body">
                 <form asp-action="Index" method="post" class="form">
 

@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 
-namespace Aide.Extensions
+namespace Aide.Attribute
 {
-    public static class CookiSpace
+    public static class CookieAttribute
     {
         public static void AddToken(HttpContext httpContext, string jsoncontent)
         {
@@ -17,8 +17,8 @@ namespace Aide.Extensions
             /*httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("m_aloudat"));*/
             /*httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("a_abusamaha"));*/
             /*httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("y_alqasrawi"));*/
-            /*httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("w_manaseer"));*/
-            httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("b_kasasbeh"));
+            httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("w_manaseer"));
+            /*httpContext.Session.Set("user", System.Text.Encoding.ASCII.GetBytes("b_kasasbeh"));*/
         }
 
         public static Token GetToken(HttpContext httpContext)
