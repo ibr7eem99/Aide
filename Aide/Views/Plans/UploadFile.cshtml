@@ -1,17 +1,15 @@
 ﻿@model UplodPlanFile
 
 @{
-    ViewData["Title"] = "UplodFile";
+    ViewData["Title"] = "UploadFile";
 }
 
 <section class="w-100 bg-img position-relative" style="min-height: calc(100vh - 75px);">
-    @*<div style="top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 1;"
-         class="position-absolute h-100 w-100"></div>*@
 
     <div class="d-flex justify-content-center align-items-center" style="min-height: inherit">
         <div class="card rounded-lg" style="width: 25rem; z-index: 1000;box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;">
             <div class="card-body">
-                <form asp-action="UplodFile" method="post" class="form" enctype="multipart/form-data">
+                <form asp-action="UploadFile" method="post" class="form" enctype="multipart/form-data">
 
                     <div asp-validation-summary="All" class="text-danger error-alert"></div>
 
@@ -35,8 +33,8 @@
 
                     <div class="col-sm-12">
                         <div class="form-group">
-                            <label asp-for="PlanSemester"></label>
-                            <input asp-for="PlanSemester" class="form-control" />
+                            <label asp-for="PlanYear"></label>
+                            <input asp-for="PlanYear" class="form-control" />
                         </div>
                     </div>
 

@@ -34,6 +34,18 @@ namespace Aide.Attribute
             System.IO.Directory.CreateDirectory(planepath);
         }
 
+        public static void DeleteFile(string path)
+        {
+            try
+            {
+                System.IO.File.Delete(path);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public static string CombineNewFileNameToPlanePath(string planType, string planepath, int planSemeter)
         {
             switch (planType)

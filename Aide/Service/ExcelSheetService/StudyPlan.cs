@@ -1,4 +1,5 @@
-﻿using Aide.Data;
+﻿using Aide.Attribute;
+using Aide.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Graph;
 using OfficeOpenXml;
@@ -33,7 +34,17 @@ namespace Aide.Service.ExcelSheetService
 
             if (!System.IO.Directory.Exists(advisingMaterialPath))
             {
-                CreateNewDirectory(advisingMaterialPath);
+                AdvicingMatelrialFolderMangment.CreateNewDirectory(advisingMaterialPath);
+            }
+            else
+            {
+                if (System.IO.Directory.GetFiles(advisingMaterialPath).Any())
+                {
+                    foreach (string file in System.IO.Directory.GetFiles(advisingMaterialPath))
+                    {
+                        AdvicingMatelrialFolderMangment.DeleteFile(file);
+                    }
+                }
             }
 
             var students = supuerviseds.GroupBy(s => s.StudentID);
@@ -48,14 +59,10 @@ namespace Aide.Service.ExcelSheetService
                 await OpenNewExcelPackag(advisingMaterialPath);
                 DriveItem studentFolder = await _oneDriveService.GetStudentFolder(
                                                 professorFolder.Id, $"{supuervised.StudentNameEn}{supuervised.StudentID}"
-                                                ) as DriveItem;
+                                                );
 
                 await _oneDriveService.UplodExcelSheet(studentFolder.Id, advisingMaterialPath);
-
-                if (System.IO.File.Exists(advisingMaterialPath))
-                {
-                    DeleteFile(advisingMaterialPath);
-                }
+                AdvicingMatelrialFolderMangment.DeleteFile(advisingMaterialPath);
                 advisingMaterialPath = $@"{_webHostEnvironment.WebRootPath}\AdvisingMaterial\StudentAdvisingPlanFolder";
             }
         }
@@ -174,23 +181,16 @@ namespace Aide.Service.ExcelSheetService
                 ExcelCellAddress end = worksheet.Dimension.End;
 
                 worksheet.Cells[end.Row + 2, 2].Value = "Course Number";
-                worksheet.Cells[end.Row + 2, 2].AutoFitColumns(10);
                 worksheet.Cells[end.Row + 2, 2].Style.WrapText = true;
                 worksheet.Cells[end.Row + 2, 2, end.Row + 3, 2].Merge = true;
 
                 worksheet.Cells[end.Row + 2, 3].Value = "Course Title";
                 worksheet.Cells[end.Row + 2, 3].AutoFitColumns(35);
                 worksheet.Cells[end.Row + 2, 3, end.Row + 3, 3].Merge = true;
+                worksheet.Cells[end.Row + 2, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
                 worksheet.Cells[end.Row + 2, 4].Value = "Registered At";
                 worksheet.Cells[end.Row + 2, 4, end.Row + 3, 5].Merge = true;
-
-                for (int i = 1; i <= 3; i++)
-                {
-                    worksheet.Cells[end.Row + 2, i += 1].Style.Border.BorderAround(ExcelBorderStyle.Thick);
-                    worksheet.Cells[end.Row + 2, i += 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[end.Row + 2, i += 1].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                }
 
                 for (int i = 0; i < studentSupuervisedList.Count(); i++)
                 {
@@ -206,14 +206,6 @@ namespace Aide.Service.ExcelSheetService
                     worksheet.Cells[row, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 }
             }
-        }
-
-        private Supuervised GetSupuervisedInfo(List<Supuervised> supuerviseds, string courseNumber)
-        {
-            return supuerviseds.Where(c => c.CourseNumber
-                    .ToString()
-                    .Equals(courseNumber))
-                    .OrderByDescending(s => s.Mark).LastOrDefault();
         }
 
         private int GetActualCourseYearBasedOnStudyPlan(int courseNumberAddress, int rowRangeBase, int firstYear)
@@ -304,7 +296,7 @@ namespace Aide.Service.ExcelSheetService
             }
             catch
             {
-                DeleteFile(path);
+                AdvicingMatelrialFolderMangment.DeleteFile(path);
                 throw;
             }
         }
@@ -316,30 +308,6 @@ namespace Aide.Service.ExcelSheetService
             try
             {
                 System.IO.File.Copy(existingExcelSheetPath, path, true);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        private void CreateNewDirectory(string path)
-        {
-            try
-            {
-                System.IO.Directory.CreateDirectory(path);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        private void DeleteFile(string path)
-        {
-            try
-            {
-                System.IO.File.Delete(path);
             }
             catch
             {

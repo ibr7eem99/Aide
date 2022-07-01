@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\AdvisingMaterial\" />
+    <Folder Include="wwwroot\AdvisingMaterial\Majors\Cyber Security\StudyPlan\" />
   </ItemGroup>
 
 </Project>

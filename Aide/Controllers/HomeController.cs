@@ -6,10 +6,8 @@ using Aide.Service.SupuervisedInfoAPIService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,21 +15,18 @@ namespace Aide.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
-        private IStudyPlan _studyPlan;
+        private readonly IStudyPlan _studyPlan;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ISupuervisedInfoService _supuervisedInfoService;
 
         public HomeController(
-            ILogger<HomeController> logger,
             IConfiguration configuration,
             IStudyPlan studyPlan,
             IWebHostEnvironment webHostEnvironment,
             ISupuervisedInfoService supuervisedInfoService
             )
         {
-            _logger = logger;
             _configuration = configuration;
             _studyPlan = studyPlan;
             _webHostEnvironment = webHostEnvironment;
@@ -107,7 +102,7 @@ namespace Aide.Controllers
                     }
                     else
                     {
-                        TempData["SupuervisedAPIError"] = "There is no data for this account";
+                        TempData["Message"] = "There is no data for this account";
                     }
                 }
                 else
@@ -118,12 +113,6 @@ namespace Aide.Controllers
             }
             ViewData["MajorsName"] = AdvicingMatelrialFolderMangment.GetMajorsName(_webHostEnvironment);
             return View(model);
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

@@ -1,44 +1,49 @@
 ﻿<aside class="sidebar">
     <div class="side-inner">
-        <div class="p-xl-3 py-4 text-center">
-            <apan class="nav-link text-white">m_albashayreh@asu.edu.jo</apan>
-        </div>
-
-        <hr class="bg-light my-0" />
-
-        <div class="share">
-            <div class="position-relative pb-1 mb-2">
+        <div class="share pt-5">
+            <header class="position-relative pb-1 mb-2">
                 <h5 class="px-3">Major Tree Plans</h5>
-            </div>
+            </header>
 
             <ul class="w-100 list-group">
-
+                @* Get the major folder path from wwwroot folder for each major *@
+                
                 @foreach (var majorPath in (string[])ViewBag.MajorsName)
                 {
+                    @* Return the file name from the current path *@
                     string majorName = System.IO.Path.GetFileName(majorPath);
                     <li>
+                        @* Display Major name *@
                         <button type="button" id="major" class="btn text-left text-white w-100 py-2" style="box-sizing:border-box">@majorName</button>
+                        @* Display a Tree plan for each major as a list *@
                         <ul id="major-plan-tree" class="list-group px-3" data-major="@majorName" style="display: none;">
                             @{
-                                string planTreeFilePath = majorPath + @"\TreePlan";
-                                if (!System.IO.Directory.Exists(planTreeFilePath))
+                                // Combine the current major folder path to TreePlan
+                                string planTreeFolderPath = majorPath + @"\TreePlan";
+                                // Check if the TreePlan folder is not exist then create it
+                                if (!System.IO.Directory.Exists(planTreeFolderPath))
                                 {
-                                    System.IO.Directory.CreateDirectory(planTreeFilePath);
+                                    System.IO.Directory.CreateDirectory(planTreeFolderPath);
                                 }
-                                string[] planTreeFileList = System.IO.Directory.GetFiles(planTreeFilePath);
+                                // return all fils inside the TreePlan folder
+                                string[] planTreeFileList = System.IO.Directory.GetFiles(planTreeFolderPath);
                             }
+                            @* Check if the TreePlan folder contains any pdf fils *@
                             @if (planTreeFileList.Any())
                             {
                                 foreach (var file in planTreeFileList)
                                 {
                                     <li class="mb-2">
+                                        @* Display Delete Button *@
                                         <button type="button" class="btn btn-danger px-1 py-0 mr-2"
                                     data-fileName="@System.IO.Path.GetFileName(file)"
                                     data-toggle="modal" data-magor="@majorName" data-target="#deletePlan">
                                             <i class="bi bi-trash3"></i>
                                         </button>
+                                        
                                         <a href="~/AdvisingMaterial/Majors/@majorName/TreePlan/@System.IO.Path.GetFileName(file)" target="_blank" class="text-white text-decoration-none">
                                             <span class="mr-2"><i class="bi bi-link"></i></span>
+                                            @* Display Tree plan file *@
                                             @System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " ")
                                         </a>
                                     </li>
@@ -46,6 +51,7 @@
                             }
                             else
                             {
+                                @* Display warning message if the TreePlan folder empty *@
                                 <li>No File Uploaded</li>
                             }
                         </ul>

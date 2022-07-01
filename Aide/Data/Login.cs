@@ -13,8 +13,8 @@ namespace Aide.Data
         public string Username { get; set; }
         [Required]
         [DataType(DataType.Password)]
-        [StringLength(20, MinimumLength = 8)]
-        /*[RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,20}$", ErrorMessage = "Password should contains Capital letters, small leters and numbers")]*/
+        [MinLength(8, ErrorMessage = "The field Password must be at least 8 character")]
+        [MaxLength(20, ErrorMessage = "The field Password must be at most 20 character")]
         public string Password { get; set; }
     }
 }

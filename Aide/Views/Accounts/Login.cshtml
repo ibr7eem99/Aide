@@ -3,30 +3,33 @@
 @{
     ViewData["Title"] = "Login";
     Layout = "_LoginLayout";
-
 }
+
 <div class="container-fluid">
     <div class="card login-card mx-auto" style="width: 80%">
-        <div class="row no-gutters">
+        <div class="row no-gutters" style="max-height: 450px; min-height: 450px;">
             <div class="col-md-5">
                 <img src="~/images/ASU-Image.jpg" alt="login" class="login-card-img">
             </div>
             <div class="col-md-7">
                 <div class="card-body">
                     <p class="login-card-description">Sign into your account</p>
+                    @if (ViewData.ModelState["InvalidAuthentication"] is not null)
+                    {
+                        <span class="text-danger">@ViewData.ModelState["InvalidAuthentication"].Errors[0].ErrorMessage</span>
+                    }
                     <form asp-action="Login" method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="Username" class="control-label"></label>
-                            <input asp-for="Username" class="form-control" />
+                            <input asp-for="Username" class="form-control mb-2" />
                             <span asp-validation-for="Username" class="text-danger"></span>
                         </div>
-                        <div class="form-group mb-4">
+                        <div class="form-group">
                             <label asp-for="Password" class="control-label"></label>
-                            <input asp-for="Password" class="form-control" />
+                            <input asp-for="Password" class="form-control mb-2" />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
-                        <input id="login" class="btn btn-block login-btn mb-4" type="submit" value="Login">
+                        <input id="login" class="btn btn-block login-btn mt-4" type="submit" value="Login">
                     </form>
 
                 </div>
@@ -38,6 +41,6 @@
 
 @section Scripts {
     @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
-}
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
