@@ -19,9 +19,4 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\AdvisingMaterial\" />
-    <Folder Include="wwwroot\AdvisingMaterial\Majors\Cyber Security\StudyPlan\" />
-  </ItemGroup>
-
 </Project>

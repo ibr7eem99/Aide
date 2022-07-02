@@ -117,6 +117,8 @@ namespace Aide.Service.ExcelSheetService
                 throw new ArgumentNullException(nameof(worksheet));
             }
 
+            var cell = worksheet.Cells["M1"].Value = $"{studentSupuervised.FirstOrDefault().StudentID} {studentSupuervised.FirstOrDefault().StudentNameEn}";
+
             IEnumerable<ExcelRangeBase> registeredAtAddress = worksheet.Cells.Where(c => c.Text.Equals("Registered At"));
             int firstYear = Convert.ToInt32(studentSupuervised.FirstOrDefault().StudentID.ToString().Substring(0, 4));
             int year = firstYear;
