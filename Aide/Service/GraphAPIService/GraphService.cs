@@ -25,7 +25,8 @@ namespace Aide.Service.GraphAPIService
         }
 
         #region Get Items From OneDrive
-        public async Task<IEnumerable<DriveItem>> GetAllItemsInsideDrive()
+        // Get Shared folder info from root drive
+        public async Task<IEnumerable<DriveItem>> GetFolderFromRootDrive()
         {
             try
             {
@@ -51,6 +52,7 @@ namespace Aide.Service.GraphAPIService
             }
         }
 
+        // Get an information for the folder in side the onedrive
         public async Task<IEnumerable<DriveItem>> GetItemInsideFolder(string itemId, string folderName)
         {
             try

@@ -30,16 +30,22 @@
                                         Home
                                     </a>
                                 </li>
-                                <li class="mx-lg-auto mx-md-3 mx-sm-3 d-lg-block d-md-none d-sm-none">
-                                    <a class="nav-link text-white" asp-controller="Plans" asp-action="UploadFile" asp-route-planType="TreePlan">
-                                        Upload Tree Plane
-                                    </a>
-                                </li>
-                                <li class="mx-lg-auto mx-md-3 mx-sm-3 d-lg-block d-md-none d-sm-none">
-                                    <a class="nav-link text-white" asp-controller="Plans" asp-action="UploadFile" asp-route-planType="StudyPlan">
-                                        Upload Study Plane
-                                    </a>
-                                </li>
+                                @if (ViewData["User"] is not null)
+                                {
+                                    if ((bool)ViewData["User"].Equals("m_aloudat"))
+                                    {
+                                        <li class="mx-lg-auto mx-md-3 mx-sm-3 d-lg-block d-md-none d-sm-none">
+                                            <a class="nav-link text-white" asp-controller="Plans" asp-action="UploadFile" asp-route-planType="TreePlan">
+                                                Upload Tree Plane
+                                            </a>
+                                        </li>
+                                        <li class="mx-lg-auto mx-md-3 mx-sm-3 d-lg-block d-md-none d-sm-none">
+                                            <a class="nav-link text-white" asp-controller="Plans" asp-action="UploadFile" asp-route-planType="StudyPlan">
+                                                Upload Study Plane
+                                            </a>
+                                        </li>
+                                    }
+                                }
                             </ul>
                         }
                     </div>

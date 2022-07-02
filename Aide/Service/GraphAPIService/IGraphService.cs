@@ -7,7 +7,7 @@ namespace Aide.Service.GraphAPIService
 {
     public interface IGraphService
     {
-        public Task<IEnumerable<DriveItem>> GetAllItemsInsideDrive();
+        public Task<IEnumerable<DriveItem>> GetFolderFromRootDrive();
         public Task<IEnumerable<DriveItem>> GetItemInsideFolder(string itemId, string folderName);
         public Task<DriveItem> CreateFolderInsideDriveRoot(string folderName);
         public Task<DriveItem> CreatNewFolder(string itemId, string folderName);

@@ -14,7 +14,7 @@ namespace Aide.Service.GraphAPIService
 
         public GraphAuthProvider(IConfiguration configuration)
         {
-            var azureOptions = new AzureAdOptions();
+            var azureOptions = new AzureAdOptions(); 
             configuration.Bind("AzureAd", azureOptions);
 
             _app = ConfidentialClientApplicationBuilder.Create(azureOptions.ClientId)

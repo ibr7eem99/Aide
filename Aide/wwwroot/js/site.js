@@ -33,7 +33,7 @@
 
     // Add URL parameters or (query strings) for delete plan button
     $("button[data-target='#deletePlan']").on("click", (e) => {
-        let url = `${$("#btn-delete-Plan").attr("href")}?fileName=${e.currentTarget.dataset.filename}&major=${e.currentTarget.dataset.magor}&planType=TreePlan`;
+        let url = `${$("#btn-delete-Plan").attr("href")}?fileName=${e.currentTarget.dataset.filename}&major=${e.currentTarget.dataset.magor}`;
         $("#btn-delete-Plan").attr("href", url);
     })
 

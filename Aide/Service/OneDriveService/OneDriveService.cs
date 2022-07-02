@@ -28,7 +28,7 @@ namespace Aide.Service.OneDriveService
             DriveItem drive = null;
             IEnumerable<DriveItem> foldersInfo = null;
 
-            foldersInfo = await _graphService.GetAllItemsInsideDrive();
+            foldersInfo = await _graphService.GetFolderFromRootDrive();
             if (Enumerable.Any(foldersInfo))
             {
                 drive = Enumerable.FirstOrDefault(foldersInfo);

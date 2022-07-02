@@ -1,6 +1,5 @@
 ﻿using Aide.Attribute;
 using Aide.Data;
-using Aide.Models;
 using Aide.Service.ExcelSheetService;
 using Aide.Service.SupuervisedInfoAPIService;
 using Microsoft.AspNetCore.Hosting;
@@ -40,7 +39,7 @@ namespace Aide.Controllers
             {
                 if (Request.Cookies.Keys.Contains("cookiesession"))
                 {
-                    int year = DateTime.Now.Year - 1;
+                    /*int year = DateTime.Now.Year - 1;*/
 
                     /*int month = DateTime.Now.Month;
                     int day = DateTime.Now.Day;
@@ -59,6 +58,7 @@ namespace Aide.Controllers
                         semester = year.ToString() + 3;
                     }*/
                     ViewData["MajorsName"] = AdvicingMatelrialFolderMangment.GetMajorsName(_webHostEnvironment);
+                    ViewData["User"] = CookieAttribute.GetUser(HttpContext);
                     return View(new StudentPlanInfo { Year = 0 });
                 }
             }

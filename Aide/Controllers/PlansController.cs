@@ -2,7 +2,6 @@
 using Aide.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.IO;
 
 namespace Aide.Controllers
@@ -30,6 +29,7 @@ namespace Aide.Controllers
                     /*ViewData["PlanType"] = planType;*/
                     // get the majors name and save it in ViewData it used to display the majors in _SidebarPartial inside shared folder
                     ViewData["MajorsName"] = AdvicingMatelrialFolderMangment.GetMajorsName(_webHostEnvironment);
+                    ViewData["User"] = CookieAttribute.GetUser(HttpContext);
                     return View();
                 }
                 else
@@ -59,7 +59,7 @@ namespace Aide.Controllers
                     /*ViewData["PlanType"] = planType;*/
                     // Get Majors Name from wwwroot folder and use it in _Layout shared view to show the tree plan for each major
                     ViewData["MajorsName"] = AdvicingMatelrialFolderMangment.GetMajorsName(_webHostEnvironment);
-
+                    ViewData["User"] = CookieAttribute.GetUser(HttpContext);
                     /*
                       Get Uploaded file extension to check if the extension is:
                       .pdf for tree plan.
@@ -131,17 +131,11 @@ namespace Aide.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-        public IActionResult DeleteFile(string fileName, string major, string planType)
+        public IActionResult DeleteFile(string fileName, string major)
         {
             if (string.IsNullOrEmpty(fileName))
             {
                 TempData["Message"] = "File name could not be empty";
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-
-            if (string.IsNullOrEmpty(planType))
-            {
-                TempData["Message"] = "Plan Type could not be empty";
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
 
@@ -151,13 +145,7 @@ namespace Aide.Controllers
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
 
-            if (!planType.Equals("TreePlan"))
-            {
-                TempData["Message"] = "Plan Type value should be only TreePlan";
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-
-            string filePath = $"{_webHostEnvironment.WebRootPath}\\AdvisingMaterial\\Majors\\{major}\\{planType}\\{fileName}";
+            string filePath = $"{_webHostEnvironment.WebRootPath}\\AdvisingMaterial\\Majors\\{major}\\TreePlan\\{fileName}";
             if (System.IO.File.Exists(filePath))
             {
                 TempData["Message"] = "File deleted success";
