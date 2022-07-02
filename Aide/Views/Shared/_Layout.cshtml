@@ -51,20 +51,29 @@
                     </div>
                 </div>
 
-                @if (ViewBag.MajorsName is not null)
-                {
-                    <partial name="_DeletWorningPartial" />
-                    <div class="col-lg-6 col-md-3 col-sm-2 px-0 h-100">
-                        <partial name="_SidebarPartial" />
-                        <ul class="navbar justify-content-end">
+                <div class="col-lg-6 col-md-3 col-sm-2 px-0 h-100">
+                    <ul class="navbar justify-content-end">
+                        @if (User.Identity.IsAuthenticated)
+                        {
                             <li class="nav-item">
+                                <a asp-action="SignedOut" class="nav-link text-white" asp-controller="Accounts">Sign Out</a>
+                            </li>
+                        }
+
+                        @if (ViewBag.MajorsName is not null)
+                        {
+                            <li class="nav-item">
+                                <partial name="_DeletWorningPartial" />
+                                <partial name="_SidebarPartial" />
                                 <a href="#" class="js-menu-toggle nav-link text-white" role="button" aria-expanded="false">
                                     <i class="bi bi-list" style="font-size: 25px"></i>
                                 </a>
+
                             </li>
-                        </ul>
-                    </div>
-                }
+                        }
+                    </ul>
+                </div>
+
             </div>
         </div>
     </header>
