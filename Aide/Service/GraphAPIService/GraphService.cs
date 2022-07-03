@@ -25,7 +25,11 @@ namespace Aide.Service.GraphAPIService
         }
 
         #region Get Items From OneDrive
-        // Get Shared folder info from root drive
+        /*
+         * Summary:
+         *      Get the GraphServiceUsers request, response should contains 
+         *      Shared folder info from root drive using microsoft Graph API
+         */
         public async Task<IEnumerable<DriveItem>> GetFolderFromRootDrive()
         {
             try
@@ -44,6 +48,7 @@ namespace Aide.Service.GraphAPIService
                     case "AuthenticationFailure":
                         throw new AuthenticationException(ex.Error);
                     case "TokenNotFound":
+                        // Genarate Authentication Exception if a microsoft access token not found in the cookie.
                         await _httpContext.HttpContext.ChallengeAsync();
                         throw new AuthenticationException(ex.Error);
                     default:
@@ -52,7 +57,15 @@ namespace Aide.Service.GraphAPIService
             }
         }
 
-        // Get an information for the folder in side the onedrive
+        /* 
+         * Summary:
+         *      Get the GraphServiceUsers request,
+         *      response should contains an information for the folder in side the Onedrive
+         *      using microsoft Graph API.
+         * Parameters:
+         *      itemId: specific Id for the parant folder
+         *      folderName: folder name that I want to get it's information
+         */
         public async Task<IEnumerable<DriveItem>> GetItemInsideFolder(string itemId, string folderName)
         {
             try
@@ -73,6 +86,7 @@ namespace Aide.Service.GraphAPIService
                     case "AuthenticationFailure":
                         throw new AuthenticationException(ex.Error);
                     case "TokenNotFound":
+                        // Genarate Authentication Exception if a microsoft access token not found in the cookie.
                         await _httpContext.HttpContext.ChallengeAsync();
                         throw new AuthenticationException(ex.Error);
                     case "invalidRequest":
@@ -85,6 +99,12 @@ namespace Aide.Service.GraphAPIService
         #endregion
 
         #region Create Folder inside OneDrive
+        /*
+         * Summary:
+         *      Microsoft Graph API request to create new folder inside root folder in onedrive.
+         *  Parameters:
+         *      folderName: is a name for the new folder that shoud create.
+         */
         public async Task<DriveItem> CreateFolderInsideDriveRoot(string folderName)
         {
             try
@@ -117,6 +137,13 @@ namespace Aide.Service.GraphAPIService
             }
         }
 
+        /*
+         * Summary:
+         *      Microsoft Graph API request to Create new folder inside specific folder.
+         * Parameters:
+         *      itemId: a specific Id for the parant folder who I want to create folder inside it
+         *      folderName: Folder name for new folder.
+         */
         public async Task<DriveItem> CreatNewFolder(string itemId, string folderName)
         {
             try
@@ -150,6 +177,13 @@ namespace Aide.Service.GraphAPIService
         }
         #endregion
 
+        /*
+         * Summary:
+         *      Microsoft Graph API request to uplade file inside specific folder in Onedrive.
+         * Parameters:
+         *      driveItemId: specific Id for the parant folder who I want to upload folder inside it
+         *      filePath: is a path for the file that sholud upload it.
+         */
         public async Task<DriveItem> UplaodAnExistingFile(string driveItemId, string filePath)
         {
             try
@@ -180,6 +214,12 @@ namespace Aide.Service.GraphAPIService
             }
         }
 
+        /*
+         * Summary:
+         *      Microsoft Graph API request to delete file inside specific folder in Onedrive.
+         * Parameters:
+         *      driveItemId: specific Id for the parant folder who I want to delete folder inside it.
+         */
         public async Task DeleteAnExistingFile(string driveItemId)
         {
             await graphServiceClient.Me.Drive.Items[$"{driveItemId}"]

@@ -23,6 +23,12 @@ namespace Aide.Service.OneDriveService
         }
 
         #region ProfessorFolder
+        /*
+         * Summary:
+         *      Check if root folder is contains shared folder,
+         *      if not it call function to create new folder inside root folder,
+         *      then return DriveItem object that contains folder info.
+         */
         private async Task<DriveItem> GetFolderFromRootDrive()
         {
             DriveItem drive = null;
@@ -39,7 +45,16 @@ namespace Aide.Service.OneDriveService
             }
             return drive;
         }
-
+        /*
+         * Summary:
+         *      Check if shared folder is contains folder name equal to professor name,
+         *      the value of professor name should get from the cookies,
+         *      if not it call function to create new folder for the professor,
+         *      then return DriveItem object that contains folder info.
+         *  Parameters:
+         *          professorName: a professor name that sholud search for,
+         *          or folder name for new folder that will create if the professor folder is not exist.
+         */
         public async Task<DriveItem> GetProfessorFolder(string professorName)
         {
             DriveItem drive = null;
@@ -59,6 +74,16 @@ namespace Aide.Service.OneDriveService
         #endregion
 
         #region StudentsFolder
+        /*
+         * Summary:
+         *      Check if professor folder is contains folder name equal to student name,
+         *      if not it should call function to create new folder for the student,
+         *      then return DriveItem object that contains folder info.
+         * Parameters:
+         *      ProfessorfolderId: a specific Id for the professor folder.
+         *      studentfolderName: a student name that sholud search for,
+         *          or folder name for new folder that will create if the student folder is not exist.
+         */
         public async Task<DriveItem> GetStudentFolder(string ProfessorfolderId, string studentfolderName)
         {
             if (string.IsNullOrEmpty(ProfessorfolderId))
@@ -68,7 +93,7 @@ namespace Aide.Service.OneDriveService
 
             if (string.IsNullOrEmpty(studentfolderName))
             {
-                throw new ArgumentNullException("Student Folder Name should not be empty");
+                throw new ArgumentNullException(nameof(studentfolderName), "Student Folder Name should not be empty");
             }
 
             DriveItem drive = null;

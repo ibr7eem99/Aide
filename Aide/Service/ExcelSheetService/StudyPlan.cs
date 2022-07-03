@@ -67,6 +67,7 @@ namespace Aide.Service.ExcelSheetService
             }
         }
 
+        // convert first litter from student name to Lower Letter.
         private string ToLowerLetter(string studentName)
         {
             string[] strList = studentName.Split(" ");
@@ -79,6 +80,7 @@ namespace Aide.Service.ExcelSheetService
             return lowerNameLetter;
         }
 
+        // path: is a path of study plan sheet file inside wwwroot folder.
         private async Task OpenNewExcelPackag(string path)
         {
             try
@@ -106,7 +108,13 @@ namespace Aide.Service.ExcelSheetService
                 throw;
             }
         }
-
+        /*
+         * Summary:
+         *      Fill Registered At, Status value in side study plan file
+         *  Parameters:
+         *      worksheet: is a sheet that will fill it.
+         *      studentSupuervised: all the subject that the student was take it.
+         */
         private void FillStudentAdvisingPlanTemplate(
             ExcelWorksheet worksheet,
             IEnumerable<Supuervised> studentSupuervised
@@ -137,6 +145,7 @@ namespace Aide.Service.ExcelSheetService
                 }
             }
 
+            // list that sholud cintains all the subjects which not include in the sheet.
             List<Supuervised> studentSupuervisedList = new List<Supuervised>();
             ExcelRange registeredAddress = null;
             int leftCourseNumberCol = worksheet.Cells.FirstOrDefault(c => c.Text.Equals("Course Number") || c.Text.Equals("Subject Number")).Start.Column;
@@ -147,6 +156,8 @@ namespace Aide.Service.ExcelSheetService
                 .Where(c => (c.Start.Column == leftCourseNumberCol || c.Start.Column == rightCourseNumberCol) && reg.IsMatch(c.Text))
                 .ToList();
 
+            // Dimension.End.Row: is a number of the row inside the sheet
+            // 4 it means 4 year.
             int rowRangeBase = worksheet.Dimension.End.Row / 4;
             int colRangeBase = 18 / 2;
             foreach (Supuervised currentSupuervised in studentSupuervised)
@@ -182,6 +193,7 @@ namespace Aide.Service.ExcelSheetService
                 ExcelCellAddress start = worksheet.Dimension.Start;
                 ExcelCellAddress end = worksheet.Dimension.End;
 
+                // Create new table to display all the subjects which not include in the sheet.
                 worksheet.Cells[end.Row + 2, 2].Value = "Course Number";
                 worksheet.Cells[end.Row + 2, 2].Style.WrapText = true;
                 worksheet.Cells[end.Row + 2, 2, end.Row + 3, 2].Merge = true;
@@ -210,6 +222,14 @@ namespace Aide.Service.ExcelSheetService
             }
         }
 
+        /*
+         * Summary:
+         *      Get the actual course year that sholud the student take the course in.
+         * Parameters:
+         *      courseNumberAddress = the row value where the course id is.
+         *      rowRangeBase = tatal number of row inside the sheet / 4.
+         *      firstYear = first 4 digit of student university number.
+        */
         private int GetActualCourseYearBasedOnStudyPlan(int courseNumberAddress, int rowRangeBase, int firstYear)
         {
             int semesterYear = 0;
@@ -230,7 +250,7 @@ namespace Aide.Service.ExcelSheetService
             }
             return semesterYear;
         }
-
+        // Get the actual course semester that sholud the student take the course in.
         private int GetActualCourseSemesterBasedOnStudyPlan(ExcelAddressBase courseAddress, int colRangeBase)
         {
             int semester = 0;
@@ -245,6 +265,9 @@ namespace Aide.Service.ExcelSheetService
             return semester;
         }
 
+        // Identifies a course statuse shape based on actual course year and actual course semester
+        // yearBase: the actual course year.
+        // semesterBase: the actual course semester.
         private string GetStatusShape(Supuervised supuervised, int yearBase, int semesterBase)
         {
             string shape = string.Empty;
@@ -275,6 +298,7 @@ namespace Aide.Service.ExcelSheetService
             return shape;
         }
 
+        // Get the advising sheet form the student excelsheet.
         private ExcelWorksheet GetSpecificWorkSheet(ExcelPackage package)
         {
             if (package.Workbook.Worksheets is null)
@@ -284,6 +308,7 @@ namespace Aide.Service.ExcelSheetService
             return package.Workbook.Worksheets.FirstOrDefault(w => w.Name.Contains("SE - Adv E") || w.Name.Contains("CS-Adv-E") || w.Name.Contains("Cyber-Adv-E"));
         }
 
+        // Create empty excelsheet file then make a copy of study plan teamplate.
         private void CreateExcelSheet(string path, Supuervised supuervised)
         {
             try
@@ -303,9 +328,9 @@ namespace Aide.Service.ExcelSheetService
             }
         }
 
+
         private void CopyExcelSheetTempleate(string path, Supuervised supuervised)
         {
-            // Get Student Advising Plan File based on MajorId & StudentId
             string existingExcelSheetPath = GetStudentPalnSheetFile(supuervised.SemesterStudyPlan, supuervised.SpecNameEn);
             try
             {
@@ -317,6 +342,7 @@ namespace Aide.Service.ExcelSheetService
             }
         }
 
+        // Get Student Advising Plan File based on Major name & Student Study Plan semester.
         private string GetStudentPalnSheetFile(int semesterStudyPlan, string majorName)
         {
             string FullFileName = $"{_webHostEnvironment.WebRootPath}\\AdvisingMaterial\\Majors\\";
@@ -339,6 +365,9 @@ namespace Aide.Service.ExcelSheetService
             return FullFileName;
         }
 
+        // Get Student Paln Sheet File Name from StudyPlan folder
+        // FullFileName: StudyPlan folder path that inside in wwwroot folder.
+        // Student Study Plan semester.
         private string GetStudentPalnSheetFileName(string FullFileName, int semesterStudyPlan)
         {
             try
